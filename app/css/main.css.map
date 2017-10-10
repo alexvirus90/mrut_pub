@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.sass"],"names":[],"mappings":"AAAA;EACE,wBAAuB;EACvB,qBAAa;EAAb,sBAAa;EAAb,qBAAa;EAAb,cAAa,EAAI","file":"main.css","sourcesContent":["body {\n  background-color: green;\n  display: flex; }\n"]}
