@@ -15,7 +15,7 @@ const gulp         = require('gulp'),
       gulpIf       = require('gulp-if'),
       sourcemaps   = require('gulp-sourcemaps');
 
-// const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
+const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
 gulp.task('sass', () => {
   return gulp.src('app/sass/main.sass')
