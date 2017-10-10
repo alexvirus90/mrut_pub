@@ -1,3 +1,5 @@
 $(function () {
 
+  // $('body').fadeOut();
+
 });
