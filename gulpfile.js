@@ -29,7 +29,7 @@ gulp.task('js', function () {
 
 gulp.task('scripts', function () {
   return gulp.src([
-    'node_modules/jquery/dist/jquery.min.js'
+    'app/libs/jquery/dist/jquery.min.js'
   ])
     .pipe(concat('libs.min.js'))
     .pipe(uglify())
