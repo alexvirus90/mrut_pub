@@ -26,62 +26,62 @@ gulp.task('sass', () => {
     .pipe(gulp.dest('app/css'))
 });
 
-gulp.task('scripts', () => {
-  return gulp.src([
-    'app/libs/jquery/dist/jquery.min.js'
-  ])
-    .pipe(concat('libs.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('app/js'));
-});
-
-gulp.task('css-libs', ['sass'], () =>{
-  return gulp.src(['app/css/libs.css', 'app/css/main.css'])
-    .pipe(cssnano())
-    .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest('app/css'));
-});
-
-gulp.task('images', () => {
-  return gulp.src('app/images/**/*')
-	.pipe(cache(imagemin({
-	  interlaced: true,
-	  progressive: true,
-	  svgoPlugins: [{removeViewBox: false}],
-	  une: [pngquant()]
-	})))
-	.pipe(gulp.dest('dist/images'));
-});
-
-gulp.task('browser-sync', () => {
-  browserSync.init({
-    server: {
-      baseDir: 'dist'
-    },
-    notify: false
-  });
-  browserSync.watch('dist/**/*.*').on('change', browserSync.reload);
-});
-
-gulp.task('clean', () => {
-  return del.sync('dist');
-});
-
-gulp.task('clear', () => {
-  return cache.clearAll();
-});
-
-gulp.task('copy', () => {
-  return gulp.src(['app/css/**/*.{css,map}', 'app/js/**/*', 'app/*.html', { since: gulp.lastRun('copy') }])
-    .pipe(gulp.dest('dist'))
-});
-
-gulp.task('build', gulp.series(
-  'clean',
-  gulp.parallel('css-libs', 'scripts', 'images', 'copy'),
-  'browser-sync')
-);
-
-// gulp.task('watch', ['css-libs', 'scripts', 'html', 'js', 'browser-sync'], () => {
-  gulp.watch('app/sass/**/*.*', gulp.series('sass'));
+// gulp.task('scripts', () => {
+//   return gulp.src([
+//     'app/libs/jquery/dist/jquery.min.js'
+//   ])
+//     .pipe(concat('libs.min.js'))
+//     .pipe(uglify())
+//     .pipe(gulp.dest('app/js'));
 // });
+//
+// gulp.task('css-libs', ['sass'], () =>{
+//   return gulp.src(['app/css/libs.css', 'app/css/main.css'])
+//     .pipe(cssnano())
+//     .pipe(rename({suffix: '.min'}))
+//     .pipe(gulp.dest('app/css'));
+// });
+//
+// gulp.task('images', () => {
+//   return gulp.src('app/images/**/*')
+// 	.pipe(cache(imagemin({
+// 	  interlaced: true,
+// 	  progressive: true,
+// 	  svgoPlugins: [{removeViewBox: false}],
+// 	  une: [pngquant()]
+// 	})))
+// 	.pipe(gulp.dest('dist/images'));
+// });
+//
+// gulp.task('browser-sync', () => {
+//   browserSync.init({
+//     server: {
+//       baseDir: 'dist'
+//     },
+//     notify: false
+//   });
+//   browserSync.watch('dist/**/*.*').on('change', browserSync.reload);
+// });
+//
+// gulp.task('clean', () => {
+//   return del.sync('dist');
+// });
+//
+// gulp.task('clear', () => {
+//   return cache.clearAll();
+// });
+//
+// gulp.task('copy', () => {
+//   return gulp.src(['app/css/**/*.{css,map}', 'app/js/**/*', 'app/*.html', { since: gulp.lastRun('copy') }])
+//     .pipe(gulp.dest('dist'))
+// });
+//
+// gulp.task('build', gulp.series(
+//   'clean',
+//   gulp.parallel('css-libs', 'scripts', 'images', 'copy'),
+//   'browser-sync')
+// );
+//
+// // gulp.task('watch', ['css-libs', 'scripts', 'html', 'js', 'browser-sync'], () => {
+//   gulp.watch('app/sass/**/*.*', gulp.series('sass'));
+// // });
