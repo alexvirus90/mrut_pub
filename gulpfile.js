@@ -28,21 +28,14 @@ gulp.task('sass', () => {
     .pipe(gulp.dest('app/css'))
 });
 
-// gulp.task('scripts', () => {
-//   return gulp.src([
-//     'app/libs/jquery/dist/jquery.min.js'
-//   ])
-//     .pipe(concat('libs.min.js'))
-//     .pipe(uglify())
-//     .pipe(gulp.dest('app/js'));
-// });
-//
-// gulp.task('css-libs', ['sass'], () =>{
-//   return gulp.src(['app/css/libs.css', 'app/css/main.css'])
-//     .pipe(cssnano())
-//     .pipe(rename({suffix: '.min'}))
-//     .pipe(gulp.dest('app/css'));
-// });
+gulp.task('scripts', () => {
+  return gulp.src([
+    'app/libs/jquery/dist/jquery.min.js'
+  ])
+    .pipe(concat('libs.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('app/js'));
+});
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
@@ -84,8 +77,7 @@ gulp.task('build', gulp.series(
   'clean',
   'sass',
   gulp.parallel('scripts', 'images', 'copy'),
-  gulp.parallel('browser-sync')
-  )
+  'browser-sync')
 );
 
 gulp.watch('app/sass/**/*.*', gulp.series('sass'));
