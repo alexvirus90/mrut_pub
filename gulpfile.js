@@ -26,14 +26,14 @@ gulp.task('sass', () => {
     .pipe(gulp.dest('app/css'))
 });
 
-// gulp.task('scripts', () => {
-//   return gulp.src([
-//     'app/libs/jquery/dist/jquery.min.js'
-//   ])
-//     .pipe(concat('libs.min.js'))
-//     .pipe(uglify())
-//     .pipe(gulp.dest('app/js'));
-// });
+gulp.task('scripts', () => {
+  return gulp.src([
+    'app/libs/jquery/dist/jquery.min.js'
+  ])
+    .pipe(concat('libs.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('app/js'));
+});
 //
 // gulp.task('css-libs', ['sass'], () =>{
 //   return gulp.src(['app/css/libs.css', 'app/css/main.css'])
