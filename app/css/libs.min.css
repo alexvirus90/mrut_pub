@@ -3,6 +3,7 @@ body {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  font-size: 40px; }
 
 /*# sourceMappingURL=libs.css.map */

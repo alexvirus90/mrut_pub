@@ -1,1 +1,1 @@
-{"version":3,"sources":["main.sass"],"names":[],"mappings":"AAAA;EACE,wBAAuB;EACvB,qBAAa;EAAb,sBAAa;EAAb,qBAAa;EAAb,cAAa,EACb","file":"libs.css","sourcesContent":["body {\n  background-color: green;\n  display: flex;\n }  //font-size: 40px\n"]}
+{"version":3,"sources":["main.sass"],"names":[],"mappings":"AAAA;EACE,wBAAuB;EACvB,qBAAa;EAAb,sBAAa;EAAb,qBAAa;EAAb,cAAa;EACb,gBAAe,EAAI","file":"libs.css","sourcesContent":["body {\n  background-color: green;\n  display: flex;\n  font-size: 40px; }\n"]}
