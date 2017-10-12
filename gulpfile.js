@@ -4,7 +4,7 @@ const gulp         = require('gulp'),
       sass         = require('gulp-sass'),
       browserSync  = require('browser-sync'),
       concat       = require('gulp-concat'),
-      uglify       = require('gulp-uglifyjs'),
+      minify       = require('gulp-minify'),
       cssnano      = require('gulp-cssnano'),
       rename       = require('gulp-rename'),
       del          = require('del'),
@@ -18,7 +18,7 @@ const gulp         = require('gulp'),
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
 gulp.task('sass', () => {
-  return gulp.src(['app/sass/main.sass', 'app/sass/libs.sass'], { since: gulp.lastRun('copy') })
+  return gulp.src('app/sass/main.sass', { since: gulp.lastRun('copy') })
     .pipe(gulpIf(isDevelopment, sourcemaps.init()))
     .pipe(sass())
     .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
@@ -28,13 +28,43 @@ gulp.task('sass', () => {
     .pipe(gulp.dest('app/css'))
 });
 
-gulp.task('scripts', () => {
+gulp.task('lib', () => {
+  return gulp.src('app/libs/jquery-3.2.1/dist/jquery.min.js', { since: gulp.lastRun('libs') })
+	.pipe(gulpIf('**/jquery.min.js', rename({basename: 'jquery-3.2.1.min'})))
+	.pipe(gulp.dest('app/js'))
+});
+
+gulp.task('libs', () => {
   return gulp.src([
-    'app/libs/jquery/dist/jquery.min.js'
-  ])
-    .pipe(concat('libs.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('app/js'));
+	'app/libs/jquery/jquery.min.js',
+	'app/libs/jquery-mobile/js/jquery.mobile.js',
+	'app/libs/leaflet/dist/leaflet.js',
+	'app/libs/leaflet/dist/leaflet-src.js',
+	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
+	'app/libs/Leaflet.MovingMarker/MovingMarker.js'
+  ], { since: gulp.lastRun('libs') })
+	.pipe(gulp.dest('app/js'));
+});
+
+gulp.task('minjs', () => {
+  return gulp.src('app/js/**/*.js', { since: gulp.lastRun('minjs') })
+	.pipe(minify({
+	  ext:{
+		min: '.min.js'
+	  },
+	  ignoreFiles: ['*.min.js']
+	}))
+	.pipe(gulpIf('**/*.min.js', gulp.dest('dist/js')));
+});
+
+gulp.task('cssnano', () => {
+  return gulp.src([
+	'app/libs/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css',
+	'app/libs/leaflet/dist/leaflet.css',
+	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css'
+  ], { since: gulp.lastRun('cssnano') })
+	.pipe(cssnano())
+	.pipe(gulp.dest('app/css'));
 });
 
 gulp.task('images', () => {
@@ -62,26 +92,30 @@ gulp.task('clean', () => {
   return del('dist');
 });
 
-// gulp.task('clear', () => {
-//   return cache.clearAll();
-// });
-
 gulp.task('copy', () => {
-  return gulp.src(['app/css/**/*.*', 'app/js/**/*', 'app/*.html'], { since: gulp.lastRun('copy') })
+  return gulp.src(['app/css/**/*.*', 'app/*.html'], { since: gulp.lastRun('copy') })
     .pipe(gulpIf('**/*.{css,map}', gulp.dest('dist/css')))
-	.pipe(gulpIf('**/*.js', gulp.dest('dist/js')))
 	.pipe(gulpIf('**/*.html', gulp.dest('dist')))
+});
+
+gulp.task('watch', () => {
+  gulp.watch('app/sass/**/*.*', gulp.series('sass'));
+  gulp.watch('app/css/**/*.*', gulp.series('copy'));
+  gulp.watch('app/js/**/*.*', gulp.series('minjs'));
+  gulp.watch('app/images/**/*.*', gulp.series('images'));
+  gulp.watch('app/*.html', gulp.series('copy'));
 });
 
 gulp.task('build', gulp.series(
   'clean',
   'sass',
-  gulp.parallel('scripts', 'images', 'copy'),
-  'browser-sync')
+  gulp.parallel('libs', 'lib', 'cssnano', 'images'),
+  'minjs',
+  'copy',
+  gulp.parallel('watch', 'browser-sync')
+  )
 );
 
-gulp.watch('app/sass/**/*.*', gulp.series('sass'));
-gulp.watch('app/css/**/*.*', gulp.series('copy'));
-gulp.watch('app/js/**/*.*', gulp.series('copy'));
-gulp.watch('app/images/**/*.*', gulp.series('images'));
-gulp.watch('app/*.html', gulp.series('copy'));
+
+
+
