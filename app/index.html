@@ -20,37 +20,19 @@
 </head>
 <body>
 
-<div data-role="page" id="test">
-	<!--<div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0" align='center'>-->
-		<!--<a href="#test" data-theme="a" data-role="button" data-icon="back" data-mini="true">Back</a>-->
-		<!--<br>&nbsp;<br>-->
-		<!--<button data-theme="a" data-role="button" data-icon="back" data-mini="true">Save to Server</button>-->
-		<!--<br>-->
-		<!--<label for="username" class="ui-hidden-accessible">Username:</label>-->
-		<!--<input type="text" name="username" id="username" value="" style="width:90%" placeholder="Username (optinoal)"/>-->
-		<!--<label for="select-choice-min"  style="width:90%" class="ui-hidden-accessible">Shipping method:</label>-->
-		<!--<select name="select-choice-min" id="select-choice-min" data-mini="true" >-->
-			<!--<option value="standard">Critical</option>-->
-		<!--</select>-->
-		<!--<label for="comments" class="ui-hidden-accessible">Comments:</label>-->
-		<!--<textarea name="comments" id="comments" placeholder="Comments" style="width:90%;height:30%"></textarea>-->
-
-	<!--</div>-->
-
-	<div data-role="header" id="header" data-position='fixed' data-tap-toggle="false">
-		<h1>
-			Уборочная техника
-		</h1>
-	</div>
-	<div data-role="content" style="padding:0;">
-		<div id="map_canvas"></div>
-	</div>
-	<div class="block" data-role="button" data-icon="home" data-iconpos="notext"></div>
-</div> <!-- page -->
+	<div data-role="page" id="test">
+		<div data-role="header" id="header" data-position='fixed' data-tap-toggle="false" data-theme="b">
+			<button class="ui-btn-left">Cancel</button>
+			<h1>Уборочная техника</h1>
+			<button class="ui-btn-right">Save</button>
+		</div>
+		<div data-role="content" style="padding:0;">
+			<div id="map_canvas"></div>
+		</div>
+		<div class="block" data-role="button" data-icon="home" data-iconpos="notext"></div>
+	</div> <!-- page -->
 
 	<script src="js/jquery-3.2.1.min.js"></script>
-	<!--<script src="js/leaflet.min.js"></script>-->
-	<script src="js/leaflet.js"></script>
 	<script src="js/leaflet-src.min.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5.min.js"></script>
@@ -59,3 +41,4 @@
 	<script src="js/common.min.js"></script>
 </body>
 </html>
+

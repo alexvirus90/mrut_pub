@@ -37,8 +37,7 @@ gulp.task('lib', () => {
 gulp.task('libs', () => {
   return gulp.src([
 	'app/libs/jquery/jquery.min.js',
-	'app/libs/jquery.mobile-1.4.5/jquery.mobile-1.4.5.js',
-	'app/libs/leaflet/dist/leaflet.js',
+	'app/libs/bootstrap/dist/js/bootstrap.js',
 	'app/libs/leaflet/dist/leaflet-src.js',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js'
@@ -59,7 +58,8 @@ gulp.task('minjs', () => {
 
 gulp.task('cssnano', () => {
   return gulp.src([
-	'app/libs/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css',
+	'app/libs/bootstrap/dist/css/bootstrap.css',
+	'app/libs/bootstrap/dist/css/bootstrap-theme.css',
 	'app/libs/leaflet/dist/leaflet.css',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css'
   ], { since: gulp.lastRun('cssnano') })
@@ -93,9 +93,10 @@ gulp.task('clean', () => {
 });
 
 gulp.task('copy', () => {
-  return gulp.src(['app/css/**/*.*', 'app/*.html'], { since: gulp.lastRun('copy') })
+  return gulp.src(['app/css/**/*.*', 'app/*.html', 'app/libs/bootstrap/fonts/*.*'], { since: gulp.lastRun('copy') })
     .pipe(gulpIf('**/*.{css,map}', gulp.dest('dist/css')))
 	.pipe(gulpIf('**/*.html', gulp.dest('dist')))
+	.pipe(gulpIf('**/*.{eot,svg,ttf,woff,woff2}', gulp.dest('dist/fonts')))
 });
 
 gulp.task('watch', () => {
