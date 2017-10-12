@@ -10,9 +10,9 @@ p
   font-family: Verdana, Arial, Helvetica, sans-serif
   font-size: 16pt
 
-html, body, #map
-  height: 100vh
-  width: 100vw
+html, body, #map_canvas
+  height: $value
+  width: $value
 
 body
   padding: 0
@@ -22,10 +22,10 @@ html
   overflow:  hidden
 
 main
-  height: $height
+  height: $value
 
 section
-  height: $height
+  height: $value
 
 @import "popupPanel"
 @import "legend"

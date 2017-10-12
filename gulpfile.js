@@ -18,7 +18,7 @@ const gulp         = require('gulp'),
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
 gulp.task('sass', () => {
-  return gulp.src('app/sass/main.sass', { since: gulp.lastRun('copy') })
+  return gulp.src('app/sass/main.sass')
     .pipe(gulpIf(isDevelopment, sourcemaps.init()))
     .pipe(sass())
     .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
@@ -37,7 +37,7 @@ gulp.task('lib', () => {
 gulp.task('libs', () => {
   return gulp.src([
 	'app/libs/jquery/jquery.min.js',
-	'app/libs/jquery-mobile/js/jquery.mobile.js',
+	'app/libs/jquery.mobile-1.4.5/jquery.mobile-1.4.5.js',
 	'app/libs/leaflet/dist/leaflet.js',
 	'app/libs/leaflet/dist/leaflet-src.js',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
