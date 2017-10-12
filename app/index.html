@@ -13,7 +13,8 @@
 	<!--[if lte IE 8]>
 	<link rel="stylesheet" href="leaflet.ie.css" />
 	<![endif]-->
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/bootstrap-theme.css">
 	<link rel="stylesheet" href="css/leaflet.css" crossorigin="">
 	<link rel="stylesheet" href="css/L.Control.Locate.min.css">
 	<link rel="stylesheet" href="css/main.min.css">
@@ -21,11 +22,29 @@
 <body>
 
 	<div data-role="page" id="test">
-		<div data-role="header" id="header" data-position='fixed' data-tap-toggle="false" data-theme="b">
-			<button class="ui-btn-left">Cancel</button>
-			<h1>Уборочная техника</h1>
-			<button class="ui-btn-right">Save</button>
-		</div>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+				<a class="navbar-brand" href="#">Hidden brand</a>
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">Disabled</a>
+					</li>
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</div>
+		</nav>
 		<div data-role="content" style="padding:0;">
 			<div id="map_canvas"></div>
 		</div>
@@ -35,7 +54,7 @@
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/leaflet-src.min.js"></script>
 	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery.mobile-1.4.5.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<script src="js/L.Control.Locate.min.js"></script>
 	<script src="js/MovingMarker.min.js"></script>
 	<script src="js/common.min.js"></script>
