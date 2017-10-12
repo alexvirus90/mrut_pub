@@ -1,4 +1,34 @@
+@import "variable"
+
+iframe
+  border: none
+
+h1
+  display: none
+
+p
+  font-family: Verdana, Arial, Helvetica, sans-serif
+  font-size: 16pt
+
+html, body, #map
+  height: 100vh
+  width: 100vw
+
 body
-  background-color: green
-  display: flex
-  font-size: 40px
+  padding: 0
+  margin: 0
+
+html
+  overflow:  hidden
+
+main
+  height: $height
+
+section
+  height: $height
+
+@import "popupPanel"
+@import "legend"
+@import "map"
+
+

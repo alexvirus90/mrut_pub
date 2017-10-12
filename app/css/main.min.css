@@ -1,9 +1,77 @@
+iframe {
+  border: none; }
+
+h1 {
+  display: none; }
+
+p {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16pt; }
+
+html, body, #map {
+  height: 100vh;
+  width: 100vw; }
+
 body {
-  background-color: green;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 40px; }
+  padding: 0;
+  margin: 0; }
+
+html {
+  overflow: hidden; }
+
+main {
+  height: 100%; }
+
+section {
+  height: 100%; }
+
+#popupPanel-popup {
+  right: 0 !important;
+  left: auto !important; }
+
+#popupPanel {
+  width: 250px;
+  border: 1px solid #000;
+  border-right: none;
+  background: rgba(0, 0, 0, 0.5);
+  margin: -1px 0; }
+  #popupPanel .ui-btn {
+    margin-left: 10px;
+    margin-right: 10px; }
+  #popupPanel .ui-intput-text {
+    width: 200px;
+    margin-left: 10px;
+    margin-right: 10px; }
+
+#curLoc {
+  position: absolute;
+  bottom: 0;
+  left: 10px; }
+
+.ui-icon-myapp-email {
+  background-image: url("app-icon-email.png"); }
+
+.legend {
+  text-align: left;
+  line-height: 18px;
+  color: #555; }
+  .legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7; }
+  .legend .circle {
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin-top: 8px; }
+
+#map_canvas {
+  float: left;
+  height: 100%;
+  min-height: 100%;
+  width: 100%; }
 
 /*# sourceMappingURL=main.css.map */
