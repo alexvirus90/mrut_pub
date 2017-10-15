@@ -18,7 +18,7 @@ const gulp         = require('gulp'),
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
 gulp.task('sass', () => {
-  return gulp.src('app/sass/main.sass')
+  return gulp.src('app/sass/main.sass', { since: gulp.lastRun('images') })
     .pipe(gulpIf(isDevelopment, sourcemaps.init()))
     .pipe(sass())
     .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
@@ -37,6 +37,7 @@ gulp.task('lib', () => {
 gulp.task('libs', () => {
   return gulp.src([
 	'app/libs/jquery/jquery.min.js',
+	'app/libs/tether/dist/js/tether.js',
 	'app/libs/bootstrap/dist/js/bootstrap.js',
 	'app/libs/leaflet/dist/leaflet-src.js',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
@@ -58,8 +59,13 @@ gulp.task('minjs', () => {
 
 gulp.task('cssnano', () => {
   return gulp.src([
+	'app/libs/tether/dist/css/tether.css',
+	'app/libs/tether/dist/css/tether-theme-arrows.css',
+	'app/libs/tether/dist/css/tether-theme-arrows-dark.css',
+	'app/libs/tether/dist/css/tether-theme-basic.css',
 	'app/libs/bootstrap/dist/css/bootstrap.css',
-	'app/libs/bootstrap/dist/css/bootstrap-theme.css',
+	'app/libs/bootstrap/dist/css/bootstrap-grid.css',
+	'app/libs/bootstrap/dist/css/bootstrap-reboot.css',
 	'app/libs/leaflet/dist/leaflet.css',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css'
   ], { since: gulp.lastRun('cssnano') })
