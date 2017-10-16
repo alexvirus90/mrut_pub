@@ -31,7 +31,7 @@ gulp.task('sass', () => {
 gulp.task('lib', () => {
   return gulp.src('app/libs/jquery-3.2.1/dist/jquery.min.js')
 	.pipe(gulpIf('**/jquery.min.js', rename({basename: 'jquery-3.2.1.min'})))
-	.pipe(gulp.dest('app/js'))
+	.pipe(gulp.dest('app/js/libs'))
 });
 
 gulp.task('libs', () => {
@@ -41,10 +41,16 @@ gulp.task('libs', () => {
 	'app/libs/bootstrap/dist/js/bootstrap.js',
 	'app/libs/leaflet/dist/leaflet-src.js',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
-	'app/libs/Leaflet.MovingMarker/MovingMarker.js'
+	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
+	'app/libs/asidebar/js/jquery/asidebar.jquery.js'
   ],)
-	.pipe(gulp.dest('app/js'));
+	.pipe(gulp.dest('app/js/libs'));
 });
+
+// gulp.task('js', () => {
+//   return gulp.src('app/js/common.js')
+// 	.pipe(concat())
+// });
 
 gulp.task('minjs', () => {
   return gulp.src('app/js/**/*.js', { since: gulp.lastRun('minjs') })
@@ -67,10 +73,11 @@ gulp.task('cssnano', () => {
 	'app/libs/bootstrap/dist/css/bootstrap-grid.css',
 	'app/libs/bootstrap/dist/css/bootstrap-reboot.css',
 	'app/libs/leaflet/dist/leaflet.css',
-	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css'
+	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
+	'app/libs/asidebar/dist.css'
   ], { since: gulp.lastRun('cssnano') })
 	.pipe(cssnano())
-	.pipe(gulp.dest('app/css'));
+	.pipe(gulp.dest('app/css/libs'));
 });
 
 gulp.task('images', () => {

@@ -13,15 +13,16 @@
 	<!--[if lte IE 8]>
 	<link rel="stylesheet" href="leaflet.ie.css" />
 	<![endif]-->
-	<link rel="stylesheet" href="css/tether.css">
-	<link rel="stylesheet" href="css/tether-theme-arrows.css">
-	<link rel="stylesheet" href="css/tether-theme-arrows-dark.css">
-	<link rel="stylesheet" href="css/tether-theme-basic.css">
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/bootstrap-grid.css">
-	<link rel="stylesheet" href="css/bootstrap-reboot.css">
-	<link rel="stylesheet" href="css/leaflet.css">
-	<link rel="stylesheet" href="css/L.Control.Locate.min.css">
+	<link rel="stylesheet" href="css/libs/tether.css">
+	<link rel="stylesheet" href="css/libs/tether-theme-arrows.css">
+	<link rel="stylesheet" href="css/libs/tether-theme-arrows-dark.css">
+	<link rel="stylesheet" href="css/libs/tether-theme-basic.css">
+	<link rel="stylesheet" href="css/libs/bootstrap.css">
+	<link rel="stylesheet" href="css/libs/bootstrap-grid.css">
+	<link rel="stylesheet" href="css/libs/bootstrap-reboot.css">
+	<link rel="stylesheet" href="css/libs/leaflet.css">
+	<link rel="stylesheet" href="css/libs/L.Control.Locate.min.css">
+	<link rel="stylesheet" href="css/libs/dist.css">
 	<link rel="stylesheet" href="css/main.min.css">
 </head>
 <body>
@@ -30,11 +31,12 @@
 		<nav class="navbar navbar-expand{-sm|-md|-lg|-xl} navbar-light bg-light">
 			<div class="container header">
 				<div class="row">
-					<div class="col-md-2 col-left">
+					<div class="col-2 col-left">
 						<a class="navbar-brand " href="#">
 							<figure>
 								<figcaption>Уборочная техника</figcaption>
-								<img src="./images/icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+								<img src="./images/icon_1.png" width="28" height="33" class="d-inline-block align-top"
+									 alt="">
 							</figure>
 						</a>
 					</div>
@@ -47,11 +49,12 @@
 									<input type="text" id="search_placeholder">
 								</div>
 								<button type="submit">Найти</button>
+								<button type="submit">Найти</button>
 							</form>
 						</div>
 					</div>
-					<div class="col-md-1 col-right">
-						<a href class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</a>
+					<div class="col-1 col-right">
+						<span></span>
 					</div>
 				</div>
 			</div>
@@ -59,17 +62,28 @@
 
 		<div data-role="content" style="padding:0;">
 			<div id="map_canvas"></div>
+			<div class="aside">
+				<div class="aside-header">
+					jQuery asidebar
+					<span class="close" data-dismiss="aside" aria-hidden="true">&times;</span>
+				</div>
+				<div class="aside-contents">
+					<h4>This is an off-canvas menu</h4>
+					<p>Aside contents</p>
+				</div>
+			</div>
 		</div>
 		<div class="block" data-role="button" data-icon="home" data-iconpos="notext"></div>
 	</div> <!-- page -->
 
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/leaflet-src.min.js"></script>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/tether.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/L.Control.Locate.min.js"></script>
-	<script src="js/MovingMarker.min.js"></script>
+	<script src="js/libs/jquery-3.2.1.min.js"></script>
+	<script src="js/libs/leaflet-src.min.js"></script>
+	<script src="js/libs/jquery.min.js"></script>
+	<script src="js/libs/tether.min.js"></script>
+	<script src="js/libs/bootstrap.min.js"></script>
+	<script src="js/libs/L.Control.Locate.min.js"></script>
+	<script src="js/libs/MovingMarker.min.js"></script>
+	<script src="js/libs/asidebar.jquery.min.js"></script>
 	<script src="js/common.min.js"></script>
 </body>
 </html>
