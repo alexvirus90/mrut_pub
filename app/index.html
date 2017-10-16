@@ -30,20 +30,28 @@
 		<nav class="navbar navbar-expand{-sm|-md|-lg|-xl} navbar-light bg-light">
 			<div class="container header">
 				<div class="row">
-					<div class="col col-left">
+					<div class="col-md-2 col-left">
 						<a class="navbar-brand " href="#">
-							<img src="./images/icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
-							Уборочная техника
+							<figure>
+								<figcaption>Уборочная техника</figcaption>
+								<img src="./images/icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+							</figure>
 						</a>
 					</div>
 					<div class="col col-middle">
-						<form class="form-inline">
-							<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-						</form>
+						<div class="context">
+							<form action="#" id="search">
+								<div class="search-input">
+									<span></span>
+									<input type="text" id="search_query" placeholder="Поиск по сайту">
+									<input type="text" id="search_placeholder">
+								</div>
+								<button type="submit">Найти</button>
+							</form>
+						</div>
 					</div>
-					<div class="col col-right">
-						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					<div class="col-md-1 col-right">
+						<a href class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</a>
 					</div>
 				</div>
 			</div>

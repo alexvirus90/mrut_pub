@@ -9,8 +9,58 @@
   &-left
     a
       float: left
+      padding: 10px 0 0 10px
+      figcaption
+        float: right
+        padding-left: 40px
   &-middle
     text-align: center
+    .context
+      #search
+        &.focus
+          background-color: #ffffff
+        &:hover
+          background-color: #edf1f5
+        .search-input
+          display: block
+          margin: 0 118px 0 39px
+          padding-right: 10px
+          position: relative
+          input
+            background: transparent
+            border: 0 none
+            font: 15px/20px Verdana,"DejaVu Sans",sans-serif
+            height: 49px
+            outline: none
+            position: relative
+            width: 100%
+            z-index: 10
+          #search_placeholder
+            position: absolute
+            z-index: 5
+            color: #cccccc
+            left: 0
+            top: 0
+        button
+          float: right
+          margin-right: 7px
+          margin-top: -42px
+          text-align: center
+          font-size: 15px
+          color: #ffffff
+          vertical-align: middle
+          line-height: 35px
+          height: 35px
+          width: 111px
+          background: #b5b9c0
+          border: 0
+          outline: 0
+          cursor: pointer
   &-right
     button
       float: right
+      margin: 8px 10px 0 0 !important
+
+
+
+  

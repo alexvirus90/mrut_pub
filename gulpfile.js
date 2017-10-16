@@ -18,7 +18,7 @@ const gulp         = require('gulp'),
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
 gulp.task('sass', () => {
-  return gulp.src('app/sass/main.sass', { since: gulp.lastRun('images') })
+  return gulp.src('app/sass/main.sass')
     .pipe(gulpIf(isDevelopment, sourcemaps.init()))
     .pipe(sass())
     .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
