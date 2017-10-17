@@ -120,9 +120,9 @@ section {
     background-color: #edf1f5; }
   .col-middle .context #search .search-input {
     display: block;
-    margin: 0 118px 0 39px;
-    padding-right: 10px;
-    position: relative; }
+    margin: 0 0 0 15px;
+    position: relative;
+    width: 70%; }
     .col-middle .context #search .search-input input {
       background: transparent;
       border: 0 none;
@@ -138,10 +138,11 @@ section {
       color: #cccccc;
       left: 0;
       top: 0; }
+  .col-middle .context #search .dropdown {
+    margin: 0 10px; }
   .col-middle .context #search button {
     float: right;
     margin-right: 7px;
-    margin-top: -42px;
     text-align: center;
     font-size: 15px;
     color: #ffffff;
