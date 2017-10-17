@@ -121,9 +121,8 @@ section {
     background-color: #edf1f5; }
   .col-middle .context #search .search-input {
     display: block;
-    margin: 0 0 0 15px;
     position: relative;
-    width: 78%; }
+    width: 88%; }
     .col-middle .context #search .search-input input {
       background: transparent;
       border: 0 none;
@@ -131,36 +130,59 @@ section {
       height: 49px;
       outline: none;
       position: relative;
-      width: 80%;
+      width: 100%;
       z-index: 10; }
+    .col-middle .context #search .search-input #search_query .clearable {
+      background: black url("data:image/gif;base64,R0lGODlhBwAHAIAAAP///5KSkiH5BAAAAAAALAAAAAAHAAcAAAIMTICmsGrIXnLxuDMLADs=") no-repeat right -10px center;
+      border: 1px solid #999;
+      padding: 3px 18px 3px 4px;
+      -webkit-transition: background 0.4s;
+      -o-transition: background 0.4s;
+      transition: background 0.4s; }
+    .col-middle .context #search .search-input #search_query.x {
+      background-position: right 5px center; }
+    .col-middle .context #search .search-input #search_query.onX {
+      cursor: pointer; }
+    .col-middle .context #search .search-input #search_query::-ms-clear {
+      display: none;
+      width: 0;
+      height: 0; }
     .col-middle .context #search .search-input #search_placeholder {
       position: absolute;
       z-index: 5;
       color: #cccccc;
       left: 0;
       top: 0; }
+  .col-middle .context #search select {
+    background: transparent url("https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/down4-16.png") no-repeat 60px center; }
   .col-middle .context #search .dropdown {
-    margin: 0 10px; }
-  .col-middle .context #search button {
-    float: right;
-    margin-right: 7px;
-    text-align: center;
-    font-size: 15px;
-    color: #ffffff;
-    vertical-align: middle;
-    line-height: 35px;
-    height: 35px;
-    width: 111px;
-    background: #b5b9c0;
-    border: 0;
-    outline: 0;
+    margin: 0 10px;
+    width: 80px; }
+  .col-middle .context #search i {
+    font-size: 1.5em;
     cursor: pointer; }
 
 .col-right {
   cursor: pointer; }
+  .col-right i {
+    color: #B5B9C0;
+    font-size: 2em;
+    margin: 10px 25px; }
   .col-right:hover {
     background-color: #edf1f5; }
   .col-right span {
     float: right; }
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none; }
+  select i.fa {
+    float: right;
+    margin-top: -30px;
+    margin-right: 5px;
+    pointer-events: none;
+    background-color: #fff;
+    padding-right: 5px; }
 
 /*# sourceMappingURL=main.css.map */

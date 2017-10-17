@@ -18,7 +18,7 @@ const gulp         = require('gulp'),
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
 gulp.task('sass', () => {
-  return gulp.src('app/sass/main.sass')
+  return gulp.src('app/sass/{main,media}.sass')
     .pipe(gulpIf(isDevelopment, sourcemaps.init()))
     .pipe(sass())
     .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
@@ -77,6 +77,7 @@ gulp.task('cssnano', () => {
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
 	'app/libs/asidebar/dist.css',
 	'app/libs/Semantic-UI/semantic.min.css',
+	'app/libs/font-awesome/css/font-awesome.css'
   ], { since: gulp.lastRun('cssnano') })
 	.pipe(cssnano())
 	.pipe(gulp.dest('app/css/libs'));
@@ -108,10 +109,10 @@ gulp.task('clean', () => {
 });
 
 gulp.task('copy', () => {
-  return gulp.src(['app/css/**/*.*', 'app/*.html', 'app/libs/bootstrap/fonts/*.*'], { since: gulp.lastRun('copy') })
+  return gulp.src(['app/css/**/*.*', 'app/*.html', 'app/libs/font-awesome/fonts/*.*'], { since: gulp.lastRun('copy') })
     .pipe(gulpIf('**/*.{css,map}', gulp.dest('dist/css')))
 	.pipe(gulpIf('**/*.html', gulp.dest('dist')))
-	.pipe(gulpIf('**/*.{eot,svg,ttf,woff,woff2}', gulp.dest('dist/fonts')))
+	.pipe(gulpIf('**/*.{svg,otf,eot,ttf,woff,woff2}', gulp.dest('dist/fonts')))
 });
 
 gulp.task('watch', () => {

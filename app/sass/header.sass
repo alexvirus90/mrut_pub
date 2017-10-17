@@ -28,9 +28,8 @@
           background-color: #edf1f5
         .search-input
           display: block
-          margin: 0 0 0 15px
           position: relative
-          width: 78%
+          width: 88%
           input
             background: transparent
             border: 0 none
@@ -38,37 +37,70 @@
             height: 49px
             outline: none
             position: relative
-            width: 80%
+            width: 100%
             z-index: 10
+          #search_query
+            .clearable
+              background: black url("data:image/gif;base64,R0lGODlhBwAHAIAAAP///5KSkiH5BAAAAAAALAAAAAAHAAcAAAIMTICmsGrIXnLxuDMLADs=") no-repeat right -10px center
+              border: 1px solid #999
+              padding: 3px 18px 3px 4px
+              transition: background 0.4s
+            &.x
+              background-position: right 5px center
+            &.onX
+              cursor: pointer
+            &::-ms-clear
+              display: none
+              width: 0
+              height: 0
           #search_placeholder
             position: absolute
             z-index: 5
             color: #cccccc
             left: 0
             top: 0
+        select
+          background: transparent url("https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/down4-16.png") no-repeat 60px center
         .dropdown
           margin: 0 10px
-        button
-          float: right
-          margin-right: 7px
-          //margin-top: -42px
-          text-align: center
-          font-size: 15px
-          color: #ffffff
-          vertical-align: middle
-          line-height: 35px
-          height: 35px
-          width: 111px
-          background: #b5b9c0
-          border: 0
-          outline: 0
+          width: 80px
+        i
+          font-size: 1.5em
           cursor: pointer
+        //button
+        //  float: right
+        //  margin: 0 0 0 10px
+        //  text-align: center
+        //  font-size: 15px
+        //  color: #ffffff
+        //  vertical-align: middle
+        //  line-height: 35px
+        //  height: 35px
+        //  width: 100px
+        //  background: #b5b9c0
+        //  border: 0
+        //  outline: 0
+        //  cursor: pointer
   &-right
     cursor: pointer
+    i
+      color: #B5B9C0
+      font-size: 2em
+      margin: 10px 25px
     &:hover
       background-color: #edf1f5
     span
       float: right
-
+select
+  -webkit-appearance: none
+  -moz-appearance: none
+  -o-appearance: none
+  & i.fa
+    float: right
+    margin-top: -30px
+    margin-right: 5px
+    pointer-events: none
+    background-color: #fff
+    padding-right: 5px
 
   

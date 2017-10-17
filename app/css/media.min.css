@@ -1,0 +1,5 @@
+@media (min-width: breakpoint-min(xl, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px))) {
+  #search .dropdown {
+    display: none; } }
+
+/*# sourceMappingURL=media.css.map */
