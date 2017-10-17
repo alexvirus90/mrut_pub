@@ -48,11 +48,6 @@ gulp.task('libs', () => {
 	.pipe(gulp.dest('app/js/libs'));
 });
 
-// gulp.task('js', () => {
-//   return gulp.src('app/js/common.js')
-// 	.pipe(concat())
-// });
-
 gulp.task('minjs', () => {
   return gulp.src('app/js/**/*.js', { since: gulp.lastRun('minjs') })
 	.pipe(minify({
