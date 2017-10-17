@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="css/libs/leaflet.css">
 	<link rel="stylesheet" href="css/libs/L.Control.Locate.min.css">
 	<link rel="stylesheet" href="css/libs/dist.css">
+	<link rel="stylesheet" href="css/libs/semantic.min.css">
 	<link rel="stylesheet" href="css/main.min.css">
 </head>
 <body>
@@ -48,14 +49,11 @@
 									<input type="text" id="search_query" placeholder="Поиск по сайту">
 									<input type="text" id="search_placeholder">
 								</div>
-								<div class="dropdown">
-									<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										Dropdown link
-									</a>
-									<div class="dropdown-menu" aria-labelledby="dLabel">
-										...
-									</div>
-								</div>
+								<select class="ui dropdown">
+									<option value="">Gender</option>
+									<option value="1">Male</option>
+									<option value="0">Female</option>
+								</select>
 								<button type="submit">Найти</button>
 							</form>
 						</div>
@@ -91,6 +89,7 @@
 	<script src="js/libs/L.Control.Locate.min.js"></script>
 	<script src="js/libs/MovingMarker.min.js"></script>
 	<script src="js/libs/asidebar.jquery.min.js"></script>
+	<script src="js/libs/semantic.min.js"></script>
 	<script src="js/common.min.js"></script>
 </body>
 </html>

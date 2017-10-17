@@ -42,7 +42,8 @@ gulp.task('libs', () => {
 	'app/libs/leaflet/dist/leaflet-src.js',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
-	'app/libs/asidebar/js/jquery/asidebar.jquery.js'
+	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
+	'app/libs/Semantic-UI/semantic.min.js'
   ],)
 	.pipe(gulp.dest('app/js/libs'));
 });
@@ -74,7 +75,8 @@ gulp.task('cssnano', () => {
 	'app/libs/bootstrap/dist/css/bootstrap-reboot.css',
 	'app/libs/leaflet/dist/leaflet.css',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
-	'app/libs/asidebar/dist.css'
+	'app/libs/asidebar/dist.css',
+	'app/libs/Semantic-UI/semantic.min.css',
   ], { since: gulp.lastRun('cssnano') })
 	.pipe(cssnano())
 	.pipe(gulp.dest('app/css/libs'));

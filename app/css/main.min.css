@@ -108,7 +108,8 @@ section {
   .col-left a figcaption {
     float: right;
     padding-left: 40px;
-    font-size: 18px; }
+    font-size: 18px;
+    margin: 6px 0; }
 
 .col-middle {
   border-left: 1px solid #D3DAE0;
@@ -122,11 +123,11 @@ section {
     display: block;
     margin: 0 0 0 15px;
     position: relative;
-    width: 70%; }
+    width: 78%; }
     .col-middle .context #search .search-input input {
       background: transparent;
       border: 0 none;
-      font: 15px/20px Verdana,"DejaVu Sans",sans-serif;
+      font: 15px/20px Verdana, "DejaVu Sans", sans-serif;
       height: 49px;
       outline: none;
       position: relative;
