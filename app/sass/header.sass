@@ -6,16 +6,15 @@
   width: auto
 .col
   &-left
+    text-align: center
     &:hover
       background-color: #edf1f5
-    a
-      float: left
-      padding: 10px 0 0 10px
+    figure
+      margin: 8px auto
       figcaption
         float: right
-        padding-left: 40px
-        font-size: 18px
-        margin: 6px 0
+        padding-left: 30px
+        font-size: 13px
   &-middle
     border-left: 1px solid #D3DAE0
     border-right: 1px solid #D3DAE0
@@ -67,26 +66,15 @@
         i
           font-size: 1.5em
           cursor: pointer
-        //button
-        //  float: right
-        //  margin: 0 0 0 10px
-        //  text-align: center
-        //  font-size: 15px
-        //  color: #ffffff
-        //  vertical-align: middle
-        //  line-height: 35px
-        //  height: 35px
-        //  width: 100px
-        //  background: #b5b9c0
-        //  border: 0
-        //  outline: 0
-        //  cursor: pointer
+          float: right
   &-right
     cursor: pointer
+    text-align: center
     i
       color: #B5B9C0
       font-size: 2em
-      margin: 10px 25px
+      position: relative
+      top: calc(50% - 15px)
     &:hover
       background-color: #edf1f5
     span

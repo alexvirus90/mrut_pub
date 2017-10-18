@@ -1,7 +1,13 @@
+.row {
+  margin: 0; }
+
 .navbar {
   background-color: #E6EBF0;
   padding: 0;
   z-index: 25; }
+  .navbar-brand {
+    margin: 0;
+    padding: 0; }
 
 .input-group .form-control {
   width: 91%; }
@@ -9,9 +15,6 @@
 .input-group .form-control, .input-group .input-group-btn button {
   -webkit-border-radius: 0;
   border-radius: 0; }
-
-figure {
-  margin: 0; }
 
 .aside {
   z-index: 22; }
@@ -99,17 +102,16 @@ section {
   padding: 0;
   width: auto; }
 
-.col-left:hover {
-  background-color: #edf1f5; }
-
-.col-left a {
-  float: left;
-  padding: 10px 0 0 10px; }
-  .col-left a figcaption {
-    float: right;
-    padding-left: 40px;
-    font-size: 18px;
-    margin: 6px 0; }
+.col-left {
+  text-align: center; }
+  .col-left:hover {
+    background-color: #edf1f5; }
+  .col-left figure {
+    margin: 8px auto; }
+    .col-left figure figcaption {
+      float: right;
+      padding-left: 30px;
+      font-size: 13px; }
 
 .col-middle {
   border-left: 1px solid #D3DAE0;
@@ -160,14 +162,18 @@ section {
     width: 80px; }
   .col-middle .context #search i {
     font-size: 1.5em;
-    cursor: pointer; }
+    cursor: pointer;
+    float: right; }
 
 .col-right {
-  cursor: pointer; }
+  cursor: pointer;
+  text-align: center; }
   .col-right i {
     color: #B5B9C0;
     font-size: 2em;
-    margin: 10px 25px; }
+    position: relative;
+    top: -webkit-calc(50% - 15px);
+    top: calc(50% - 15px); }
   .col-right:hover {
     background-color: #edf1f5; }
   .col-right span {

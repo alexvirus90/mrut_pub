@@ -13,7 +13,8 @@ const gulp         = require('gulp'),
       cache        = require('gulp-cache'),
       autoprefixer = require('gulp-autoprefixer'),
       gulpIf       = require('gulp-if'),
-      sourcemaps   = require('gulp-sourcemaps');
+      sourcemaps   = require('gulp-sourcemaps'),
+      jsonToSass   = require('gulp-json-to-sass');
 
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 

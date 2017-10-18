@@ -14,22 +14,14 @@
   &:hover, &:active, &:focus
     @content
 
-// Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
-// Makes the @content apply to the given breakpoint and wider.
-@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints)
-  $min: breakpoint-min($name, $breakpoints)
-  @if $min
-    @media (min-width: $min)
-      @content
-  @else
+@mixin media-breakpoint-up($resolution-min)
+  @media only screen and (max-width: $resolution-min)
     @content
 
-// Media of at most the maximum breakpoint width. No query for the largest breakpoint.
-// Makes the @content apply to the given breakpoint and narrower.
-@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints)
-  $max: breakpoint-max($name, $breakpoints)
-  @if $max
-    @media (max-width: $max)
-      @content
-  @else
+@mixin media-breakpoint-between($resolution-min, $resolution-max)
+  @media only screen and (min-width: $resolution-min + 1) and (max-width: $resolution-max - 1)
+    @content
+
+@mixin media-breakpoint-down($resolution-max)
+  @media only screen and (min-width: $resolution-max)
     @content

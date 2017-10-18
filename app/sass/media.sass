@@ -1,7 +1,82 @@
 @import "variables"
 @import "mixin"
 
-@include media-breakpoint-up(xl)
-  #search
-    .dropdown
-      display: none
+@include media-breakpoint-between($xl + 80, $xl + 241)
+  #{$search-width}
+    width: 86%
+  #{$value-font}
+    font-size: 11px
+  .header
+    .col
+      &-left
+        .navbar-brand
+          margin: 0
+          figcaption
+            padding-left: 10px
+
+@include media-breakpoint-between($xl - 176, $xl + 81)
+  #{$search-width}
+    width: 83%
+  #{$value-font}
+    font-size: 8px
+  .header
+    .col
+      &-left
+        .navbar-brand
+          margin: 0
+          figcaption
+            padding-left: 9px
+
+@include media-breakpoint-between($md, $lg + 33)
+  #{$search-width}
+    width: 78%
+  .header
+    .col
+      &-left
+        max-width: 8%
+
+@include media-breakpoint-between($sm, $md + 1)
+  #{$search-width}
+    width: 92%
+  .header
+    .col
+      &-left
+        max-width: 10%
+      &-middle
+        .dropdown
+          display: none
+        .context
+          .search
+            &-input
+              input
+                padding-left: 10px
+
+@include media-breakpoint-between($sm - 257, $sm + 1)
+  #{$search-width}
+    width: 86%
+  .header
+    .col
+      &-middle
+        .dropdown
+          display: none
+        .context
+          .search
+            &-input
+              input
+                padding-left: 10px
+  #test
+    .in
+      min-width: 300px
+
+
+@include media-breakpoint-between($sm - 257, $lg + 33)
+  #{$value-font}
+    display: none
+  .header
+    .col
+      &-left
+        padding: 0
+        .navbar-brand
+          padding: 0
+      &-right
+        padding: 0

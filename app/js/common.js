@@ -140,4 +140,5 @@ $(document).ready(function () {
 	  $(this).removeClass('x onX').val('').change();
 	});
   });
+
 });
