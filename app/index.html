@@ -23,6 +23,7 @@
 	<link rel="stylesheet" href="css/libs/bootstrap-reboot.css">
 	<link rel="stylesheet" href="css/libs/leaflet.css">
 	<link rel="stylesheet" href="css/libs/L.Control.Locate.min.css">
+	<link rel="stylesheet" href="css/libs/Control.Geocoder.css">
 	<link rel="stylesheet" href="css/libs/dist.css">
 	<link rel="stylesheet" href="css/libs/semantic.min.css">
 	<link rel="stylesheet" href="css/libs/font-awesome.css">
@@ -51,11 +52,11 @@
 									<option value="0">Адрес</option>
 									<option value="1">Объект</option>
 								</select>
-								<div class="search-input">
-									<input type="text" id="search_query" class="clearable" name="" value="" placeholder="Поиск по ">
-									<input type="text" id="search_placeholder">
+								<i class="fa fa-search" aria-hidden="true" ></i>
+								<div id="search_clear" class="search-input">
+									<!--<input type="text" id="search_query" class="clearable" placeholder="Поиск по ">-->
+									<!--<input type="text" id="search_placeholder">-->
 								</div>
-								<i class="fa fa-search" aria-hidden="true"></i>
 							</form>
 						</div>
 					</div>
@@ -68,6 +69,7 @@
 		</nav>
 
 		<div data-role="content" style="padding:0;">
+
 			<div id="map_canvas"></div>
 			<div class="aside">
 				<div class="aside-header">
@@ -89,9 +91,11 @@
 	<script src="js/libs/tether.min.js"></script>
 	<script src="js/libs/bootstrap.min.js"></script>
 	<script src="js/libs/L.Control.Locate.min.js"></script>
+	<script src="js/libs/Control.Geocoder.min.js"></script>
 	<script src="js/libs/MovingMarker.min.js"></script>
 	<script src="js/libs/asidebar.jquery.min.js"></script>
 	<script src="js/libs/semantic.min.js"></script>
+	<script src="js/libs/addclear.min.js"></script>
 	<script src="js/common.min.js"></script>
 </body>
 </html>

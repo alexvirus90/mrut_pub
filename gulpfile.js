@@ -42,10 +42,11 @@ gulp.task('libs', () => {
 	'app/libs/bootstrap/dist/js/bootstrap.js',
 	'app/libs/leaflet/dist/leaflet-src.js',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
+	'app/libs/leaflet-control-geocoder/Control.Geocoder.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
 	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
-	'app/libs/Semantic-UI/semantic.min.js'
-  ],)
+	'app/libs/Semantic-UI/semantic.min.js',
+	'app/libs/jquery.clear/addclear.js'])
 	.pipe(gulp.dest('app/js/libs'));
 });
 
@@ -71,6 +72,7 @@ gulp.task('cssnano', () => {
 	'app/libs/bootstrap/dist/css/bootstrap-reboot.css',
 	'app/libs/leaflet/dist/leaflet.css',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
+	'app/libs/leaflet-control-geocoder/Control.Geocoder.css',
 	'app/libs/asidebar/dist.css',
 	'app/libs/Semantic-UI/semantic.min.css',
 	'app/libs/font-awesome/css/font-awesome.css'

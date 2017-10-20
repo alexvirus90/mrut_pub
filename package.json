@@ -13,7 +13,9 @@
   },
   "author": "Komarov Alexander",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "ol": "^4.4.2"
+  },
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",

@@ -21,6 +21,10 @@
   .aside-backdrop {
     z-index: 20; }
 
+#search_clear a {
+  margin: 7px 0;
+  z-index: 2000; }
+
 #map_canvas .leaflet-control-attribution {
   display: none; }
 
@@ -53,6 +57,9 @@ section {
 
 .col-middle .context #search {
   outline: 0 none; }
+
+.none {
+  display: none; }
 
 #popupPanel-popup {
   right: 0 !important;
@@ -124,7 +131,8 @@ section {
   .col-middle .context #search .search-input {
     display: block;
     position: relative;
-    width: 88%; }
+    width: 88%;
+    margin: 0 auto; }
     .col-middle .context #search .search-input input {
       background: transparent;
       border: 0 none;
@@ -161,9 +169,7 @@ section {
     margin: 0 10px;
     width: 80px; }
   .col-middle .context #search i {
-    font-size: 1.5em;
-    cursor: pointer;
-    float: right; }
+    font-size: 1.5em; }
 
 .col-right {
   cursor: pointer;
@@ -190,5 +196,26 @@ select {
     pointer-events: none;
     background-color: #fff;
     padding-right: 5px; }
+
+.search-ul-alternatives {
+  display: block;
+  width: 272px;
+  list-style: none;
+  padding: 0;
+  margin: 0; }
+
+.search-ul-minimized {
+  display: none;
+  height: 0; }
+
+.search-ul-alternatives li {
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  padding: 5px 8px;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer; }
 
 /*# sourceMappingURL=main.css.map */

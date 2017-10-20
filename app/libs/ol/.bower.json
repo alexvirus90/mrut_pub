@@ -1,0 +1,15 @@
+{
+  "name": "ol",
+  "homepage": "https://github.com/lidingning/ol",
+  "version": "0.1.0",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.0",
+    "commit": "c937213cd9a916e94d9a01d08fb3db7d9bcf8964"
+  },
+  "_source": "https://github.com/lidingning/ol.git",
+  "_target": "^0.1.0",
+  "_originalSource": "ol",
+  "_direct": true
+}

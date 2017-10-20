@@ -1,61 +1,74 @@
 'use strict';
 
 $(document).ready(function () {
-  let car_imgColor = new Array();
-  car_imgColor[1] = "black";
-  car_imgColor[2] = "lilac";
-  car_imgColor[3] = "light_blue";
-  car_imgColor[4] = "red";
-  car_imgColor[5] = "orange";
-  car_imgColor[6] = "blue";
-  car_imgColor[7] = "green";
-  car_imgColor[8] = "light_green";
-  car_imgColor[9] = "light_blue";
-  car_imgColor[10] = "yellow";
-  car_imgColor[11] = "lilac";
-  car_imgColor[12] = "brown";
-  car_imgColor[13] = "yellow";
-  car_imgColor[14] = "lemon";
-  car_imgColor[15] = "violet";
-  car_imgColor[16] = "t";
-  let car_Fun = new Array();
-  car_Fun[1] = "ПГ";
-  car_Fun[2] = "ССВ";
-  car_Fun[3] = "М";
-  car_Fun[4] = "РТ";
-  car_Fun[5] = "РУ";
-  car_Fun[6] = "ПМ";
-  car_Fun[7] = "ПУ";
-  car_Fun[8] = "В";
-  car_Fun[9] = "Щ";
-  car_Fun[10] = "П";
-  car_Fun[11] = "Б";
-  car_Fun[12] = "РЖ";
-  car_Fun[13] = "Т";
-  car_Fun[14] = "Р";
-  car_Fun[15] = "К";
-  car_Fun[16] = "ПР";
-  let car_Color = new Array();
-  car_Color[1] = "black";
-  car_Color[2] = "#9B30FF";
-  car_Color[3] = "turquoise";
-  car_Color[4] = "red";
-  car_Color[5] = "orange";
-  car_Color[6] = "blue";
-  car_Color[7] = "green";
-  car_Color[8] = "lime";
-  car_Color[9] = "#00D5D5";
-  car_Color[10] = "yellow";
-  car_Color[11] = "#FF6A00";
-  car_Color[12] = "brown";
-  car_Color[13] = "yellow";
-  car_Color[14] = "green";
-  car_Color[15] = "grey";
-  car_Color[16] = "green";
-  car_Color[17] = "C3F266";
-  car_Color[18] = "violet";
 
+  let L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
 
+  let input = this._input = document.createElement('input', '');
+
+  let ul = this._alts = document.createElement('ul', '');
+  ul.setAttribute("class", "search-ul-alternatives search-ul-minimized");
+  L.DomEvent.disableClickPropagation(ul);
+
+  $('#search_clear').append(input);
+  $('#map_canvas').append(ul);
+
+  function setAttributes(el, attrs) {
+	for(var key in attrs) {
+	  el.setAttribute(key, attrs[key]);
+	}
+  }
+
+  setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по"});
+
+  function _geocodeResult(results, suggest) {
+	if (!suggest && results.length === 1) {
+	  this._geocodeResultSelected(results[0]);
+	} else if (results.length > 0) {
+	  this._alts.innerHTML = '';
+	  this._results = results;
+	  L.DomUtil.removeClass(this._alts, 'leaflet-control-geocoder-alternatives-minimized');
+	  for (var i = 0; i < results.length; i++) {
+		this._alts.appendChild(this._createAlt(results[i], i));
+	  }
+	} else {
+	  L.DomUtil.addClass(this._errorElement, 'leaflet-control-geocoder-error');
+	}
+  }
+
+  function _geocode(suggest) {
+	var requestCount = ++this._requestCount,
+	  mode = suggest ? 'suggest' : 'geocode',
+	  eventData = {input: this._input.value};
+
+	this._lastGeocode = this._input.value;
+	if (!suggest) {
+	  this._clearResults();
+	}
+
+	this.fire('start' + mode, eventData);
+	this.options.geocoder[mode](this._input.value, function(results) {
+	  if (requestCount === this._requestCount) {
+		eventData.results = results;
+		this.fire('finish' + mode, eventData);
+		this._geocodeResult(results, suggest);
+	  }
+	}, this);
+  }
+
+  function _geocodeResultSelected(result) {
+	if (!this.options.collapsed) {
+	  this._clearResults();
+	}
+
+	this.fire('markgeocode', {geocode: result});
+  }
+
+  function _clearResults() {
+	L.DomUtil.addClass(this._alts, 'search-ul-minimized');
+	this._selection = null;
+	L.DomUtil.removeClass(this._errorElement, 'search-ul-error');
+  }
 
   function resizeMap() {
 	scroll(0, 0);
@@ -87,9 +100,7 @@ $(document).ready(function () {
 	  let spbCenter = new L.LatLng(59.930967, 30.302636);
 	  let map = new L.Map('map_canvas', {center: spbCenter, zoom: 11, layers: [minimal, /*motorways,*/ pointLayer]});
 	  map.locate({setView: true});
-
 	  let lc = L.control.locate().addTo(map);
-
 	  let baseMaps = {
 		"Карта СПб": minimal,
 		"Карта СПб(ночь)": midnightCommander
@@ -99,26 +110,45 @@ $(document).ready(function () {
 		"Тракера": pointLayer
 	  };
 	  let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+
+	  // //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	  // var geocoder = L.Control.geocoder({
+		// defaultMarkGeocode: false
+	  // })
+		// .on('markgeocode', function(e) {
+		//   var bbox = e.geocode.bbox;
+		//   var poly = L.polygon([
+		// 	bbox.getSouthEast(),
+		// 	bbox.getNorthEast(),
+		// 	bbox.getNorthWest(),
+		// 	bbox.getSouthWest()
+		//   ]).addTo(map);
+		//   map.fitBounds(poly.getBounds());
+		// })
+		// .addTo(map);
+	  var geocoder = new Geocoder('nominatim', {
+		provider: 'mapquest',
+		key: '__some_key__',
+		lang: 'pt-BR', //en-US, fr-FR
+		placeholder: 'Search for ...',
+		targetType: 'text-input',
+		limit: 5,
+		keepOpen: true
+	  });
+	  map.addControl(geocoder);
+	  // //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 	  map.locate({setView: true});
 	  map.addControl(layersControl);
-	}
 
+	  // //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	  // map.addControl(geocoder);
+	  // //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	}
 	return mapDraw();
   }
 
-  Map();
-
-  // $('.col-middle').click(() => {
-	// if ($(".aside-backdrop").length === 0) {
-	//   $("body").append("<div class='aside-backdrop'></div>");
-	// }
-  //   if ($('#search').hasClass('focus')) {
-	//   $('#search').removeClass('focus');
-	// } else {
-	//   $('#search').addClass('focus');
-	// }
-  // });
-  // alert('hello')
   $('.col-right').click(() => {
 	if ($(".aside").hasClass("in")) {
 	  $('.aside').asidebar('close')
@@ -127,18 +157,23 @@ $(document).ready(function () {
 	}
   });
 
-  $(function($) {
-	function tog(v){
-	  return v ? 'addClass' : 'removeClass';
-	}
-	$(document).on('input', '.clearable', function() {
-	  $(this)[tog(this.value)]('x');
-	}).on('mousemove', '.x', function(e) {
-	  $(this)[tog(this.offsetWidth - 18 < e.clientX - this.getBoundingClientRect().left)]('onX');
-	}).on('touchstart click', '.onX', function(ev) {
-	  ev.preventDefault();
-	  $(this).removeClass('x onX').val('').change();
-	});
+  $(() => {
+	$("#search_query").addClear();
   });
+
+  // $(function($) {
+	// function tog(v){
+	//   return v ? 'addClass' : 'removeClass';
+	// }
+	// $(document).on('input', '.clearable', function() {
+	//   $(this)[tog(this.value)]('x');
+	// }).on('mousemove', '.x', function(e) {
+	//   $(this)[tog(this.offsetWidth - 18 < e.clientX - this.getBoundingClientRect().left)]('onX');
+	// }).on('touchstart click', '.onX', function(ev) {
+	//   ev.preventDefault();
+	//   $(this).removeClass('x onX').val('').change();
+	// });
+  // });
+  Map();
 
 });
