@@ -136,13 +136,14 @@ $(document).ready(function () {
 	$('#search_query').autocomplete({
 	  source: function ( request, response ) {
 		$.ajax({
-		  url: "http://nominatim.openstreetmap.org/search?format=json&&polygon_geojson=1&limit=5&q=",
+		  url: "http://nominatim.openstreetmap.org/search?format=json&&polygon_geojson=1&limit=15",
 		  cache: true,
 		  method: "GET",
 		  types: ['(cities)'],
 		  data: {
-			q: request.term,
+			q:'Санкт-Петербург, ' + request.term,
 			format: 'json',
+			zoom: 15
 		  },
 		  success: function (data) {
 			response( $.map( data, function ( item ) {
