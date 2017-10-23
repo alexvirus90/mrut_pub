@@ -150,8 +150,8 @@ $(document).ready(function () {
 				value: item.display_name
 			  }
 			}));
-			$.each(data, function () {
-			  let bb = value.boundingbox;
+			$.each(data, function (key, val) {
+			  let bb = val.boundingbox;
 			});
 		  }
 		});
