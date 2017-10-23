@@ -30,19 +30,18 @@ gulp.task('sass', () => {
 });
 
 gulp.task('lib', () => {
-  return gulp.src('app/libs/jquery-3.2.1/dist/jquery.min.js')
+  return gulp.src('node_modules/jquery/dist/jquery.min.js')
 	.pipe(gulpIf('**/jquery.min.js', rename({basename: 'jquery-3.2.1.min'})))
 	.pipe(gulp.dest('app/js/libs'))
 });
 
 gulp.task('libs', () => {
   return gulp.src([
-	'app/libs/jquery/jquery.min.js',
+	'node_modules/jquery-ui/external/jquery-1.10.2/jquery.js',
 	'app/libs/tether/dist/js/tether.js',
 	'app/libs/bootstrap/dist/js/bootstrap.js',
-	'app/libs/leaflet/dist/leaflet-src.js',
+	'node_modules/leaflet/dist/leaflet.js',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
-	'app/libs/leaflet-control-geocoder/Control.Geocoder.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
 	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
 	'app/libs/Semantic-UI/semantic.min.js',
@@ -70,9 +69,8 @@ gulp.task('cssnano', () => {
 	'app/libs/bootstrap/dist/css/bootstrap.css',
 	'app/libs/bootstrap/dist/css/bootstrap-grid.css',
 	'app/libs/bootstrap/dist/css/bootstrap-reboot.css',
-	'app/libs/leaflet/dist/leaflet.css',
+	'node_modules/leaflet/dist/leaflet.css',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
-	'app/libs/leaflet-control-geocoder/Control.Geocoder.css',
 	'app/libs/asidebar/dist.css',
 	'app/libs/Semantic-UI/semantic.min.css',
 	'app/libs/font-awesome/css/font-awesome.css'
