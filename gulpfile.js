@@ -13,8 +13,7 @@ const gulp         = require('gulp'),
       cache        = require('gulp-cache'),
       autoprefixer = require('gulp-autoprefixer'),
       gulpIf       = require('gulp-if'),
-      sourcemaps   = require('gulp-sourcemaps'),
-      jsonToSass   = require('gulp-json-to-sass');
+      sourcemaps   = require('gulp-sourcemaps');
 
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
@@ -37,7 +36,7 @@ gulp.task('lib', () => {
 
 gulp.task('libs', () => {
   return gulp.src([
-	'node_modules/jquery-ui/external/jquery-1.10.2/jquery.js',
+	'node_modules/jquery-ui/external/jquery-1.12.4/jquery.js',
 	'app/libs/tether/dist/js/tether.js',
 	'app/libs/bootstrap/dist/js/bootstrap.js',
 	'node_modules/leaflet/dist/leaflet.js',
@@ -72,6 +71,7 @@ gulp.task('cssnano', () => {
 	'node_modules/leaflet/dist/leaflet.css',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
 	'app/libs/asidebar/dist.css',
+	'app/libs/jquery-ui/jquery-ui.min.css',
 	'app/libs/Semantic-UI/semantic.min.css',
 	'app/libs/font-awesome/css/font-awesome.css'
   ], { since: gulp.lastRun('cssnano') })

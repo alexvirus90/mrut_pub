@@ -34,6 +34,13 @@
 .leaflet-default-icon-path {
   background-image: url(../images/marker-icon.png); }
 
+ul {
+  left: 237px !important;
+  width: 1066px !important; }
+
+.leaflet-control-attribution {
+  display: none; }
+
 iframe {
   border: none; }
 
@@ -143,8 +150,10 @@ section {
       height: 49px;
       outline: none;
       position: relative;
-      width: 100%;
+      width: 97%;
       z-index: 10; }
+    .col-middle .context #search .search-input a {
+      top: 13px !important; }
     .col-middle .context #search .search-input #search_query .clearable {
       background: black url("data:image/gif;base64,R0lGODlhBwAHAIAAAP///5KSkiH5BAAAAAAALAAAAAAHAAcAAAIMTICmsGrIXnLxuDMLADs=") no-repeat right -10px center;
       border: 1px solid #999;

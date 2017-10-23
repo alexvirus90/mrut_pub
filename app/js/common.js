@@ -2,22 +2,24 @@
 
 $(document).ready(function () {
 
-  // let input = this._input = document.createElement('input', '');
-  //
+  let input = this._input = document.createElement('input', '');
+
   // let ul = this._alts = document.createElement('ul', '');
   // ul.setAttribute("class", "search-ul-alternatives search-ul-minimized");
   // L.DomEvent.disableClickPropagation(ul);
-  //
-  // $('#search_clear').append(input);
+
+  $('#search_clear').append(input);
   // $('#map_canvas').append(ul);
-  //
-  // function setAttributes(el, attrs) {
-	// for(let key in attrs) {
-	//   el.setAttribute(key, attrs[key]);
-	// }
-  // }
-  //
-  // setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по"});
+
+  function setAttributes(el, attrs) {
+	for(let key in attrs) {
+	  el.setAttribute(key, attrs[key]);
+	}
+  }
+
+  setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по"});
+
+
 
   function resizeMap() {
 	scroll(0, 0);
@@ -64,6 +66,98 @@ $(document).ready(function () {
 	  map.locate({setView: true});
 	  map.addControl(layersControl);
 	}
+
+/*
+	function WaitForPool(id) {
+	  $.ajax({
+		type: 'GET',
+		url: 'http://176.97.34.40:6064/?command=receive&connection=' + id,
+		async: true,
+		cache: false,
+
+		success: function (data) {
+		  try {
+			let json = eval('(' + data + ')');
+
+			let str = JSON.stringify(json);
+			slice = JSON.parse(str);
+
+			for (let k in slice.root) {
+			  if (slice.root[k] instanceof Object) {
+				if (typeof slice.root[k].header == "undefined") continue;
+				if (!slice.root[k].header instanceof Object) continue;
+				if (slice.root[k].header.type == "33") continue;
+				if (slice.root[k].header.type == "34") continue;
+				if (slice.root[k].lat == undefined || slice.root[k].lon == undefined) continue;
+				if (slice.root[k].lat == 0 || slice.root[k].lon == 0) continue;
+
+				if ((slice.root[k].flag & 32) == 32) {
+				  continue;
+				}
+				evt.latlon = [[slice.root[k].lat, slice.root[k].lon]];
+				evt.obj = slice.root[k];
+				evt.did = slice.root[k].header.id;
+				$(window).trigger(evt);
+			  }
+			}
+			setTimeout('WaitForPool(' + id + ')', 100);
+		  }
+		  catch (e) {
+		  }
+		},
+
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+		  setTimeout('WaitForPool(' + id + ')', 1000);
+		}
+	  });
+	}
+
+	function WaitForConnect() {
+
+	  $.ajax({
+		type: 'GET',
+		url: 'http://176.97.34.40:6064/?command=connect&principal=1',
+		async: true,
+		cache: false,
+
+		success: function (data) {
+
+		  let json = eval('(' + data + ')');
+		  setTimeout(' WaitForPool(' + json.root[0].connection + ')', 1000);
+		},
+
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+		  setTimeout(' WaitForPool(' + json.root[0].connection + ')', 1000);
+		}
+	  });
+	}
+*/
+
+	$('#search_query').autocomplete({
+	  source: function ( request, response ) {
+		$.ajax({
+		  url: "http://nominatim.openstreetmap.org/search?format=json&&polygon_geojson=1&limit=5&q=",
+		  cache: true,
+		  method: "GET",
+		  types: ['(cities)'],
+		  data: {
+			q: request.term,
+			format: 'json',
+		  },
+		  success: function (data) {
+			response( $.map( data, function ( item ) {
+			  return {
+				value: item.display_name
+			  }
+			}));
+			$.each(data, function () {
+			  let bb = value.boundingbox;
+			});
+		  }
+		});
+	  }
+	});
+
 	return mapDraw();
   }
 
