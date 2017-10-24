@@ -3,71 +3,63 @@
 $(document).ready(function () {
 
   let input = this._input = document.createElement('input', '');
-
-  // let ul = this._alts = document.createElement('ul', '');
-  // ul.setAttribute("class", "search-ul-alternatives search-ul-minimized");
-  // L.DomEvent.disableClickPropagation(ul);
-
   $('#search_clear').append(input);
-  // $('#map_canvas').append(ul);
 
   function setAttributes(el, attrs) {
-	for(let key in attrs) {
-	  el.setAttribute(key, attrs[key]);
-	}
+		for(let key in attrs) {
+			el.setAttribute(key, attrs[key]);
+		}
   }
 
   setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по"});
 
   function resizeMap() {
-	scroll(0, 0);
-	let header = $(".header:visible");
-	let footer = $(".footer:visible");
-	let content = $(".content:visible");
-	let viewport_height = $(window).height();
-	let content_height = viewport_height - header.outerHeight() - footer.outerHeight();
-	content_height -= (content.outerHeight() - content.height());
-	content.height(content_height);
-	$("#map_canvas").height(content_height);
+		scroll(0, 0);
+		let header = $(".header:visible");
+		let footer = $(".footer:visible");
+		let content = $(".content:visible");
+		let viewport_height = $(window).height();
+		let content_height = viewport_height - header.outerHeight() - footer.outerHeight();
+		content_height -= (content.outerHeight() - content.height());
+		content.height(content_height);
+		$("#map_canvas").height(content_height);
   }
 
   function Map() {
-    let map,
-	 	marker,
-	  	spbCenter;
+		resizeMap();
+		let map,
+	 			marker,
+				spbCenter,
+				resizeTimer;
 
-	resizeMap();
-	let resizeTimer;
-	$(window).resize(function () {
-	  clearTimeout(resizeTimer);
-	  resizeTimer = setTimeout(resizeMap, 100);
-	});
+		$(window).resize(function () {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(resizeMap, 100);
+		});
 
-	function mapDraw() {
-	  let pointLayer = new L.FeatureGroup();
-	  let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
-	  let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-		detectRetina: true
-	  });
-	  let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
-	  spbCenter = new L.LatLng(59.930967, 30.302636);
-	  map = new L.Map('map_canvas', {center: spbCenter, zoom: 11, layers: [minimal, /*motorways,*/ pointLayer]});
+		function mapDraw() {
+			let pointLayer = new L.FeatureGroup();
+			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
+			let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				detectRetina: true
+			});
+			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
+			spbCenter = new L.LatLng(59.930967, 30.302636);
+			map = new L.Map('map_canvas', {center: spbCenter, zoom: 11, layers: [minimal, /*motorways,*/ pointLayer]});
 
+			let lc = L.control.locate().addTo(map);
 
-
-	  let lc = L.control.locate().addTo(map);
-
-	  let baseMaps = {
-		"Карта СПб": minimal,
-		"Карта СПб(ночь)": midnightCommander
-	  };
-	  let overlayMaps = {
-		"Уборочная техника": pointLayer,
-		"Тракера": pointLayer
-	  };
-	  let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
-	  map.addControl(layersControl);
-	}
+			let baseMaps = {
+				"Карта СПб": minimal,
+				"Карта СПб(ночь)": midnightCommander
+			};
+			let overlayMaps = {
+				"Уборочная техника": pointLayer,
+				"Тракера": pointLayer
+			};
+			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+			map.addControl(layersControl);
+		}
 
 /*
 	function WaitForPool(id) {
@@ -135,61 +127,60 @@ $(document).ready(function () {
 	}
 */
 
-	$('#search_query').autocomplete({
-	  appendTo: '.col-middle',
-	  source: function ( request, response ) {
-		$.ajax({
-		  url: "http://nominatim.openstreetmap.org/search",
-		  cache: true,
-		  method: "GET",
-		  data: {
-			q:'Санкт-Петербург, ' + request.term,
-			format: 'json',
-			limit: 10,
-		  },
-		  success: function (data) {
-			response( $.map( data, function ( item ) {
-			  return {
-				value: item.display_name.split(',', 6),
-				latitude: item.lat,
-				longitude: item.lon
-			  }
-			}));
-		  }
+		$('#search_query').autocomplete({
+			appendTo: '.col-middle',
+			source: function ( request, response ) {
+				$.ajax({
+					url: "http://nominatim.openstreetmap.org/search",
+					cache: true,
+					method: "GET",
+					data: {
+						q:'Санкт-Петербург, ' + request.term,
+						format: 'json',
+						limit: 10,
+					},
+					success: function (data) {
+						response( $.map( data, function ( item ) {
+							return {
+								value: item.display_name.split(',', 6),
+								latitude: item.lat,
+								longitude: item.lon
+							}
+						}));
+					}
+				});
+			},
+
+			select: function (event, point) {
+				let lat = point.item.latitude,
+						lon = point.item.longitude;
+				marker = {lat, lon};
+
+				map.setView(marker, 18);
+				let dot = L.marker(marker).addTo(map);
+
+				$('#search_clear a').click(function () {
+					if (dot != undefined){
+					map.removeLayer(dot);
+					}
+				});
+			},
 		});
-	  },
-
-	  select: function (event, point) {
-	    let lat = point.item.latitude,
-		  	lon = point.item.longitude;
-		marker = {lat, lon};
-
-		map.setView(marker, 18);
-		let dot = L.marker(marker).addTo(map);
-
-		$('#search_clear a').click(function () {
-		  if (dot != undefined){
-			map.removeLayer(dot);
-		  }
-		});
-	  },
-	});
-
-	return mapDraw();
+		return mapDraw();
   }
 
   $('.col-right').click(() => {
-	if ($(".aside").hasClass("in")) {
-	  $('.aside').asidebar('close')
-	} else {
-	  $('.aside').asidebar('open')
-	}
+		if ($(".aside").hasClass("in")) {
+			$('.aside').asidebar('close')
+		} else {
+			$('.aside').asidebar('open')
+		}
   });
 
   $(() => {
-	$("#search_query").addClear();
+		$("#search_query").addClear();
   });
 
-  Map();
+  return Map();
 
 });
