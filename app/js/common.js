@@ -147,6 +147,9 @@ $(document).ready(function () {
 								longitude: item.lon
 							}
 						}));
+						setTimeout(()=>{
+							$('#progressbar').hide();
+						}, 500);
 					}
 				});
 			},
@@ -165,6 +168,10 @@ $(document).ready(function () {
 					}
 				});
 			},
+
+			search: function () {
+				$('#progressbar').show();
+			}
 		});
 		return mapDraw();
   }
@@ -180,6 +187,15 @@ $(document).ready(function () {
   $(() => {
 		$("#search_query").addClear();
   });
+
+	$( "#progressbar" ).progressbar({
+		value: false
+	});
+	$('#search_query').on('input', function () {
+		if ($('#ui-id-1').css("display: block")){
+			$('#progressbar').css('display: none')
+		}
+	});
 
   return Map();
 

@@ -38,6 +38,13 @@ ul {
   left: 0 !important;
   width: 100% !important; }
 
+#progressbar {
+  display: none;
+  height: 10px;
+  position: absolute;
+  width: 100%;
+  z-index: 20; }
+
 .leaflet-control-attribution {
   display: none; }
 
