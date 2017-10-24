@@ -19,8 +19,6 @@ $(document).ready(function () {
 
   setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по"});
 
-
-
   function resizeMap() {
 	scroll(0, 0);
 	let header = $(".header:visible");
@@ -34,6 +32,10 @@ $(document).ready(function () {
   }
 
   function Map() {
+    let map,
+	 	marker,
+	  	spbCenter;
+
 	resizeMap();
 	let resizeTimer;
 	$(window).resize(function () {
@@ -48,9 +50,10 @@ $(document).ready(function () {
 		detectRetina: true
 	  });
 	  let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
-	  let spbCenter = new L.LatLng(59.930967, 30.302636);
-	  let map = new L.Map('map_canvas', {center: spbCenter, zoom: 11, layers: [minimal, /*motorways,*/ pointLayer]});
-	  map.locate({setView: true});
+	  spbCenter = new L.LatLng(59.930967, 30.302636);
+	  map = new L.Map('map_canvas', {center: spbCenter, zoom: 11, layers: [minimal, /*motorways,*/ pointLayer]});
+
+
 
 	  let lc = L.control.locate().addTo(map);
 
@@ -63,7 +66,6 @@ $(document).ready(function () {
 		"Тракера": pointLayer
 	  };
 	  let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
-	  map.locate({setView: true});
 	  map.addControl(layersControl);
 	}
 
@@ -137,28 +139,40 @@ $(document).ready(function () {
 	  appendTo: '.col-middle',
 	  source: function ( request, response ) {
 		$.ajax({
-		  url: "http://nominatim.openstreetmap.org/search?&polygon_geojson=1",
+		  url: "http://nominatim.openstreetmap.org/search",
 		  cache: true,
 		  method: "GET",
-		  types: ['(cities)'],
 		  data: {
 			q:'Санкт-Петербург, ' + request.term,
 			format: 'json',
 			limit: 10,
-			zoom: 15
 		  },
 		  success: function (data) {
 			response( $.map( data, function ( item ) {
 			  return {
-				value: item.display_name.split(',')[0]
+				value: item.display_name.split(',', 6),
+				latitude: item.lat,
+				longitude: item.lon
 			  }
 			}));
-			$.each(data, function (key, val) {
-			  let bb = val.boundingbox;
-			});
 		  }
 		});
-	  }
+	  },
+
+	  select: function (event, point) {
+	    let lat = point.item.latitude,
+		  	lon = point.item.longitude;
+		marker = {lat, lon};
+
+		map.setView(marker, 18);
+		let dot = L.marker(marker).addTo(map);
+
+		$('#search_clear a').click(function () {
+		  if (dot != undefined){
+			map.removeLayer(dot);
+		  }
+		});
+	  },
 	});
 
 	return mapDraw();
