@@ -134,6 +134,7 @@ $(document).ready(function () {
 */
 
 	$('#search_query').autocomplete({
+	  appendTo: '.col-middle',
 	  source: function ( request, response ) {
 		$.ajax({
 		  url: "http://nominatim.openstreetmap.org/search?format=json&&polygon_geojson=1&limit=15",
@@ -148,7 +149,7 @@ $(document).ready(function () {
 		  success: function (data) {
 			response( $.map( data, function ( item ) {
 			  return {
-				value: item.display_name
+				value: item.display_name.split(',')[0]
 			  }
 			}));
 			$.each(data, function (key, val) {

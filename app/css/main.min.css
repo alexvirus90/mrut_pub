@@ -35,8 +35,8 @@
   background-image: url(../images/marker-icon.png); }
 
 ul {
-  left: 237px !important;
-  width: 1066px !important; }
+  left: 0 !important;
+  width: 100% !important; }
 
 .leaflet-control-attribution {
   display: none; }
