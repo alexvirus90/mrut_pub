@@ -137,13 +137,14 @@ $(document).ready(function () {
 	  appendTo: '.col-middle',
 	  source: function ( request, response ) {
 		$.ajax({
-		  url: "http://nominatim.openstreetmap.org/search?format=json&&polygon_geojson=1&limit=15",
+		  url: "http://nominatim.openstreetmap.org/search?&polygon_geojson=1",
 		  cache: true,
 		  method: "GET",
 		  types: ['(cities)'],
 		  data: {
 			q:'Санкт-Петербург, ' + request.term,
 			format: 'json',
+			limit: 10,
 			zoom: 15
 		  },
 		  success: function (data) {
