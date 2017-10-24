@@ -147,9 +147,7 @@ $(document).ready(function () {
 								longitude: item.lon
 							}
 						}));
-						setTimeout(()=>{
-							$('#progressbar').hide();
-						}, 500);
+					  	$('#progressbar').hide();
 					}
 				});
 			},
