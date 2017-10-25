@@ -49,14 +49,15 @@ gulp.task('libs', () => {
 });
 
 gulp.task('minjs', () => {
-  return gulp.src('app/js/**/*.js', { since: gulp.lastRun('minjs') })
+  return gulp.src(['app/js/**/*.js'], { since: gulp.lastRun('minjs') })
 	.pipe(minify({
 	  ext:{
 		min: '.min.js'
 	  },
 	  ignoreFiles: ['*.min.js']
 	}))
-	.pipe(gulpIf('**/*.min.js', gulp.dest('dist/js')));
+	.pipe(gulpIf(isDevelopment, sourcemaps.write('.')))
+	.pipe(gulpIf('**/*.min.js', gulp.dest('dist/js')))
 });
 
 gulp.task('cssnano', () => {
@@ -105,10 +106,15 @@ gulp.task('clean', () => {
 });
 
 gulp.task('copy', () => {
-  return gulp.src(['app/css/**/*.*', 'app/*.html', 'app/libs/font-awesome/fonts/*.*'], { since: gulp.lastRun('copy') })
+  return gulp.src(['app/css/**/*.*', 'app/*.html', 'app/libs/font-awesome/fonts/*.*', 'app/js/*.json'], { since: gulp.lastRun('copy') })
     .pipe(gulpIf('**/*.{css,map}', gulp.dest('dist/css')))
 	.pipe(gulpIf('**/*.html', gulp.dest('dist')))
 	.pipe(gulpIf('**/*.{svg,otf,eot,ttf,woff,woff2}', gulp.dest('dist/fonts')))
+});
+
+gulp.task('json', () => {
+	return gulp.src('app/js/info.json')
+		.pipe(gulp.dest('dist/js'))
 });
 
 gulp.task('watch', () => {
@@ -124,7 +130,7 @@ gulp.task('build', gulp.series(
   'sass',
   gulp.parallel('libs', 'lib', 'cssnano', 'images'),
   'minjs',
-  'copy',
+	gulp.parallel('copy', 'json'),
   gulp.parallel('watch', 'browser-sync')
   )
 );
