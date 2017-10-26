@@ -156,9 +156,9 @@ $(document).ready( () => {
 		});
 
 		function mapDraw () {
-			let onLine = new L.FeatureGroup(),
-					offLine = new L.FeatureGroup(),
-					trakers = new L.FeatureGroup();
+			let onLine  = new L.layerGroup(),
+					offLine = new L.layerGroup(),
+					trakers = new L.layerGroup();
 			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
 			let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
 				detectRetina: true,
@@ -241,6 +241,16 @@ $(document).ready( () => {
 			return s_fun;
 		}
 
+		function getSensor(obj, layer) {
+			console.log('obj', obj);
+			console.log('layer', mapDraw().onLine);
+			if (((obj.sensors & 8) / 8) === 1) {
+
+			} else {
+				offLine.addLayer(layer);
+			}
+		}
+
 		function getFunColor(obj, car_info) {
 			let c = null;
 			if (((obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL && //Если включена масса
@@ -272,11 +282,12 @@ $(document).ready( () => {
 		$(window).on('startpoint', (e) => {
 			if (global.data[e.did] === undefined) return;
 			if (global.data[e.did]['imgType'] === undefined) return;
-			let color, func, imgType, myMovingMarker, greenIcon, imgPath;
-			color = getFunColor(e.obj, global.data[e.did]);
-			func = get_function_car(global.data[e.did], e.obj.sensors);
-			imgType = global.data[e.did]['imgType'];
-			imgPath = 'images/car/' + imgType + color + '_32.png';
+			let layer, color, func, imgType, myMovingMarker, greenIcon, imgPath;
+			layer 		= getSensor(e.obj);
+			color 		= getFunColor(e.obj, global.data[e.did]);
+			func 			= get_function_car(global.data[e.did], e.obj.sensors);
+			imgType 	= global.data[e.did]['imgType'];
+			imgPath 	= 'images/car/' + imgType + color + '_32.png';
 			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32]});
 
 			if (marker[e.did] !== undefined) {
@@ -295,8 +306,6 @@ $(document).ready( () => {
 				"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
 
 			marker[e.did].m_move.bindPopup(pupuptext);
-
-			console.log('speed', e);
 
 		});
 
