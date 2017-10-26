@@ -42,7 +42,6 @@ $(document).ready( () => {
 			el.setAttribute(key, attrs[key]);
 		}
   }
-
   setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по"});
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -83,12 +82,10 @@ $(document).ready( () => {
 			url: 'http://176.97.34.40:6064/?command=connect&principal=1',
 			async: true,
 			cache: false,
-
 			success: (data) => {
 				let json = eval('(' + data + ')');
 				WaitForPool(json.root[0].connection);
 			},
-
 			error: (XMLHttpRequest, textStatus, errorThrown) => {
 				WaitForPool(json.root[0].connection);
 			}
@@ -101,7 +98,7 @@ $(document).ready( () => {
 			url: 'http://176.97.34.40:6064/?command=receive&connection=' + id,
 			async: true,
 			cache: false,
-			success: function (data) {
+			success: (data) => {
 				let json = eval('(' + data + ')');
 				let str = JSON.stringify(json);
 				let slice = JSON.parse(str);
@@ -126,13 +123,11 @@ $(document).ready( () => {
 				}
 				WaitForPool(id);
 			},
-			error: function (XMLHttpRequest, textStatus, errorThrown) {
+			error: (XMLHttpRequest, textStatus, errorThrown) => {
 				WaitForPool(id);
 			}
 		});
 	}
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   function resizeMap() {
 		scroll(0, 0);
@@ -161,7 +156,9 @@ $(document).ready( () => {
 		});
 
 		function mapDraw () {
-			let pointLayer = new L.FeatureGroup();
+			let onLine = new L.FeatureGroup(),
+					offLine = new L.FeatureGroup(),
+					trakers = new L.FeatureGroup();
 			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
 			let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
 				detectRetina: true,
@@ -169,16 +166,17 @@ $(document).ready( () => {
 			});
 			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
 			spbCenter = new L.LatLng(59.930967, 30.302636);
-			map = new L.Map('map_canvas', {center: spbCenter, zoom: 11, layers: [minimal, /*motorways,*/ pointLayer]});
-			map.setMaxBounds([[59.5, 29], [60.4, 31]]);
+			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, onLine]});
+			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
 			let lc = L.control.locate().addTo(map);
 			let baseMaps = {
 				"Карта СПб": minimal,
 				"Карта СПб(ночь)": midnightCommander
 			};
 			let overlayMaps = {
-				"Уборочная техника": pointLayer,
-				"Тракера": pointLayer
+				"На линии": onLine,
+				"В дежурстве": offLine,
+				"Тракира": trakers
 			};
 			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			map.addControl(layersControl);
@@ -188,7 +186,7 @@ $(document).ready( () => {
 
 		$.ajax({
 			url: "/js/info.json",
-			success: function (data) {
+			success: (data) => {
 				for (let k in data.result) {
 					if (typeof data.result[k] === 'object') {
 						global.data[data.result[k]['did']] = data.result[k];
@@ -197,51 +195,52 @@ $(document).ready( () => {
 				let conId = WaitForConnect();
 			}
 		});
-		// function get_function_car(obj, sensors) {
-		// 	let arr_FName = new Array();
-		// 	obj = obj.car_info || obj;
-		// 	let s_fun = "";
-		// 	let color = "";
-		//
-		// 	if (car_Fun[obj.F1_ID] != undefined) {
-		// 		arr_FName[0] = car_Fun[obj.F1_ID];
-		// 	} else { arr_FName[0] = ""; }
-		// 	if (car_Fun[obj.F2_ID] != undefined) {
-		// 		arr_FName[1] = car_Fun[obj.F2_ID];
-		// 	} else { arr_FName[1] = ""; }
-		// 	if (car_Fun[obj.F3_ID] != undefined) {
-		// 		arr_FName[2] = car_Fun[obj.F3_ID];
-		// 	} else { arr_FName[2] = ""; }
-		// 	if (car_Fun[obj.F4_ID] != undefined) {
-		// 		arr_FName[3] = car_Fun[obj.F4_ID];
-		// 	} else { arr_FName[3] = ""; }
-		//
-		// 	if ((((sensors & 1024) / 1024) == obj.GB_AL) && (((sensors & 8) / 8) == 1)) {
-		// 		if (((sensors & obj.F1_MASK) / obj.F1_MASK) == obj.F1_AL) {
-		// 			color = car_Color[obj.F1_ID];
-		// 			s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[0] + "</b></span> ";
-		// 		} else { s_fun += "<span style='color:grey;'><b>" + arr_FName[0] + "</b></span> " + " "; }
-		// 		if (((sensors & obj.F2_MASK) / obj.F2_MASK) == obj.F2_AL) {
-		// 			color = car_Color[obj.F2_ID];
-		// 			s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[1] + "</b></span> ";
-		// 		}
-		// 		else { s_fun += "<span style='color:grey;'><b>" + arr_FName[1] + "</b></span> " + " "; }
-		// 		if (((sensors & obj.F3_MASK) / obj.F3_MASK) == obj.F3_AL) {
-		// 			color = car_Color[obj.F3_ID];
-		// 			s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[2] + "</b></span> ";
-		// 		}
-		// 		else { s_fun += "<span style='color:grey;'><b>" + arr_FName[2] + "</b></span> " + " "; }
-		// 		if (((sensors & obj.F4_MASK) / obj.F4_MASK) == obj.F4_AL) {
-		// 			color = car_Color[obj.F4_ID];
-		// 			s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[3] + "</b></span> ";
-		// 		}
-		// 		else { s_fun += "<span style='color:grey;'><b>" + arr_FName[3] + "</b></span> " + " "; }
-		// 	}
-		// 	else {
-		// 		s_fun = arr_FName[0] + " " + arr_FName[1] + " " + arr_FName[2] + " " + arr_FName[3];
-		// 	}
-		// 	return s_fun;
-		// }
+		function get_function_car(obj, sensors) {
+			let arr_FName = new Array();
+			obj = obj.car_info || obj;
+			let s_fun = "";
+			let color = "";
+
+			if (car_Fun[obj.F1_ID] != undefined) {
+				arr_FName[0] = car_Fun[obj.F1_ID];
+			} else { arr_FName[0] = ""; }
+			if (car_Fun[obj.F2_ID] != undefined) {
+				arr_FName[1] = car_Fun[obj.F2_ID];
+			} else { arr_FName[1] = ""; }
+			if (car_Fun[obj.F3_ID] != undefined) {
+				arr_FName[2] = car_Fun[obj.F3_ID];
+			} else { arr_FName[2] = ""; }
+			if (car_Fun[obj.F4_ID] != undefined) {
+				arr_FName[3] = car_Fun[obj.F4_ID];
+			} else { arr_FName[3] = ""; }
+
+			if ((((sensors & 1024) / 1024) == obj.GB_AL) && (((sensors & 8) / 8) == 1)) {
+				if (((sensors & obj.F1_MASK) / obj.F1_MASK) == obj.F1_AL) {
+					color = car_Color[obj.F1_ID];
+					s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[0] + "</b></span> ";
+				} else { s_fun += "<span style='color:grey;'><b>" + arr_FName[0] + "</b></span> " + " "; }
+				if (((sensors & obj.F2_MASK) / obj.F2_MASK) == obj.F2_AL) {
+					color = car_Color[obj.F2_ID];
+					s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[1] + "</b></span> ";
+				}
+				else { s_fun += "<span style='color:grey;'><b>" + arr_FName[1] + "</b></span> " + " "; }
+				if (((sensors & obj.F3_MASK) / obj.F3_MASK) == obj.F3_AL) {
+					color = car_Color[obj.F3_ID];
+					s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[2] + "</b></span> ";
+				}
+				else { s_fun += "<span style='color:grey;'><b>" + arr_FName[2] + "</b></span> " + " "; }
+				if (((sensors & obj.F4_MASK) / obj.F4_MASK) == obj.F4_AL) {
+					color = car_Color[obj.F4_ID];
+					s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[3] + "</b></span> ";
+				}
+				else { s_fun += "<span style='color:grey;'><b>" + arr_FName[3] + "</b></span> " + " "; }
+			}
+			else {
+				s_fun = arr_FName[0] + " " + arr_FName[1] + " " + arr_FName[2] + " " + arr_FName[3];
+			}
+			return s_fun;
+		}
+
 		function getFunColor(obj, car_info) {
 			let c = null;
 			if (((obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL && //Если включена масса
@@ -270,67 +269,36 @@ $(document).ready( () => {
 			return c;
 		}
 
-		$(window).on('startpoint', function (e) {
+		$(window).on('startpoint', (e) => {
 			if (global.data[e.did] === undefined) return;
 			if (global.data[e.did]['imgType'] === undefined) return;
 			let color, func, imgType, myMovingMarker, greenIcon, imgPath;
 			color = getFunColor(e.obj, global.data[e.did]);
-			// func = get_function_car(global.data[e.did], e.obj.sensors);
+			func = get_function_car(global.data[e.did], e.obj.sensors);
 			imgType = global.data[e.did]['imgType'];
 			imgPath = 'images/car/' + imgType + color + '_32.png';
 			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32]});
-			if (marker[e.did] !== undefined) {
-				startMarkerTo(e);
-				return;
-			}
-			myMovingMarker = L.Marker.movingMarker(e.latlon, [], {icon: greenIcon}).addTo(map);
-			console.log('myMovingMarker', myMovingMarker);
-			//
-			// let pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
-			// 	//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
-			// 	//"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
-			// 	"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
-			// 	"<b>Функция: </b>" + func + "</br>" +
-			// 	"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
-			//
-			// JSON.stringify(global.data[e.did]);
-			// marker[e.did] = { 'm_move': myMovingMarker, 'time': 1 };
-			// marker[e.did].m_move.bindPopup(pupuptext);
-		});
 
-		// function startMarkerTo(e) {
-		// 	//console.log('startMarkerTo');
-		// 	marker[e.did].m_move.start();
-		// 	if (marker[e.did].m_move.isStarted() == false) {
-		// 			marker[e.did].m_move.moveTo(e.latlon[0], (e.obj.speed * 2000));
-		// 			marker[e.did].m_move.bindPopup(e.obj.speed + 'км/ч');
-		// 	}
-		// 	else {
-		// 		//let latlng = L.latLng(event.root[k].lat, event.root[k].lon);
-		// 		//
-		// 		let latlng = L.latLng(e.latlon[0], e.latlon[1]);
-		//
-		// 		if (marker[e.did].m_move._latlng.distanceTo(latlng) <= 2000) {
-		// 			//console.log(marker[e.did].m_move._latlng.distanceTo(latlng));
-		// 			//	console.log(global.data[e.did]);
-		// 			marker[e.did].m_move.addLatLng(e.latlon[0], (e.obj.speed * 2000));
-		// 			let func = get_function_car(global.data[e.did], e.obj.sensors);
-		//
-		// 			// let pupuptext = "<b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
-		// 			// 								"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
-		// 			// 								"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
-		// 			// 								"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
-		// 			// 								"<b>Функция: </b>" + func + "</br>" +
-		// 			// 								"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</br>" +
-		// 			// 								"<b>Сменное задание: </b> <a href='#' target='_blank' onclick='ajaxInfo("+e.did+");return false'>Показать на карте</a>";
-		// 			//
-		// 			// marker[e.did].m_move.bindPopup(pupuptext);
-		// 		}
-		// 		//console.log(latlng);
-		// 		//marker[e.did].m_move.addLatLng(e.latlon[0], (e.obj.speed * 2000));
-		// 		//marker[e.did].m_move.bindPopup(e.obj.speed + 'км/ч').openPopup();
-		// 	}
-		// }
+			if (marker[e.did] !== undefined) {
+				let move = marker[e.did].m_move.setLatLng(e.latlon[0]);
+			} else {
+				myMovingMarker = L.Marker.movingMarker(e.latlon, [], {icon: greenIcon}).addTo(map);
+				// JSON.stringify(global.data[e.did]);
+				marker[e.did] = { 'm_move': myMovingMarker, 'time': 1 };
+			}
+
+			let pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
+				//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
+				//"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
+				"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
+				"<b>Функция: </b>" + func + "</br>" +
+				"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
+
+			marker[e.did].m_move.bindPopup(pupuptext);
+
+			console.log('speed', e);
+
+		});
 
 		$('#search_query').autocomplete({
 			appendTo: '.col-middle',
