@@ -34,6 +34,9 @@
 .leaflet-default-icon-path {
   background-image: url(../images/marker-icon.png); }
 
+.leaflet-popup-content p {
+  font-size: 1em; }
+
 ul {
   left: 0 !important;
   width: 100% !important; }
@@ -131,7 +134,10 @@ section {
   .col-left:hover {
     background-color: #edf1f5; }
   .col-left figure {
-    margin: 8px auto; }
+    margin: 6px auto; }
+    .col-left figure img {
+      height: 36px;
+      width: 32px; }
     .col-left figure figcaption {
       float: right;
       padding-left: 30px;
@@ -159,6 +165,10 @@ section {
       position: relative;
       width: 97%;
       z-index: 10; }
+    .col-middle .context #search .search-input:enabled {
+      background: #ffff00; }
+    .col-middle .context #search .search-input:disabled {
+      background: #dddddd; }
     .col-middle .context #search .search-input a {
       top: 13px !important; }
     .col-middle .context #search .search-input #search_query .clearable {
