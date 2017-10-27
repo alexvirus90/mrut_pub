@@ -42,9 +42,8 @@ $(document).ready( () => {
 			el.setAttribute(key, attrs[key]);
 		}
   }
-  setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по"});
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск" +
+	" по", "disabled": "disabled"});
 
 	function WaitForConnect() {
 
@@ -114,13 +113,26 @@ $(document).ready( () => {
 
   function Map() {
 		resizeMap();
-
+		let typeSearch;
 		let map,
-			markerSearch,
-			spbCenter,
-			resizeTimer;
-		let marker = [];
-		let markerCar = {};
+				markerSearch,
+				spbCenter,
+				resizeTimer;
+
+		let layer,
+				color,
+				func,
+				imgType,
+				addMarker,
+				greenIcon,
+				imgPath;
+
+		let marker 			= [],
+				arrayMarker = [];
+
+		let	markerOnline  = new L.layerGroup(),
+				markerOffline = new L.layerGroup(),
+				markerTrakers = new L.layerGroup();
 
 		$(window).resize(() => {
 			clearTimeout(resizeTimer);
@@ -129,21 +141,18 @@ $(document).ready( () => {
 
 		function mapDraw () {
 
-			markerCar.onLine  = new L.layerGroup();
-			markerCar.offLine = new L.layerGroup();
-			markerCar.trakers = new L.layerGroup();
 			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
-			// let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
-			// 	detectRetina: true,
-			// 	minZoom: 9
-			// });
-			let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
 				detectRetina: true,
 				minZoom: 9
 			});
+			// let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			// 	detectRetina: true,
+			// 	minZoom: 9
+			// });
 			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
 			spbCenter = new L.LatLng(59.930967, 30.302636);
-			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerCar.onLine]});
+			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerOnline]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
 			let lc = L.control.locate().addTo(map);
 			let baseMaps = {
@@ -151,9 +160,9 @@ $(document).ready( () => {
 				"Карта СПб(ночь)": midnightCommander
 			};
 			let overlayMaps = {
-				"На линии": markerCar.onLine,
-				"В дежурстве": markerCar.offLine,
-				"Тракира": markerCar.trakers
+				"На линии": markerOnline,
+				"В дежурстве": markerOffline,
+				"Тракира": markerTrakers
 			};
 			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			map.addControl(layersControl);
@@ -164,7 +173,7 @@ $(document).ready( () => {
 		$.ajax({
 			url: "/js/info.json",
 			success: (data) => {
-				console.log('data', data);
+				console.log('', data);
 				for (let k in data.result) {
 					if (typeof data.result[k] === 'object') {
 						global.data[data.result[k]['did']] = data.result[k];
@@ -219,12 +228,12 @@ $(document).ready( () => {
 			return s_fun;
 		}
 
-		function getSensor(obj) {
-			console.log('obj', obj);
-			if (((obj.sensors & 8) / 8) === 1) {
-				map.addLayer(markerCar.onLine);
+		function getSensor(obj, car_info) {
+			if (((obj._durations[0].sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
+				((obj._durations[0].sensors & 8) / 8) === 1) {
+				markerOnline.addLayer(obj);
 			} else {
-				map.addLayer(markerCar.offLine)
+				markerOffline.addLayer(obj);
 			}
 		}
 
@@ -257,23 +266,23 @@ $(document).ready( () => {
 		}
 
 		$(window).on('startpoint', (e) => {
+
 			if (global.data[e.did] === undefined) return;
 			if (global.data[e.did]['imgType'] === undefined) return;
-			let layer, color, func, imgType, myMovingMarker, greenIcon, imgPath;
-			layer 		= getSensor(e.obj);
+
 			color 		= getFunColor(e.obj, global.data[e.did]);
 			func 			= get_function_car(global.data[e.did], e.obj.sensors);
 			imgType 	= global.data[e.did]['imgType'];
 			imgPath 	= 'images/car/' + imgType + color + '_32.png';
 			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32]});
 
-			if (marker[e.did] !== undefined) {
-				let move = marker[e.did].m_move.setLatLng(e.latlon[0]);
-			} else {
-				myMovingMarker = L.Marker.movingMarker(e.latlon, [], {icon: greenIcon}).addTo(map);
-				// JSON.stringify(global.data[e.did]);
-				marker[e.did] = { 'm_move': myMovingMarker, 'time': 1 };
-			}
+				if (marker[e.did] !== undefined) {
+					marker[e.did].m_move.setLatLng(e.latlon[0]);
+				} else {
+					addMarker = L.Marker.movingMarker(e.latlon, [e.obj], {icon: greenIcon});
+					marker[e.did] = { 'm_move': addMarker, 'time': 1 };
+					getSensor(addMarker, global.data[e.did]);
+				}
 
 			let pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
 				//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
@@ -343,6 +352,20 @@ $(document).ready( () => {
 
 	$( "#progressbar" ).progressbar({
 		value: false
+	});
+
+	$(function () {
+		$('#profile').change(function () {
+			if ($('#profile option').eq([1,2]).prop('selected',true)){
+				$('input[type="text').prop('disabled', false);
+				$('input[type="text').val('');
+				$('#search_clear a').css('display', 'none');
+			}
+			$('#search_clear a').click(function () {
+				$('#profile option').eq([0]).prop('selected',true);
+				$('input[type="text').prop('disabled', true);
+			})
+		})
 	});
 
   return Map();
