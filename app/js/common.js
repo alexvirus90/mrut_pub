@@ -173,7 +173,6 @@ $(document).ready( () => {
 		$.ajax({
 			url: "/js/info.json",
 			success: (data) => {
-				console.log('', data);
 				for (let k in data.result) {
 					if (typeof data.result[k] === 'object') {
 						global.data[data.result[k]['did']] = data.result[k];
@@ -295,46 +294,134 @@ $(document).ready( () => {
 
 		});
 
-		$('#search_query').autocomplete({
-			appendTo: '.col-middle',
-			source: (request, response) => {
-				$.ajax({
-					url: "http://190.0.0.14/nominatim/search",
-					cache: true,
-					method: "GET",
-					data: {
-						q: 'Санкт-Петербург, ' + request.term,
-						format: 'json',
-						limit: 10,
-					},
-					success: (data) => {
-						response($.map(data, (item) => {
-							return {
-								value: item.display_name.split(',', 6),
-								latitude: item.lat,
-								longitude: item.lon
-							}
-						}));
-						$('#progressbar').hide();
-					}
-				});
-			},
-			select: (event, point) => {
-				let lat = point.item.latitude,
-					lon = point.item.longitude;
-				markerSearch = {lat, lon};
-				map.setView(markerSearch, 18);
-				let dot = L.marker(markerSearch).addTo(map);
-				$('#search_clear a').click(() => {
-					if (dot != undefined) {
-						map.removeLayer(dot);
-					}
-				});
-			},
-			search: () => {
-				$('#progressbar').show();
-			}
+		$(function () {
+			$('#profile').change(function () {
+				/*if ($('#profile option').eq(1).prop('selected',true)){
+					$('#search_query').autocomplete({
+						appendTo: '.col-middle',
+						source: (request, response) => {
+							$.ajax({
+								url: "http://190.0.0.14/nominatim/search",
+								cache: true,
+								method: "GET",
+								data: {
+									q: 'Санкт-Петербург, ' + request.term,
+									format: 'json',
+									limit: 10,
+								},
+								success: (data) => {
+									response($.map(data, (item) => {
+										return {
+											value: item.display_name.split(',', 6),
+											latitude: item.lat,
+											longitude: item.lon
+										}
+									}));
+									$('#progressbar').hide();
+								}
+							});
+						},
+						select: (event, point) => {
+							let lat = point.item.latitude,
+									lon = point.item.longitude;
+							markerSearch = {lat, lon};
+							map.setView(markerSearch, 18);
+							let dot = L.marker(markerSearch).addTo(map);
+							$('#search_clear a').click(() => {
+								if (dot != undefined) {
+									map.removeLayer(dot);
+								}
+							});
+						},
+						search: () => {
+							$('#progressbar').show();
+						}
+					});
+				} else*/ if ($('#profile option').eq(2).prop('selected',true)){
+					$('#search_query').autocomplete({
+						appendTo: '.col-middle',
+						source: (request, response) => {
+							console.log('request', response);
+							$.ajax({
+								url: "/js/info.json",
+								data: {
+									q: request.term,
+									limit: 10,
+								},
+								success: (data) => {
+									console.log('data', data);
+									response($.map(data, (item) => {
+										for (let k in item.result) {
+											if (typeof item.result[k] === 'object') {
+												global.data[item.result[k]['did']] = item.result[k];
+												console.log('item.result[k]', item.result[k]);
+											}
+										}
+									}));
+									$('#progressbar').hide();
+								}
+							});
+						},
+						select: (event, point) => {
+							let lat = point.item.latitude,
+									lon = point.item.longitude;
+							markerSearch = {lat, lon};
+							map.setView(markerSearch, 18);
+							let dot = L.marker(markerSearch).addTo(map);
+							$('#search_clear a').click(() => {
+								if (dot != undefined) {
+									map.removeLayer(dot);
+								}
+							});
+						},
+						search: () => {
+							$('#progressbar').show();
+						}
+					});
+				}
+			})
 		});
+
+		// $('#search_query').autocomplete({
+		// 	appendTo: '.col-middle',
+		// 	source: (request, response) => {
+		// 		$.ajax({
+		// 			url: "http://190.0.0.14/nominatim/search",
+		// 			cache: true,
+		// 			method: "GET",
+		// 			data: {
+		// 				q: 'Санкт-Петербург, ' + request.term,
+		// 				format: 'json',
+		// 				limit: 10,
+		// 			},
+		// 			success: (data) => {
+		// 				response($.map(data, (item) => {
+		// 					return {
+		// 						value: item.display_name.split(',', 6),
+		// 						latitude: item.lat,
+		// 						longitude: item.lon
+		// 					}
+		// 				}));
+		// 				$('#progressbar').hide();
+		// 			}
+		// 		});
+		// 	},
+		// 	select: (event, point) => {
+		// 		let lat = point.item.latitude,
+		// 			lon = point.item.longitude;
+		// 		markerSearch = {lat, lon};
+		// 		map.setView(markerSearch, 18);
+		// 		let dot = L.marker(markerSearch).addTo(map);
+		// 		$('#search_clear a').click(() => {
+		// 			if (dot != undefined) {
+		// 				map.removeLayer(dot);
+		// 			}
+		// 		});
+		// 	},
+		// 	search: () => {
+		// 		$('#progressbar').show();
+		// 	}
+		// });
 		return mapDraw();
   }
 
