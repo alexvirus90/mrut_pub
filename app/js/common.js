@@ -46,35 +46,6 @@ $(document).ready( () => {
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	// let successCallback = function (data) {
-	//
-	// 	let size = 32;
-	// 	if (L.Browser.touch) size = 32;
-	// 	let greenIcon = L.icon({
-	// 		iconUrl: 'images/car/circle_ya_32.png',
-	// 		iconSize: [size, size], // size of the icon
-	// 	});
-	//
-	// 	L.marker([data.coords.latitude, data.coords.longitude], { icon: greenIcon }).addTo(map);
-	// 	map.panTo(L.latLng(data.coords.latitude, data.coords.longitude), 16);
-	// 	//map.setZoom(16);
-	// 	//console.log('latitude: ' + data.coords.latitude + ' longitude: ' + data.coords.longitude);
-	// };
-	//
-	// let failureCallback = function () {
-	// 	console.log('location failure :(');
-	// };
-	//
-	// let logLocation = function () {
-	//
-	// 	if (navigator.geolocation) {
-	// 		navigator.geolocation.getCurrentPosition(successCallback, failureCallback);
-	// 	}
-	// 	else {
-	// 		alert("Functionality not available");
-	// 	}
-	// };
-	//
 	function WaitForConnect() {
 
 		$.ajax({
@@ -149,6 +120,7 @@ $(document).ready( () => {
 			spbCenter,
 			resizeTimer;
 		let marker = [];
+		let markerCar = {};
 
 		$(window).resize(() => {
 			clearTimeout(resizeTimer);
@@ -156,17 +128,22 @@ $(document).ready( () => {
 		});
 
 		function mapDraw () {
-			let onLine  = new L.layerGroup(),
-					offLine = new L.layerGroup(),
-					trakers = new L.layerGroup();
+
+			markerCar.onLine  = new L.layerGroup();
+			markerCar.offLine = new L.layerGroup();
+			markerCar.trakers = new L.layerGroup();
 			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
-			let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
+			// let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
+			// 	detectRetina: true,
+			// 	minZoom: 9
+			// });
+			let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				detectRetina: true,
 				minZoom: 9
 			});
 			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
 			spbCenter = new L.LatLng(59.930967, 30.302636);
-			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, onLine]});
+			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerCar.onLine]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
 			let lc = L.control.locate().addTo(map);
 			let baseMaps = {
@@ -174,9 +151,9 @@ $(document).ready( () => {
 				"Карта СПб(ночь)": midnightCommander
 			};
 			let overlayMaps = {
-				"На линии": onLine,
-				"В дежурстве": offLine,
-				"Тракира": trakers
+				"На линии": markerCar.onLine,
+				"В дежурстве": markerCar.offLine,
+				"Тракира": markerCar.trakers
 			};
 			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			map.addControl(layersControl);
@@ -187,6 +164,7 @@ $(document).ready( () => {
 		$.ajax({
 			url: "/js/info.json",
 			success: (data) => {
+				console.log('data', data);
 				for (let k in data.result) {
 					if (typeof data.result[k] === 'object') {
 						global.data[data.result[k]['did']] = data.result[k];
@@ -241,13 +219,12 @@ $(document).ready( () => {
 			return s_fun;
 		}
 
-		function getSensor(obj, layer) {
+		function getSensor(obj) {
 			console.log('obj', obj);
-			console.log('layer', mapDraw().onLine);
 			if (((obj.sensors & 8) / 8) === 1) {
-
+				map.addLayer(markerCar.onLine);
 			} else {
-				offLine.addLayer(layer);
+				map.addLayer(markerCar.offLine)
 			}
 		}
 
