@@ -113,22 +113,19 @@ $(document).ready( () => {
 
   function Map() {
 		resizeMap();
-		let typeSearch;
 		let map,
 				markerSearch,
 				spbCenter,
 				resizeTimer;
 
-		let layer,
-				color,
+		let color,
 				func,
 				imgType,
 				addMarker,
 				greenIcon,
 				imgPath;
 
-		let marker 			= [],
-				arrayMarker = [];
+		let marker = [];
 
 		let	markerOnline  = new L.layerGroup(),
 				markerOffline = new L.layerGroup(),
@@ -294,134 +291,123 @@ $(document).ready( () => {
 
 		});
 
-		$(function () {
-			$('#profile').change(function () {
-				/*if ($('#profile option').eq(1).prop('selected',true)){
-					$('#search_query').autocomplete({
-						appendTo: '.col-middle',
-						source: (request, response) => {
-							$.ajax({
-								url: "http://190.0.0.14/nominatim/search",
-								cache: true,
-								method: "GET",
-								data: {
-									q: 'Санкт-Петербург, ' + request.term,
-									format: 'json',
-									limit: 10,
-								},
-								success: (data) => {
-									response($.map(data, (item) => {
-										return {
-											value: item.display_name.split(',', 6),
-											latitude: item.lat,
-											longitude: item.lon
-										}
-									}));
-									$('#progressbar').hide();
-								}
-							});
-						},
-						select: (event, point) => {
-							let lat = point.item.latitude,
-									lon = point.item.longitude;
-							markerSearch = {lat, lon};
-							map.setView(markerSearch, 18);
-							let dot = L.marker(markerSearch).addTo(map);
-							$('#search_clear a').click(() => {
-								if (dot != undefined) {
-									map.removeLayer(dot);
-								}
-							});
-						},
-						search: () => {
-							$('#progressbar').show();
-						}
-					});
-				} else*/ if ($('#profile option').eq(2).prop('selected',true)){
-					$('#search_query').autocomplete({
-						appendTo: '.col-middle',
-						source: (request, response) => {
-							console.log('request', response);
-							$.ajax({
-								url: "/js/info.json",
-								data: {
-									q: request.term,
-									limit: 10,
-								},
-								success: (data) => {
-									console.log('data', data);
-									response($.map(data, (item) => {
-										for (let k in item.result) {
-											if (typeof item.result[k] === 'object') {
-												global.data[item.result[k]['did']] = item.result[k];
-												console.log('item.result[k]', item.result[k]);
-											}
-										}
-									}));
-									$('#progressbar').hide();
-								}
-							});
-						},
-						select: (event, point) => {
-							let lat = point.item.latitude,
-									lon = point.item.longitude;
-							markerSearch = {lat, lon};
-							map.setView(markerSearch, 18);
-							let dot = L.marker(markerSearch).addTo(map);
-							$('#search_clear a').click(() => {
-								if (dot != undefined) {
-									map.removeLayer(dot);
-								}
-							});
-						},
-						search: () => {
-							$('#progressbar').show();
-						}
-					});
-				}
-			})
-		});
+		function searchAddress() {
+			$('#search_query').autocomplete({
+					appendTo: '.col-middle',
+					source: (request, response) => {
+						$.ajax({
+							url: "http://190.0.0.14/nominatim/search",
+							cache: true,
+							method: "GET",
+							data: {
+								q: 'Санкт-Петербург, ' + request.term,
+								format: 'json',
+								limit: 10,
+							},
+							success: (data) => {
+								response($.map(data, (item) => {
+									return {
+										value: item.display_name.split(',', 6),
+										latitude: item.lat,
+										longitude: item.lon
+									}
+								}));
+								$('#progressbar').hide();
+							}
+						});
+					},
+					select: (event, point) => {
+						let lat = point.item.latitude,
+							lon = point.item.longitude;
+						markerSearch = {lat, lon};
+						map.setView(markerSearch, 18);
+						let dot = L.marker(markerSearch).addTo(map);
+						$('#search_clear a').click(() => {
+							if (dot != undefined) {
+								map.removeLayer(dot);
+							}
+						});
+					},
+					search: () => {
+						$('#progressbar').show();
+					}
+				});
+		}
 
-		// $('#search_query').autocomplete({
-		// 	appendTo: '.col-middle',
-		// 	source: (request, response) => {
-		// 		$.ajax({
-		// 			url: "http://190.0.0.14/nominatim/search",
-		// 			cache: true,
-		// 			method: "GET",
-		// 			data: {
-		// 				q: 'Санкт-Петербург, ' + request.term,
-		// 				format: 'json',
-		// 				limit: 10,
-		// 			},
-		// 			success: (data) => {
-		// 				response($.map(data, (item) => {
-		// 					return {
-		// 						value: item.display_name.split(',', 6),
-		// 						latitude: item.lat,
-		// 						longitude: item.lon
-		// 					}
-		// 				}));
-		// 				$('#progressbar').hide();
-		// 			}
-		// 		});
-		// 	},
-		// 	select: (event, point) => {
-		// 		let lat = point.item.latitude,
-		// 			lon = point.item.longitude;
-		// 		markerSearch = {lat, lon};
-		// 		map.setView(markerSearch, 18);
-		// 		let dot = L.marker(markerSearch).addTo(map);
-		// 		$('#search_clear a').click(() => {
-		// 			if (dot != undefined) {
-		// 				map.removeLayer(dot);
-		// 			}
-		// 		});
-		// 	},
-		// 	search: () => {
-		// 		$('#progressbar').show();
+		// function searchCarQuery(item) {
+		// 	console.log('item', item);
+		// 	return{
+		// 		value: item
 		// 	}
-		// });
+		// }
+
+		function searchCar() {
+			$('#search_query').autocomplete({
+				appendTo: '.col-middle',
+				source: (request, response) => {
+					let regex = new RegExp(request.term, 'ig');
+					$.ajax({
+						url: "/js/info.json",
+						dataType: "json",
+						cache: false,
+						// data: {
+						// 	q: request.term,
+						// 	format: 'json',
+						// 	limit: 10,
+						// },
+						success: (data) => {
+							console.log('data', data);
+							for (let k in data.result) {
+								console.log('data.result[k]',data.result[k] );
+								response(data.result[k], (item) => {
+									console.log('item', item);
+									// console.log('item', item[k]);
+									// let result = item.match(/пг/gi);
+									// 	console.log('result', );
+										// return {
+										// 	label: item.nc
+										// };
+
+								});
+							}
+							$('#progressbar').hide();
+						}
+					});
+				},
+				select: (event, point) => {
+					let lat = point.item.latitude,
+						lon = point.item.longitude;
+					markerSearch = {lat, lon};
+					map.setView(markerSearch, 18);
+					let dot = L.marker(markerSearch).addTo(map);
+					$('#search_clear a').click(() => {
+						if (dot != undefined) {
+							map.removeLayer(dot);
+						}
+					});
+				},
+				search: () => {
+					$('#progressbar').show();
+				}
+			});
+		}
+
+		searchCar();
+
+		$('#profile').change(function () {
+				switch ($(this).val()) {
+					// case '0':
+					// 	alert('фильтр');
+					// 	$('input[type="text').prop('disabled', true);
+					// 	break;
+					case '1':
+						searchAddress();
+						break;
+					case '2':
+						searchCar();
+						break;
+				}
+		});
 		return mapDraw();
   }
 
