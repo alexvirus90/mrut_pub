@@ -1,5 +1,7 @@
 'use strict';
 
+let carsArray = [];
+
 $(document).ready( () => {
 
 	let car_imgColor = new Array();
@@ -173,6 +175,7 @@ $(document).ready( () => {
 				for (let k in data.result) {
 					if (typeof data.result[k] === 'object') {
 						global.data[data.result[k]['did']] = data.result[k];
+						carsArray.push(data.result[k]);
 					}
 				}
 				let conId = WaitForConnect();
@@ -345,50 +348,61 @@ $(document).ready( () => {
 			$('#search_query').autocomplete({
 				appendTo: '.col-middle',
 				source: (request, response) => {
-					let regex = new RegExp(request.term, 'ig');
-					$.ajax({
-						url: "/js/info.json",
-						dataType: "json",
-						cache: false,
-						// data: {
-						// 	q: request.term,
-						// 	format: 'json',
-						// 	limit: 10,
-						// },
-						success: (data) => {
-							console.log('data', data);
-							for (let k in data.result) {
-								console.log('data.result[k]',data.result[k] );
-								response(data.result[k], (item) => {
-									console.log('item', item);
-									// console.log('item', item[k]);
-									// let result = item.match(/пг/gi);
-									// 	console.log('result', );
-										// return {
-										// 	label: item.nc
-										// };
+					var re = $.ui.autocomplete.escapeRegex(request.term);
+					var matcher = new RegExp("^" + re, "i");
+					response($.grep(($.map(carsArray, function (v, i) {
+						return {
+							label: v.nc,
+							value: v.nc
+						};
+					})), function (item) {
+						return matcher.test(item.value);
+					}))
 
-								});
-							}
-							$('#progressbar').hide();
-						}
-					});
-				},
-				select: (event, point) => {
-					let lat = point.item.latitude,
-						lon = point.item.longitude;
-					markerSearch = {lat, lon};
-					map.setView(markerSearch, 18);
-					let dot = L.marker(markerSearch).addTo(map);
-					$('#search_clear a').click(() => {
-						if (dot != undefined) {
-							map.removeLayer(dot);
-						}
-					});
-				},
-				search: () => {
-					$('#progressbar').show();
+					//let regex = new RegExp(request.term, 'ig');
+					// $.ajax({
+					// 	url: "/js/info.json",
+					// 	dataType: "json",
+					// 	cache: false,
+					// 	// data: {
+					// 	// 	q: request.term,
+					// 	// 	format: 'json',
+					// 	// 	limit: 10,
+					// 	// },
+					// 	// success: (data) => {
+					// 	// 	console.log('data', data);
+					// 	// 	for (let k in data.result) {
+					// 	// 		console.log('data.result[k]',data.result[k] );
+					// 	// 		response(data.result[k], (item) => {
+					// 	// 			console.log('item', item);
+					// 	// 			// console.log('item', item[k]);
+					// 	// 			// let result = item.match(/пг/gi);
+					// 	// 			// 	console.log('result', );
+					// 	// 				// return {
+					// 	// 				// 	label: item.nc
+					// 	// 				// };
+					// 	//
+					// 	// 		});
+					// 	// 	}
+					// 	// 	$('#progressbar').hide();
+					// 	// }
+					// });
 				}
+				// select: (event, point) => {
+				// 	let lat = point.item.latitude,
+				// 		lon = point.item.longitude;
+				// 	markerSearch = {lat, lon};
+				// 	map.setView(markerSearch, 18);
+				// 	let dot = L.marker(markerSearch).addTo(map);
+				// 	$('#search_clear a').click(() => {
+				// 		if (dot != undefined) {
+				// 			map.removeLayer(dot);
+				// 		}
+				// 	});
+				// },
+				// search: () => {
+				// 	$('#progressbar').show();
+				// }
 			});
 		}
 
