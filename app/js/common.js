@@ -337,56 +337,22 @@ $(document).ready( () => {
 				});
 		}
 
-		// function searchCarQuery(item) {
-		// 	console.log('item', item);
-		// 	return{
-		// 		value: item
-		// 	}
-		// }
-
 		function searchCar() {
 			$('#search_query').autocomplete({
 				appendTo: '.col-middle',
 				source: (request, response) => {
-					var re = $.ui.autocomplete.escapeRegex(request.term);
-					var matcher = new RegExp("^" + re, "i");
-					response($.grep(($.map(carsArray, function (v, i) {
+					let re = $.ui.autocomplete.escapeRegex(request.term);
+					let matcher = new RegExp(re, "ig");
+					response($.grep(($.map(carsArray, (v, i) => {
 						return {
-							label: v.nc,
-							value: v.nc
+							label: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
+							value: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"]
 						};
-					})), function (item) {
+					})), (item) => {
+						console.log('item', item.value);
 						return matcher.test(item.value);
-					}))
-
-					//let regex = new RegExp(request.term, 'ig');
-					// $.ajax({
-					// 	url: "/js/info.json",
-					// 	dataType: "json",
-					// 	cache: false,
-					// 	// data: {
-					// 	// 	q: request.term,
-					// 	// 	format: 'json',
-					// 	// 	limit: 10,
-					// 	// },
-					// 	// success: (data) => {
-					// 	// 	console.log('data', data);
-					// 	// 	for (let k in data.result) {
-					// 	// 		console.log('data.result[k]',data.result[k] );
-					// 	// 		response(data.result[k], (item) => {
-					// 	// 			console.log('item', item);
-					// 	// 			// console.log('item', item[k]);
-					// 	// 			// let result = item.match(/пг/gi);
-					// 	// 			// 	console.log('result', );
-					// 	// 				// return {
-					// 	// 				// 	label: item.nc
-					// 	// 				// };
-					// 	//
-					// 	// 		});
-					// 	// 	}
-					// 	// 	$('#progressbar').hide();
-					// 	// }
-					// });
+					}));
+					$('#progressbar').hide();
 				}
 				// select: (event, point) => {
 				// 	let lat = point.item.latitude,
@@ -405,8 +371,6 @@ $(document).ready( () => {
 				// }
 			});
 		}
-
-		searchCar();
 
 		$('#profile').change(function () {
 				switch ($(this).val()) {
