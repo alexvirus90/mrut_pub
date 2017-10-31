@@ -52,6 +52,7 @@ $(document).ready( () => {
 		$.ajax({
 			type: 'GET',
 			url: 'http://176.97.34.40:6064/?command=connect&principal=1',
+			// url: 'http://176.97.34.41:6064/?command=connect&principal=1',
 			async: true,
 			cache: false,
 			success: (data) => {
@@ -68,6 +69,7 @@ $(document).ready( () => {
 		$.ajax({
 			type: 'GET',
 			url: 'http://176.97.34.40:6064/?command=receive&connection=' + id,
+			// url: 'http://176.97.34.41:6064/?command=receive&connection=' + id,
 			async: true,
 			cache: false,
 			success: (data) => {
@@ -117,6 +119,7 @@ $(document).ready( () => {
 		resizeMap();
 		let map,
 				markerSearch,
+				pupuptext,
 				spbCenter,
 				resizeTimer;
 
@@ -141,14 +144,14 @@ $(document).ready( () => {
 		function mapDraw () {
 
 			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
-			let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
-				detectRetina: true,
-				minZoom: 9
-			});
-			// let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			// let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
 			// 	detectRetina: true,
 			// 	minZoom: 9
 			// });
+			let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				detectRetina: true,
+				minZoom: 9
+			});
 			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
 			spbCenter = new L.LatLng(59.930967, 30.302636);
 			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerOnline]});
@@ -228,8 +231,14 @@ $(document).ready( () => {
 		}
 
 		function getSensor(obj, car_info) {
-			if (((obj._durations[0].sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
-				((obj._durations[0].sensors & 8) / 8) === 1) {
+			// if (((obj._durations[0].sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
+			// 	((obj._durations[0].sensors & 8) / 8) === 1) {
+			// 	markerOnline.addLayer(obj);
+			// } else {
+			// 	markerOffline.addLayer(obj);
+			// }
+			if (((obj.obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
+				((obj.obj.sensors & 8) / 8) === 1) {
 				markerOnline.addLayer(obj);
 			} else {
 				markerOffline.addLayer(obj);
@@ -275,23 +284,24 @@ $(document).ready( () => {
 			imgPath 	= 'images/car/' + imgType + color + '_32.png';
 			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32]});
 
-				if (marker[e.did] !== undefined) {
-					marker[e.did].m_move.setLatLng(e.latlon[0]);
-				} else {
-					addMarker = L.Marker.movingMarker(e.latlon, [e.obj], {icon: greenIcon});
-					marker[e.did] = { 'm_move': addMarker, 'time': 1 };
-					getSensor(addMarker, global.data[e.did]);
-				}
+			if (marker[e.did] !== undefined) {
+				marker[e.did].m_move.setLatLng(e.latlon[0]);
+			} else {
+				// addMarker = L.Marker.movingMarker(e.latlon, [e.obj], {icon: greenIcon});
+				addMarker = L.marker(e.latlon[0], {icon: greenIcon});
+				addMarker.obj = e.obj;
+				marker[e.did] = { 'm_move': addMarker, 'time': 1 };
+				getSensor(addMarker, global.data[e.did]);
+			}
 
-			let pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
-				//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
-				//"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
-				"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
-				"<b>Функция: </b>" + func + "</br>" +
-				"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
-
+			pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
+											//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
+											//"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
+											"<b>Гаражный номер: </b>" + global.data[e.did].nc + "</p>" +
+											"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
+											"<b>Функция: </b>" + func + "</br>" +
+											"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
 			marker[e.did].m_move.bindPopup(pupuptext);
-
 		});
 
 		function searchAddress() {
@@ -321,7 +331,7 @@ $(document).ready( () => {
 					},
 					select: (event, point) => {
 						let lat = point.item.latitude,
-							lon = point.item.longitude;
+								lon = point.item.longitude;
 						markerSearch = {lat, lon};
 						map.setView(markerSearch, 18);
 						let dot = L.marker(markerSearch).addTo(map);
@@ -346,32 +356,29 @@ $(document).ready( () => {
 					response($.grep(($.map(carsArray, (v, i) => {
 						return {
 							label: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
-							value: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"]
+							value: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
+							did: v.did
 						};
 					})), (item) => {
-						console.log('item', item.value);
 						return matcher.test(item.value);
 					}));
 					$('#progressbar').hide();
+				},
+				select: (event, point) => {
+					map.setView(marker[point.item.did].m_move._latlng, 18);
+					marker[point.item.did].m_move.openPopup(marker[point.item.did].m_move._latlng);
+					// let dot = L.marker(marker[point.item.did].m_move._latlng).addTo(map);
+					// $('#search_clear a').click(() => {
+					// 	if (dot != undefined) {
+					// 		map.removeLayer(dot);
+					// 	}
+					// });
+				},
+				search: () => {
+					$('#progressbar').show();
 				}
-				// select: (event, point) => {
-				// 	let lat = point.item.latitude,
-				// 		lon = point.item.longitude;
-				// 	markerSearch = {lat, lon};
-				// 	map.setView(markerSearch, 18);
-				// 	let dot = L.marker(markerSearch).addTo(map);
-				// 	$('#search_clear a').click(() => {
-				// 		if (dot != undefined) {
-				// 			map.removeLayer(dot);
-				// 		}
-				// 	});
-				// },
-				// search: () => {
-				// 	$('#progressbar').show();
-				// }
 			});
 		}
-
 		$('#profile').change(function () {
 				switch ($(this).val()) {
 					// case '0':
