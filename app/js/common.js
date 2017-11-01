@@ -118,6 +118,7 @@ $(document).ready( () => {
   function Map() {
 		resizeMap();
 		let map,
+				// ciLayer,
 				markerSearch,
 				pupuptext,
 				spbCenter,
@@ -132,9 +133,10 @@ $(document).ready( () => {
 
 		let marker = [];
 
-		let	markerOnline  = new L.layerGroup(),
+		let	markerOnline  = new L.canvasIconLayer(),
 				markerOffline = new L.layerGroup(),
-				markerTrakers = new L.layerGroup();
+				markerTrakers = new L.layerGroup()/*,
+				ciLayer 			= new L.canvasIconLayer({})*/;
 
 		$(window).resize(() => {
 			clearTimeout(resizeTimer);
@@ -154,7 +156,7 @@ $(document).ready( () => {
 			});
 			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
 			spbCenter = new L.LatLng(59.930967, 30.302636);
-			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerOnline]});
+			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerOnline/*, ciLayer*/]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
 			let lc = L.control.locate().addTo(map);
 			let baseMaps = {
@@ -165,6 +167,7 @@ $(document).ready( () => {
 				"На линии": markerOnline,
 				"В дежурстве": markerOffline,
 				"Тракира": markerTrakers
+				// "ciLayer": ciLayer
 			};
 			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			map.addControl(layersControl);
@@ -237,6 +240,9 @@ $(document).ready( () => {
 			// } else {
 			// 	markerOffline.addLayer(obj);
 			// }
+
+			// ciLayer.addLayer(obj);
+
 			if (((obj.obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
 				((obj.obj.sensors & 8) / 8) === 1) {
 				markerOnline.addLayer(obj);
@@ -282,12 +288,12 @@ $(document).ready( () => {
 			func 			= get_function_car(global.data[e.did], e.obj.sensors);
 			imgType 	= global.data[e.did]['imgType'];
 			imgPath 	= 'images/car/' + imgType + color + '_32.png';
-			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32]});
+			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32],	iconAnchor: [16, 16]});
 
 			if (marker[e.did] !== undefined) {
 				marker[e.did].m_move.setLatLng(e.latlon[0]);
 			} else {
-				// addMarker = L.Marker.movingMarker(e.latlon, [e.obj], {icon: greenIcon});
+				addMarker = L.Marker.movingMarker(e.latlon, [e.obj], {icon: greenIcon});
 				addMarker = L.marker(e.latlon[0], {icon: greenIcon});
 				addMarker.obj = e.obj;
 				marker[e.did] = { 'm_move': addMarker, 'time': 1 };
@@ -379,6 +385,7 @@ $(document).ready( () => {
 				}
 			});
 		}
+
 		$('#profile').change(function () {
 				switch ($(this).val()) {
 					// case '0':

@@ -42,6 +42,7 @@ gulp.task('libs', () => {
 	'node_modules/leaflet/dist/leaflet.js',
 	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
+	'app/libs/Leaflet.Canvas-Markers/leaflet.canvas-markers.js',
 	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
 	'app/libs/Semantic-UI/semantic.min.js',
 	'app/libs/jquery.clear/addclear.js'])
