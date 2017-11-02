@@ -64,7 +64,6 @@ $(document).ready( () => {
 			}
 		});
 	}
-
 	function WaitForPool(id) {
 		$.ajax({
 			type: 'GET',
@@ -102,7 +101,6 @@ $(document).ready( () => {
 			}
 		});
 	}
-
   function resizeMap() {
 		scroll(0, 0);
 		let header = $(".header:visible");
@@ -233,21 +231,12 @@ $(document).ready( () => {
 			return s_fun;
 		}
 		function getSensor(obj, car_info) {
-			// if (zoom > 14 || zoom == 14) {
-			// 	if (((obj._durations[0].sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
-			// 		((obj._durations[0].sensors & 8) / 8) === 1) {
-			// 		markerOnline.addLayer(obj);
-			// 	} else {
-			// 		markerOffline.addLayer(obj);
-			// 	}
-			// } else {
 			if (((obj.obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
 				((obj.obj.sensors & 8) / 8) === 1) {
 				markerOnline.addLayer(obj);
 			} else {
 				markerOffline.addLayer(obj);
 			}
-			// }
 		}
 		function getFunColor(obj, car_info) {
 			let c = null;
@@ -277,6 +266,7 @@ $(document).ready( () => {
 			return c;
 		}
 		$(window).on('startpoint', (e) => {
+			let lastLatLng;
 			if (global.data[e.did] === undefined) return;
 			if (global.data[e.did]['imgType'] === undefined) return;
 
@@ -290,19 +280,21 @@ $(document).ready( () => {
 				zoom = map.getZoom();
 			});
 
-			function moving() {
-				if (zoom > 14 || zoom == 14){
-					addMarker = L.Marker.movingMarker(e.latlon, [2000], {icon: greenIcon});
-					addMarker.obj = e.obj;
-					console.log('addMarker', addMarker);
-					getSensor(addMarker, global.data[e.did]);
-				} else {
-					marker[e.did].m_move.setLatLng(e.latlon[0]);
+			function moving(s) {
+				console.log('s', s);
+				console.log('e.latlon[0]', e.latlon);
+				if (zoom > 14 || zoom === 14){
+					movingMarker = L.Marker.movingMarker([s, e.latlon], [], {icon: greenIcon});
+					movingMarker.obj = e.obj;
+					console.log('addMarker', movingMarker);
+					getSensor(movingMarker, global.data[e.did]);
 				}
 			}
 
 			if (marker[e.did] !== undefined) {
-				moving();
+				marker[e.did].m_move.setLatLng(e.latlon[0]);
+				lastLatLng = marker[e.did].m_move.getLatLng(e.latlon[0]);
+				moving(lastLatLng);
 			} else {
 				addMarker = L.marker(e.latlon[0], {icon: greenIcon});
 				addMarker.obj = e.obj;
