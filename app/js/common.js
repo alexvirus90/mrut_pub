@@ -126,14 +126,16 @@ $(document).ready( () => {
 
 		let color,
 				func,
+				zoom,
 				imgType,
 				addMarker,
+				movingMarker,
 				greenIcon,
 				imgPath;
 
 		let marker = [];
 
-		let	markerOnline  = new L.canvasIconLayer(),
+		let	markerOnline  = new L.layerGroup(),
 				markerOffline = new L.layerGroup(),
 				markerTrakers = new L.layerGroup()/*,
 				ciLayer 			= new L.canvasIconLayer({})*/;
@@ -171,10 +173,8 @@ $(document).ready( () => {
 			};
 			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			map.addControl(layersControl);
-
 			return WaitForConnect();
 		}
-
 		$.ajax({
 			url: "/js/info.json",
 			success: (data) => {
@@ -232,25 +232,23 @@ $(document).ready( () => {
 			}
 			return s_fun;
 		}
-
 		function getSensor(obj, car_info) {
-			// if (((obj._durations[0].sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
-			// 	((obj._durations[0].sensors & 8) / 8) === 1) {
-			// 	markerOnline.addLayer(obj);
+			// if (zoom > 14 || zoom == 14) {
+			// 	if (((obj._durations[0].sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
+			// 		((obj._durations[0].sensors & 8) / 8) === 1) {
+			// 		markerOnline.addLayer(obj);
+			// 	} else {
+			// 		markerOffline.addLayer(obj);
+			// 	}
 			// } else {
-			// 	markerOffline.addLayer(obj);
-			// }
-
-			// ciLayer.addLayer(obj);
-
 			if (((obj.obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
 				((obj.obj.sensors & 8) / 8) === 1) {
 				markerOnline.addLayer(obj);
 			} else {
 				markerOffline.addLayer(obj);
 			}
+			// }
 		}
-
 		function getFunColor(obj, car_info) {
 			let c = null;
 			if (((obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL && //Если включена масса
@@ -278,9 +276,7 @@ $(document).ready( () => {
 			}
 			return c;
 		}
-
 		$(window).on('startpoint', (e) => {
-
 			if (global.data[e.did] === undefined) return;
 			if (global.data[e.did]['imgType'] === undefined) return;
 
@@ -290,13 +286,27 @@ $(document).ready( () => {
 			imgPath 	= 'images/car/' + imgType + color + '_32.png';
 			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32],	iconAnchor: [16, 16]});
 
+			map.on('zoomend', function () {
+				zoom = map.getZoom();
+			});
+
+			function moving() {
+				if (zoom > 14 || zoom == 14){
+					addMarker = L.Marker.movingMarker(e.latlon, [2000], {icon: greenIcon});
+					addMarker.obj = e.obj;
+					console.log('addMarker', addMarker);
+					getSensor(addMarker, global.data[e.did]);
+				} else {
+					marker[e.did].m_move.setLatLng(e.latlon[0]);
+				}
+			}
+
 			if (marker[e.did] !== undefined) {
-				marker[e.did].m_move.setLatLng(e.latlon[0]);
+				moving();
 			} else {
-				addMarker = L.Marker.movingMarker(e.latlon, [e.obj], {icon: greenIcon});
 				addMarker = L.marker(e.latlon[0], {icon: greenIcon});
 				addMarker.obj = e.obj;
-				marker[e.did] = { 'm_move': addMarker, 'time': 1 };
+				marker[e.did] = {'m_move': addMarker, 'time': 1};
 				getSensor(addMarker, global.data[e.did]);
 			}
 
