@@ -133,10 +133,10 @@ $(document).ready( () => {
 
 		let marker = [];
 
-		let	markerOnline  = new L.layerGroup(),
-				markerOffline = new L.layerGroup(),
-				markerTrakers = new L.layerGroup()/*,
-				ciLayer 			= new L.canvasIconLayer({})*/;
+		let	markerOnline  = new L.FeatureGroup(),
+				markerOffline = new L.FeatureGroup(),
+				markerTrakers = new L.layerGroup();
+		/*ciLayer 			= new L.canvasIconLayer({})*/
 
 		$(window).resize(() => {
 			clearTimeout(resizeTimer);
@@ -265,8 +265,30 @@ $(document).ready( () => {
 			}
 			return c;
 		}
+
+		function startMarkerTo(e) {
+			marker[e.did].m_move.start();
+			if (marker[e.did].m_move.isStarted() == false) {
+				marker[e.did].m_move.moveTo(e.latlon[0], (e.obj.speed * 2000));
+				marker[e.did].m_move.bindPopup(e.obj.speed + 'км/ч');
+			} else {
+				let latlng = L.latLng(e.latlon[0], e.latlon[1]);
+
+				if (marker[e.did].m_move._latlng.distanceTo(latlng) <= 2000) {
+					marker[e.did].m_move.addLatLng(e.latlon[0], (e.obj.speed * 2000));
+					let func = get_function_car(global.data[e.did], e.obj.sensors);
+					let pupuptext = "<b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
+						//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
+						//"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
+						"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
+						"<b>Функция: </b>" + func + "</br>" +
+						"<b>Скорость: </b>" + e.obj.speed + "(км/ч)";
+					marker[e.did].m_move.bindPopup(pupuptext);
+				}
+			}
+		}
+
 		$(window).on('startpoint', (e) => {
-			let lastLatLng;
 			if (global.data[e.did] === undefined) return;
 			if (global.data[e.did]['imgType'] === undefined) return;
 
@@ -278,29 +300,45 @@ $(document).ready( () => {
 
 			map.on('zoomend', function () {
 				zoom = map.getZoom();
+				console.log('zoom', zoom);
 			});
 
-			function moving(s) {
-				console.log('s', s);
-				console.log('e.latlon[0]', e.latlon);
-				if (zoom > 14 || zoom === 14){
-					movingMarker = L.Marker.movingMarker([s, e.latlon], [], {icon: greenIcon});
-					movingMarker.obj = e.obj;
-					console.log('addMarker', movingMarker);
-					getSensor(movingMarker, global.data[e.did]);
-				}
-			}
+			// function moving(s) {
+			// 	if (zoom > 14 || zoom === 14){
+			// 		movingMarker = L.Marker.movingMarker([s, e.latlon[0]], [], {icon: greenIcon});
+			// 		movingMarker.obj = e.obj;
+			// 		// console.log('addMarker', movingMarker);
+			// 		// getSensor(movingMarker, global.data[e.did]);
+			// 	}
+			// }
+			//
+			// if (marker[e.did] !== undefined) {
+			// 	marker[e.did].m_move.setLatLng(e.latlon[0]);
+			// 	lastLatLng = marker[e.did].m_move.getLatLng(e.latlon[0], (e.obj.speed * 2000));
+			// 	moving(lastLatLng);
+			// } else {
+			// 	addMarker = L.marker(e.latlon[0], {icon: greenIcon});
+			// 	addMarker.obj = e.obj;
+			// 	marker[e.did] = {'m_move': addMarker, 'time': 1};
+			// 	getSensor(addMarker, global.data[e.did]);
+			// }
 
 			if (marker[e.did] !== undefined) {
-				marker[e.did].m_move.setLatLng(e.latlon[0]);
-				lastLatLng = marker[e.did].m_move.getLatLng(e.latlon[0]);
-				moving(lastLatLng);
-			} else {
-				addMarker = L.marker(e.latlon[0], {icon: greenIcon});
-				addMarker.obj = e.obj;
-				marker[e.did] = {'m_move': addMarker, 'time': 1};
-				getSensor(addMarker, global.data[e.did]);
+				startMarkerTo(e);
+				return;
 			}
+
+			// if (zoom < 14 || zoom !== 14) {
+			// 	addMarker = L.marker(e.latlon[0], {icon: greenIcon});
+			// 	addMarker.obj = e.obj;
+			// 	marker[e.did] = {'m_move': addMarker, 'time': 1};
+			// 	getSensor(addMarker, global.data[e.did]);
+			// } else {
+				movingMarker = L.Marker.movingMarker(e.latlon, [], {icon: greenIcon});
+				movingMarker.obj = e.obj;
+				marker[e.did] = {'m_move': movingMarker, 'time': 1};
+				getSensor(movingMarker, global.data[e.did]);
+			// }
 
 			pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
 											//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
@@ -311,7 +349,6 @@ $(document).ready( () => {
 											"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
 			marker[e.did].m_move.bindPopup(pupuptext);
 		});
-
 		function searchAddress() {
 			$('#search_query').autocomplete({
 					appendTo: '.col-middle',
@@ -354,7 +391,6 @@ $(document).ready( () => {
 					}
 				});
 		}
-
 		function searchCar() {
 			$('#search_query').autocomplete({
 				appendTo: '.col-middle',
@@ -387,7 +423,6 @@ $(document).ready( () => {
 				}
 			});
 		}
-
 		$('#profile').change(function () {
 				switch ($(this).val()) {
 					// case '0':
