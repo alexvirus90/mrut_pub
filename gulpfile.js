@@ -37,12 +37,11 @@ gulp.task('lib', () => {
 gulp.task('libs', () => {
   return gulp.src([
 	'node_modules/jquery-ui/external/jquery-1.12.4/jquery.js',
-	'app/libs/tether/dist/js/tether.js',
-	'app/libs/bootstrap/dist/js/bootstrap.js',
+	'app/libs/tether/js/tether.js',
+	'app/libs/bootstrap/js/bootstrap.js',
 	'node_modules/leaflet/dist/leaflet.js',
-	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
+	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
-	'app/libs/Leaflet.Canvas-Markers/leaflet.canvas-markers.js',
 	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
 	'app/libs/Semantic-UI/semantic.min.js',
 	'app/libs/jquery.clear/addclear.js'])
@@ -63,15 +62,15 @@ gulp.task('minjs', () => {
 
 gulp.task('cssnano', () => {
   return gulp.src([
-	'app/libs/tether/dist/css/tether.css',
-	'app/libs/tether/dist/css/tether-theme-arrows.css',
-	'app/libs/tether/dist/css/tether-theme-arrows-dark.css',
-	'app/libs/tether/dist/css/tether-theme-basic.css',
-	'app/libs/bootstrap/dist/css/bootstrap.css',
-	'app/libs/bootstrap/dist/css/bootstrap-grid.css',
-	'app/libs/bootstrap/dist/css/bootstrap-reboot.css',
+	'app/libs/tether/css/tether.css',
+	'app/libs/tether/css/tether-theme-arrows.css',
+	'app/libs/tether/css/tether-theme-arrows-dark.css',
+	'app/libs/tether/css/tether-theme-basic.css',
+	'app/libs/bootstrap/css/bootstrap.css',
+	'app/libs/bootstrap/css/bootstrap-grid.css',
+	'app/libs/bootstrap/css/bootstrap-reboot.css',
 	'node_modules/leaflet/dist/leaflet.css',
-	'app/libs/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
+	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.css',
 	'app/libs/asidebar/dist.css',
 	'app/libs/jquery-ui/jquery-ui.min.css',
 	'app/libs/Semantic-UI/semantic.min.css',
