@@ -42,6 +42,7 @@ gulp.task('libs', () => {
 	'node_modules/leaflet/dist/leaflet.js',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
+	'app/libs/leaflet_list_markers/leaflet_list_markers.js',
 	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
 	'app/libs/Semantic-UI/semantic.min.js',
 	'app/libs/jquery.clear/addclear.js'])
@@ -50,14 +51,15 @@ gulp.task('libs', () => {
 
 gulp.task('minjs', () => {
   return gulp.src(['app/js/**/*.js'], { since: gulp.lastRun('minjs') })
-	.pipe(minify({
-	  ext:{
-		min: '.min.js'
-	  },
-	  ignoreFiles: ['*.min.js']
-	}))
+	// .pipe(minify({
+	//   ext:{
+	// 	min: '.min.js'
+	//   },
+	//   ignoreFiles: ['*.min.js']
+	// }))
 	.pipe(gulpIf(isDevelopment, sourcemaps.write('.')))
-	.pipe(gulpIf('**/*.min.js', gulp.dest('dist/js')))
+	// .pipe(gulpIf('**/*.min.js', gulp.dest('dist/js')))
+	.pipe(gulpIf('**/*.js', gulp.dest('dist/js')))
 });
 
 gulp.task('cssnano', () => {
@@ -71,6 +73,7 @@ gulp.task('cssnano', () => {
 	'app/libs/bootstrap/css/bootstrap-reboot.css',
 	'node_modules/leaflet/dist/leaflet.css',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.css',
+	'app/libs/leaflet_list_markers/leaflet_list_markers.css',
 	'app/libs/asidebar/dist.css',
 	'app/libs/jquery-ui/jquery-ui.min.css',
 	'app/libs/Semantic-UI/semantic.min.css',
