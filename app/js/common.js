@@ -1,14 +1,23 @@
 'use strict';
 
-let carsArray 	 = [];
-let car_imgColor = [];
-let car_Fun 		 = [];
-let car_Color 	 = [];
-let marker 			 = [];
-let global 			 = {data: []};
-let evt 				 = $.Event('startpoint');
+var carsArray 	 = [],
+		mrkOn 		 	 = [],
+	 	marker 			 = [],
+	 	global 			 = {data: []},
+	 	evt 				 = $.Event('startpoint');
 
-$(document).ready( () => {
+var map, markerSearch, pupuptext,	spbCenter, resizeTimer;
+
+var color, func, zoom, bounds, imgType, addMarker, movingMarker, greenIcon,	imgPath;
+
+var	markerOnline  = new L.LayerGroup(),
+		markerOffline = new L.FeatureGroup(),
+		markerTrakers = new L.layerGroup();
+
+$(document).ready( function(){
+	var car_imgColor = [],
+			car_Fun 		 = [],
+			car_Color 	 = [];
 
 	car_imgColor[1] = "black"; car_imgColor[2] = "lilac";
 	car_imgColor[3] = "light_blue"; car_imgColor[4] = "red";
@@ -17,7 +26,7 @@ $(document).ready( () => {
 	car_imgColor[9] = "light_blue"; car_imgColor[10] = "yellow";
 	car_imgColor[11] = "lilac"; car_imgColor[12] = "brown";
 	car_imgColor[13] = "yellow"; car_imgColor[14] = "lemon";//car_imgColor[15] = "white";
-	car_imgColor[15] = "violet"; car_imgColor[16] = "t";
+	car_imgColor[15] = "viovar"; car_imgColor[16] = "t";
 
 	car_Fun[1] = "ПГ"; car_Fun[2] = "ССВ";
 	car_Fun[3] = "М"; car_Fun[4] = "РТ";
@@ -34,18 +43,22 @@ $(document).ready( () => {
 	car_Color[9] = "#00D5D5"; car_Color[10] = "yellow";
 	car_Color[11] = "#FF6A00"; car_Color[12] = "brown";
 	car_Color[13] = "yellow"; car_Color[14] = "green";
-	car_Color[15] = "grey"; car_Color[16] = "green"; car_Color[14] = "C3F266"; car_Color[15] = "violet";
+	car_Color[15] = "grey"; car_Color[16] = "green"; car_Color[14] = "C3F266"; car_Color[15] = "viovar";
 
-  let input = document.createElement('input', '');
-  $('#search_clear').append(input);
+  var input = document.createElement('input');
+	$('#search_clear').append(input);
+
+	var divList 			= document.createElement("div");
+	divList.id 				= "markers_list";
+	divList.className = "markers_list";
+	$('#map_canvas').append(divList);
 
   function setAttributes(el, attrs) {
-		for(let key in attrs) {
+		for(var key in attrs) {
 			el.setAttribute(key, attrs[key]);
 		}
   }
-  setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск" +
-	" по", "disabled": "disabled"});
+  setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по", "disabled": "disabled"});
 
 	function WaitForConnect() {
 		$.ajax({
@@ -54,11 +67,11 @@ $(document).ready( () => {
 			// url: 'http://176.97.34.41:6064/?command=connect&principal=1',
 			async: true,
 			cache: false,
-			success: (data) => {
-				let json = eval('(' + data + ')');
+			success: function(data){
+				var json = eval('(' + data + ')');
 				WaitForPool(json.root[0].connection);
 			},
-			error: (XMLHttpRequest, textStatus, errorThrown) => {
+			error: function(XMLHttpRequest, textStatus, errorThrown){
 				WaitForPool(json.root[0].connection);
 			}
 		});
@@ -70,12 +83,12 @@ $(document).ready( () => {
 			// url: 'http://176.97.34.41:6064/?command=receive&connection=' + id,
 			async: true,
 			cache: false,
-			success: (data) => {
-				let json = eval('(' + data + ')');
-				let str = JSON.stringify(json);
-				let slice = JSON.parse(str);
+			success: function(data){
+				var json = eval('(' + data + ')');
+				var str = JSON.stringify(json);
+				var slice = JSON.parse(str);
 
-				for (let k in slice.root) {
+				for (var k in slice.root) {
 					if (slice.root[k] instanceof Object) {
 						// if (typeof slice.root[k].header == "undefined") continue;
 						if (typeof slice.root[k].header == "undefined") continue;
@@ -97,94 +110,100 @@ $(document).ready( () => {
 				}
 				WaitForPool(id);
 			},
-			error: (XMLHttpRequest, textStatus, errorThrown) => {
+			error: function(XMLHttpRequest, textStatus, errorThrown){
 				WaitForPool(id);
 			}
 		});
 	}
   function resizeMap() {
 		scroll(0, 0);
-		let header = $(".header:visible");
-		let footer = $(".footer:visible");
-		let content = $(".content:visible");
-		let viewport_height = $(window).height();
-		let content_height = viewport_height - header.outerHeight() - footer.outerHeight();
+		var header = $(".header:visible");
+		var footer = $(".footer:visible");
+		var content = $(".content:visible");
+		var viewport_height = $(window).height();
+		var content_height = viewport_height - header.outerHeight() - footer.outerHeight();
 		content_height -= (content.outerHeight() - content.height());
 		content.height(content_height);
 		$("#map_canvas").height(content_height);
   }
-
   function Map() {
 		resizeMap();
-		let map,
-				markerSearch,
-				pupuptext,
-				spbCenter,
-				resizeTimer;
 
-		let color,
-				func,
-				zoom,
-				imgType,
-				addMarker,
-				movingMarker,
-				greenIcon,
-				imgPath;
-
-
-		let	markerOnline  = new L.FeatureGroup(),
-				markerOffline = new L.FeatureGroup(),
-				markerTrakers = new L.layerGroup();
-
-		$(window).resize(() => {
+		$(window).resize(function(){
 			clearTimeout(resizeTimer);
 			resizeTimer = setTimeout(resizeMap, 100);
 		});
 		function mapDraw () {
-			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
-			// let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
+			var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
+			// var minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
 			// 	detectRetina: true,
 			// 	minZoom: 9
 			// });
-			let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			var minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				detectRetina: true,
 				minZoom: 9
 			});
-			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
+			var midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
 			spbCenter = new L.LatLng(59.930967, 30.302636);
 			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerOnline]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
-			let lc = L.control.locate().addTo(map);
-			let baseMaps = {
+			var lc = L.control.locate().addTo(map);
+
+			var legend = L.control({position: 'bottomright'});
+			legend.onAdd = function (map) {
+				var div = L.DomUtil.create('div', 'info legend');
+				div.innerHTML =
+					"<table>" +
+					"<tr><td><img src='images/car/square_grey_32.png' /></td><!--<td>&nbsp-&nbspМашины для уборки тротуаров</td>--></tr>" +
+					"<tr><td><img src='images/car/triangle_grey_32.png' /></td><!--<td>&nbsp-&nbspМашины для уборки проезжей части</td>--></tr>" +
+					"<tr><td><img src='images/car/circle_grey_32.png' /></td><!--<td>&nbsp-&nbspДругая техника</td>--></tr>" +
+					"<tr><td><img src='images/car/circle_t_32.png' /></td><!--<td>&nbsp-&nbspТреккер&nbsp(для ручной уборки)</td>--></tr>" +
+					"</table>";
+					return div;
+			};
+			legend.addTo(map);
+
+			var baseMaps = {
 				"Карта СПб": minimal,
 				"Карта СПб(ночь)": midnightCommander
 			};
-			let overlayMaps = {
+			var overlayMaps = {
 				"На линии": markerOnline,
 				"В дежурстве": markerOffline,
 				"Тракира": markerTrakers
 			};
-			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+			var layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			map.addControl(layersControl);
+
+			map.on('zoomend', function () {
+				zoom = map.getZoom();
+				console.log('zoom', zoom);
+			});
+
+			map.off('moveend', function () {
+				bounds = map.getBounds();
+				console.log('bounds', bounds);
+			});
+
 			return WaitForConnect();
 		}
 		$.ajax({
 			url: "/js/info.json",
-			success: (data) => {
-				for (let k in data.result) {
+			success: function(data){
+				for (var k in data.result) {
 					if (typeof data.result[k] === 'object') {
 						global.data[data.result[k]['did']] = data.result[k];
 						carsArray.push(data.result[k]);
 					}
 				}
-				let conId = WaitForConnect();
+				var conId = WaitForConnect();
 			}
 		});
 		function get_function_car(obj, sensors) {
-			let arr_FName = new Array();
+			var arr_FName = new Array();
 			obj = obj.car_info || obj;
-			let s_fun = "";
-			let color = "";
+			var s_fun = "";
+			var color = "";
 
 			if (car_Fun[obj.F1_ID] != undefined) {
 				arr_FName[0] = car_Fun[obj.F1_ID];
@@ -234,7 +253,7 @@ $(document).ready( () => {
 			}
 		}
 		function getFunColor(obj, car_info) {
-			let c = null;
+			var c = null;
 			if (((obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL && //Если включена масса
 				((obj.sensors & 8) / 8) === 1) { //и если включено зажигание
 				if ((car_info.F1_MASK !== "") &&
@@ -263,15 +282,15 @@ $(document).ready( () => {
 		function startMarkerTo(e) {
 			marker[e.did].m_move.start();
 			if (marker[e.did].m_move.isStarted() == false) {
-				marker[e.did].m_move.moveTo(e.latlon[0], (e.obj.speed * 2000));
+				marker[e.did].m_move.moveTo(global.data[e.did].latlon[0], (e.obj.speed * 2000));
 			} else {
-				let latlng = L.latLng(e.latlon[0], e.latlon[1]);
+				var latlng = L.latLng(e.latlon[0], e.latlon[1]);
 				if (marker[e.did].m_move._latlng.distanceTo(latlng) <= 2000) {
 					marker[e.did].m_move.addLatLng(e.latlon[0], (e.obj.speed * 2000));
 				}
 			}
 		}
-		$(window).on('startpoint', (e) => {
+		$(window).on('startpoint', function(e){
 			if (global.data[e.did] === undefined) return;
 			if (global.data[e.did]['imgType'] === undefined) return;
 
@@ -282,20 +301,23 @@ $(document).ready( () => {
 			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32],	iconAnchor: [16, 16]});
 
 			if (marker[e.did] !== undefined) {
-				startMarkerTo(e);
-				return;
+				if (zoom === 15 || zoom > 15) {
+					startMarkerTo(e);
+					return;
+				} else {
+					marker[e.did].m_move.setLatLng(e.latlon[0]);
+					return;
+				}
 			}
 
 			movingMarker = L.Marker.movingMarker(global.data[e.did].latlon, [], {title: global.data[e.did].nc, icon: greenIcon});
 			movingMarker.obj = e.obj;
 			marker[e.did] = {'m_move': movingMarker, 'time': 1};
-			getSensor(movingMarker, global.data[e.did]);
+			// getSensor(movingMarker, global.data[e.did]);
 
-
-
-			map.on('zoomend', function () {
-				// let iszoom = 0;
-				zoom = map.getZoom();
+			// map.on('zoomend', function () {
+				// var iszoom = 0;
+				// zoom = map.getZoom();
 			// 	console.log('zoom', zoom);
 			// 	if (zoom == 14 && iszoom == 0 ) {
 			// 		iszoom = 1;
@@ -308,29 +330,8 @@ $(document).ready( () => {
 			// 		iszoom = 0;
 			// 		getSensor(movingMarker, global.data[e.did]);
 			// 	}
-				if (zoom >= 14) {
-					var list = new L.Control.ListMarkers({layer: markerOnline, itemIcon: null});
-					list.on('item-mouseover', function (j) {
-						j.layer.openPopup(marker[e.did].m_move._latlng)
-						//	}).on('item-mouseout', function(e) {
-						//		e.layer.setIcon(L.icon({
-						//			iconUrl: L.Icon.Default.imagePath+'/marker-icon.png'
-						//		}))
-					});
-					map.addControl( list );
-				}
-			});
+			// });
 
-			// if (marker[e.did] !== undefined) {
-			// 	marker[e.did].m_move.setLatLng(e.latlon[0]);
-			// 	lastLatLng = marker[e.did].m_move.getLatLng(e.latlon[0], (e.obj.speed * 2000));
-			// 	moving(lastLatLng);
-			// } else {
-			// 	addMarker = L.marker(e.latlon[0], {icon: greenIcon});
-			// 	addMarker.obj = e.obj;
-			// 	marker[e.did] = {'m_move': addMarker, 'time': 1};
-			// 	getSensor(addMarker, global.data[e.did]);
-			// }
 			pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
 											//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
 											//"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
@@ -344,7 +345,7 @@ $(document).ready( () => {
 		function searchAddress() {
 			$('#search_query').autocomplete({
 					appendTo: '.col-middle',
-					source: (request, response) => {
+					source: function(request, response){
 						$.ajax({
 							url: "http://190.0.0.14/nominatim/search",
 							cache: true,
@@ -354,8 +355,8 @@ $(document).ready( () => {
 								format: 'json',
 								limit: 10,
 							},
-							success: (data) => {
-								response($.map(data, (item) => {
+							success: function(data){
+								response($.map(data, function(item){
 									return {
 										value: item.display_name.split(',', 6),
 										latitude: item.lat,
@@ -366,19 +367,19 @@ $(document).ready( () => {
 							}
 						});
 					},
-					select: (event, point) => {
-						let lat = point.item.latitude,
-								lon = point.item.longitude;
-						markerSearch = {lat, lon};
-						map.setView(markerSearch, 18);
-						let dot = L.marker(markerSearch).addTo(map);
-						$('#search_clear a').click(() => {
-							if (dot != undefined) {
-								map.removeLayer(dot);
-							}
-						});
-					},
-					search: () => {
+					// select: function(event, point){
+					// 	var lat = point.item.latitude,
+					// 			lon = point.item.longitude;
+					// 	markerSearch = {lat, lon};
+					// 	map.setView(markerSearch, 18);
+					// 	var dot = L.marker(markerSearch).addTo(map);
+					// 	$('#search_clear a').click(function(){
+					// 		if (dot != undefined) {
+					// 			map.removeLayer(dot);
+					// 		}
+					// 	});
+					// },
+					search: function(){
 						$('#progressbar').show();
 					}
 				});
@@ -386,31 +387,25 @@ $(document).ready( () => {
 		function searchCar() {
 			$('#search_query').autocomplete({
 				appendTo: '.col-middle',
-				source: (request, response) => {
-					let re = $.ui.autocomplete.escapeRegex(request.term);
-					let matcher = new RegExp(re, "ig");
-					response($.grep(($.map(carsArray, (v, i) => {
+				source: function(request, response){
+					var re = $.ui.autocompvare.escapeRegex(request.term);
+					var matcher = new RegExp(re, "ig");
+					response($.grep(($.map(carsArray, function(v, i){
 						return {
 							label: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
 							value: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
 							did: v.did
 						};
-					})), (item) => {
+					})), function(item){
 						return matcher.test(item.value);
 					}));
 					$('#progressbar').hide();
 				},
-				select: (event, point) => {
+				select: function(event, point){
 					map.setView(marker[point.item.did].m_move._latlng, 18);
 					marker[point.item.did].m_move.openPopup(marker[point.item.did].m_move._latlng);
-					// let dot = L.marker(marker[point.item.did].m_move._latlng).addTo(map);
-					// $('#search_clear a').click(() => {
-					// 	if (dot != undefined) {
-					// 		map.removeLayer(dot);
-					// 	}
-					// });
 				},
-				search: () => {
+				search: function(){
 					$('#progressbar').show();
 				}
 			});
@@ -431,15 +426,21 @@ $(document).ready( () => {
 		});
 		return mapDraw();
   }
-
-  $('.col-right').click(() => {
+  $('.col-right').click(function(){
 		if ($(".aside").hasClass("in")) {
 			$('.aside').asidebar('close')
 		} else {
 			$('.aside').asidebar('open')
 		}
   });
-  $(() => {
+	$('#news').FeedEk({
+		FeedUrl:'http://gov.spb.ru/gov/otrasl/blago/news/rss/',
+		MaxCount: 7,
+		ShowDesc: true,
+		ShowPubDate: true,
+		DescCharacterLimit: 100
+	});
+  $(function(){
 		$("#search_query").addClear();
   });
 	$( "#progressbar" ).progressbar({

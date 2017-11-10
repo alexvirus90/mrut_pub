@@ -1,0 +1,42 @@
+.aside
+  z-index: 22
+  border: 0
+  &-backdrop
+    z-index: 20
+  .aside-header
+    background-color: #dddedf
+    border-bottom: 3px solid #B5B9C0
+    border-top: 1px solid #B5B9C0
+    color: #000
+    padding: .8em
+  .aside-contents
+    padding: 0
+    .nav-item
+      width: 50%
+      .nav-link
+        text-transform: uppercase
+        font-weight: bold
+        text-align: center
+    .row
+      .caption
+        margin: 10px 0 0
+        color: #466ba1
+        font-size: 18px
+        text-align: center
+        text-decoration: none
+      .col_1
+        text-align: right
+        max-width: 50%
+      .col_2
+        margin: auto
+        padding: 0
+        text-align: left
+      p
+        font-size: 16px
+        a[href^="tel:"]
+          text-decoration: none
+          color: #000000
+        i
+          margin: 0 5px
+  &.in
+    width: 30%

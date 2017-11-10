@@ -13,7 +13,8 @@ const gulp         = require('gulp'),
       cache        = require('gulp-cache'),
       autoprefixer = require('gulp-autoprefixer'),
       gulpIf       = require('gulp-if'),
-      sourcemaps   = require('gulp-sourcemaps');
+      sourcemaps   = require('gulp-sourcemaps'),
+			babel 			 = require('gulp-babel');
 
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
@@ -45,6 +46,7 @@ gulp.task('libs', () => {
 	'app/libs/leaflet_list_markers/leaflet_list_markers.js',
 	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
 	'app/libs/Semantic-UI/semantic.min.js',
+	'app/libs/FeedEk/FeedEk.js',
 	'app/libs/jquery.clear/addclear.js'])
 	.pipe(gulp.dest('app/js/libs'));
 });
@@ -62,6 +64,16 @@ gulp.task('minjs', () => {
 	.pipe(gulpIf('**/*.js', gulp.dest('dist/js')))
 });
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+gulp.task('babeljs', () => {
+	return gulp.src('src/app.js')
+		.pipe(babel({
+			presets: ['env']
+		}))
+		.pipe(gulp.dest('dist'))
+});
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 gulp.task('cssnano', () => {
   return gulp.src([
 	'app/libs/tether/css/tether.css',
@@ -77,7 +89,8 @@ gulp.task('cssnano', () => {
 	'app/libs/asidebar/dist.css',
 	'app/libs/jquery-ui/jquery-ui.min.css',
 	'app/libs/Semantic-UI/semantic.min.css',
-	'app/libs/font-awesome/css/font-awesome.css'
+	'app/libs/font-awesome/css/font-awesome.css',
+	'app/libs/FeedEk/FeedEk.css'
   ], { since: gulp.lastRun('cssnano') })
 	.pipe(cssnano())
 	.pipe(gulp.dest('app/css/libs'));
