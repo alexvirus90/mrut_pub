@@ -436,7 +436,6 @@ $(document).ready( () => {
 					let re = $.ui.autocomplete.escapeRegex(request.term);
 					let matcher = new RegExp(re, "ig");
 					response($.grep(($.map(carsArray, (v, i) => {
-						console.log('carsArray', v);
 						return {
 							label: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
 							value: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
@@ -507,7 +506,6 @@ $(document).ready( () => {
 		})
 	});
 	$(".legend").mouseover(function () {
-		alert('ahah');
 		$(".panel-collapse").fadeIn();
 	});
 	$(".panel-collapse").mouseleave(function(){
