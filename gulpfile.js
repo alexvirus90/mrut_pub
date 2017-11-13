@@ -28,13 +28,11 @@ gulp.task('sass', () => {
 	.pipe(gulpIf('**/*.css', rename({suffix: '.min'})))
     .pipe(gulp.dest('app/css'))
 });
-
 gulp.task('lib', () => {
   return gulp.src('node_modules/jquery/dist/jquery.min.js')
 	.pipe(gulpIf('**/jquery.min.js', rename({basename: 'jquery-3.2.1.min'})))
 	.pipe(gulp.dest('app/js/libs'))
 });
-
 gulp.task('libs', () => {
   return gulp.src([
 	'node_modules/jquery-ui/external/jquery-1.12.4/jquery.js',
@@ -50,9 +48,15 @@ gulp.task('libs', () => {
 	'app/libs/jquery.clear/addclear.js'])
 	.pipe(gulp.dest('app/js/libs'));
 });
-
+gulp.task('babeljs', () => {
+	return gulp.src('app/js/common.js', { since: gulp.lastRun('babeljs') })
+		.pipe(babel({
+			presets: ['env']
+		}))
+		.pipe(gulp.dest('dist/js'))
+});
 gulp.task('minjs', () => {
-  return gulp.src(['app/js/**/*.js'], { since: gulp.lastRun('minjs') })
+  return gulp.src(['app/js/libs/**/*.js'], { since: gulp.lastRun('minjs') })
 	// .pipe(minify({
 	//   ext:{
 	// 	min: '.min.js'
@@ -61,19 +65,8 @@ gulp.task('minjs', () => {
 	// }))
 	.pipe(gulpIf(isDevelopment, sourcemaps.write('.')))
 	// .pipe(gulpIf('**/*.min.js', gulp.dest('dist/js')))
-	.pipe(gulpIf('**/*.js', gulp.dest('dist/js')))
+	.pipe(gulpIf('**/*.js', gulp.dest('dist/js/libs')))
 });
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-gulp.task('babeljs', () => {
-	return gulp.src('src/app.js')
-		.pipe(babel({
-			presets: ['env']
-		}))
-		.pipe(gulp.dest('dist'))
-});
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 gulp.task('cssnano', () => {
   return gulp.src([
 	'app/libs/tether/css/tether.css',
@@ -84,6 +77,7 @@ gulp.task('cssnano', () => {
 	'app/libs/bootstrap/css/bootstrap-grid.css',
 	'app/libs/bootstrap/css/bootstrap-reboot.css',
 	'node_modules/leaflet/dist/leaflet.css',
+	'app/sass/leaflet.ie.css',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.css',
 	'app/libs/leaflet_list_markers/leaflet_list_markers.css',
 	'app/libs/asidebar/dist.css',
@@ -95,7 +89,6 @@ gulp.task('cssnano', () => {
 	.pipe(cssnano())
 	.pipe(gulp.dest('app/css/libs'));
 });
-
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
 	.pipe(cache(imagemin({
@@ -106,7 +99,6 @@ gulp.task('images', () => {
 	})))
 	.pipe(gulp.dest('dist/images'));
 });
-
 gulp.task('browser-sync', () => {
   browserSync.init({
     server: {
@@ -116,36 +108,32 @@ gulp.task('browser-sync', () => {
   });
   browserSync.watch('dist/**/*.*').on('change', browserSync.reload);
 });
-
 gulp.task('clean', () => {
   return del('dist');
 });
-
 gulp.task('copy', () => {
   return gulp.src(['app/css/**/*.*', 'app/*.html', 'app/libs/font-awesome/fonts/*.*', 'app/js/*.json'], { since: gulp.lastRun('copy') })
     .pipe(gulpIf('**/*.{css,map}', gulp.dest('dist/css')))
 	.pipe(gulpIf('**/*.html', gulp.dest('dist')))
 	.pipe(gulpIf('**/*.{svg,otf,eot,ttf,woff,woff2}', gulp.dest('dist/fonts')))
 });
-
 gulp.task('json', () => {
 	return gulp.src('app/js/info.json')
 		.pipe(gulp.dest('dist/js'))
 });
-
 gulp.task('watch', () => {
   gulp.watch('app/sass/**/*.*', gulp.series('sass'));
   gulp.watch('app/css/**/*.*', gulp.series('copy'));
-  gulp.watch('app/js/**/*.*', gulp.series('minjs'));
+  gulp.watch('app/js/**/*.*', gulp.series('babeljs'));
   gulp.watch('app/images/**/*.*', gulp.series('images'));
   gulp.watch('app/*.html', gulp.series('copy'));
 });
-
 gulp.task('build', gulp.series(
   'clean',
   'sass',
   gulp.parallel('libs', 'lib', 'cssnano', 'images'),
-  'minjs',
+	'babeljs',
+	'minjs',
 	gulp.parallel('copy', 'json'),
   gulp.parallel('watch', 'browser-sync')
   )

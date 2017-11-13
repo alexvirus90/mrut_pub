@@ -147,7 +147,8 @@ hr {
 .header {
   margin: 0;
   padding: 0;
-  width: auto; }
+  width: auto;
+  height: 49px; }
 
 .col-left {
   text-align: center; }
@@ -214,6 +215,11 @@ hr {
       top: 0; }
   .col-middle .context #search select {
     background: transparent url("https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/down4-16.png") no-repeat 60px center; }
+    .col-middle .context #search select::-ms-expand {
+      display: none; }
+    .col-middle .context #search select::-ms-value {
+      background: transparent;
+      color: #000; }
   .col-middle .context #search .dropdown {
     margin: 0 10px;
     width: 80px; }
@@ -227,8 +233,7 @@ hr {
     color: #B5B9C0;
     font-size: 2em;
     position: relative;
-    top: -webkit-calc(50% - 15px);
-    top: calc(50% - 15px); }
+    top: 10px; }
   .col-right:hover {
     background-color: #edf1f5; }
   .col-right span {
@@ -265,26 +270,33 @@ select {
         text-transform: uppercase;
         font-weight: bold;
         text-align: center; }
-    .aside .aside-contents .row .caption {
-      margin: 10px 0 0;
-      color: #466ba1;
-      font-size: 18px;
-      text-align: center;
-      text-decoration: none; }
-    .aside .aside-contents .row .col_1 {
-      text-align: right;
-      max-width: 50%; }
-    .aside .aside-contents .row .col_2 {
-      margin: auto;
-      padding: 0;
-      text-align: left; }
-    .aside .aside-contents .row p {
-      font-size: 16px; }
-      .aside .aside-contents .row p a[href^="tel:"] {
-        text-decoration: none;
-        color: #000000; }
-      .aside .aside-contents .row p i {
-        margin: 0 5px; }
+    .aside .aside-contents #contact {
+      height: auto;
+      max-height: 85vh;
+      overflow-x: hidden; }
+      .aside .aside-contents #contact .row .caption {
+        margin: 10px 0 0;
+        color: #466ba1;
+        font-size: 18px;
+        text-align: center;
+        text-decoration: none; }
+      .aside .aside-contents #contact .row .col_1 {
+        text-align: right;
+        max-width: 50%; }
+      .aside .aside-contents #contact .row .col_2 {
+        padding: 0;
+        text-align: left; }
+      .aside .aside-contents #contact .row p {
+        font-size: 13px; }
+        .aside .aside-contents #contact .row p a[href^="tel:"] {
+          text-decoration: none;
+          color: #000000; }
+        .aside .aside-contents #contact .row p i {
+          margin: 0 5px; }
+    .aside .aside-contents .feedEkList {
+      height: auto;
+      max-height: 85vh;
+      overflow-x: hidden; }
   .aside.in {
     width: 30%; }
 
