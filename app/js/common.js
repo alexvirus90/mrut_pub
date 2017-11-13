@@ -128,11 +128,6 @@ $(document).ready( () => {
   }
   function Map() {
 		resizeMap();
-
-		$(window).resize(() => {
-			clearTimeout(resizeTimer);
-			resizeTimer = setTimeout(resizeMap, 100);
-		});
 		function mapDraw () {
 			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
 			// let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
@@ -153,12 +148,56 @@ $(document).ready( () => {
 			legend.onAdd = (map) => {
 				let div = L.DomUtil.create('div', 'info legend');
 				div.innerHTML =
-					"<table>" +
-					"<tr><td><img src='images/car/square_grey_32.png' /></td><!--<td>&nbsp-&nbspМашины для уборки тротуаров</td>--></tr>" +
-					"<tr><td><img src='images/car/triangle_grey_32.png' /></td><!--<td>&nbsp-&nbspМашины для уборки проезжей части</td>--></tr>" +
-					"<tr><td><img src='images/car/circle_grey_32.png' /></td><!--<td>&nbsp-&nbspДругая техника</td>--></tr>" +
-					"<tr><td><img src='images/car/circle_t_32.png' /></td><!--<td>&nbsp-&nbspТреккер&nbsp(для ручной уборки)</td>--></tr>" +
-					"</table>";
+					"<div class='row'>" +
+						"<div class='col-12'>" +
+							"<div class='col-12'>" +
+								"<img src='images/car/square_grey_32.png' />" +
+							"</div>" +
+							"<div class='col-12'>" +
+								"<img src='images/car/triangle_grey_32.png' />" +
+							"</div>" +
+							"<div class='col-12'>" +
+								"<img src='images/car/circle_grey_32.png' />" +
+							"</div>" +
+							"<div class='col-12'>" +
+								"<img src='images/car/circle_t_32.png' />" +
+							"</div>" +
+						"</div>" +
+					"</div>" +
+					"<div class='row'>" +
+					"</div>";
+					// "<div class='row'>" +
+					// 	"<div class='col-2'>" +
+					// 		"<img src='images/car/square_grey_32.png' />" +
+					// 	"</div>" +
+					// 	"<div class='col-10'>" +
+					// 		"<p>&nbsp-&nbspМашины для уборки тротуаров</p>" +
+					// 	"</div>" +
+					// "</div>" +
+					// "<div class='row'>" +
+					// 	"<div class='col-2'>" +
+					// 		"<img src='images/car/triangle_grey_32.png' />" +
+					// 	"</div>" +
+					// 	"<div class='col-10'>" +
+					// 		"<p>&nbsp-&nbspМашины для уборки проезжей части</p>" +
+					// 	"</div>" +
+					// "</div>" +
+					// "<div class='row'>" +
+					// 	"<div class='col-2'>" +
+					// 		"<img src='images/car/circle_grey_32.png' />" +
+					// 	"</div>" +
+					// 	"<div class='col-10'>" +
+					// 		"<p>&nbsp-&nbspДругая техника</p>" +
+					// 	"</div>" +
+					// "</div>" +
+					// "<div class='row'>" +
+					// 	"<div class='col-2'>" +
+					// 		"<img src='images/car/circle_t_32.png' />" +
+					// 	"</div>" +
+					// 	"<div class='col-10'>" +
+					// 		"<p>&nbsp-&nbspТреккер&nbsp(для ручной уборки)</p>" +
+					// 	"</div>" +
+					// "</div>";
 					return div;
 			};
 			legend.addTo(map);
@@ -183,6 +222,13 @@ $(document).ready( () => {
 			map.off('moveend', () => {
 				bounds = map.getBounds();
 				console.log('bounds', bounds);
+			});
+
+			$(".legend").mouseover(function () {
+				$(".panel-collapse").fadeIn();
+			});
+			$(".panel-collapse").mouseout(function(){
+				$(".panel-collapse").fadeOut();
 			});
 
 			return WaitForConnect();
@@ -313,7 +359,7 @@ $(document).ready( () => {
 			movingMarker = L.Marker.movingMarker(global.data[e.did].latlon, [], {title: global.data[e.did].nc, icon: greenIcon});
 			movingMarker.obj = e.obj;
 			marker[e.did] = {'m_move': movingMarker, 'time': 1};
-			getSensor(movingMarker, global.data[e.did]);
+			// getSensor(movingMarker, global.data[e.did]);
 
 			// map.on('zoomend', function () {
 				// let iszoom = 0;
@@ -341,7 +387,6 @@ $(document).ready( () => {
 											"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
 			marker[e.did].m_move.bindPopup(pupuptext);
 		});
-
 		function searchAddress() {
 			$('#search_query').autocomplete({
 					appendTo: '.col-middle',
@@ -419,11 +464,15 @@ $(document).ready( () => {
 					break;
 				case 2:
 					searchCar();
-					break;
+ 					break;
 			}
 		});
 		return mapDraw();
   }
+	$(window).resize(() => {
+		clearTimeout(resizeTimer);
+		resizeTimer = setTimeout(resizeMap(), 100);
+	});
   $('.col-right').click(() => {
 		if ($(".aside").hasClass("in")) {
 			$('.aside').asidebar('close')
@@ -457,6 +506,14 @@ $(document).ready( () => {
 			})
 		})
 	});
+	$(".legend").mouseover(function () {
+		alert('ahah');
+		$(".panel-collapse").fadeIn();
+	});
+	$(".panel-collapse").mouseleave(function(){
+		$(".panel-collapse").fadeOut();
+	});
+
 
 	return Map();
 });

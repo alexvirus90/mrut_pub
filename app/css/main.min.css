@@ -131,6 +131,9 @@ hr {
 .legend {
   line-height: 18px;
   color: #555; }
+  .legend .col-12, .legend .col-10 {
+    padding: 0;
+    margin: auto; }
   .legend p {
     font-size: 10px; }
 
@@ -148,21 +151,26 @@ hr {
   margin: 0;
   padding: 0;
   width: auto;
-  height: 49px; }
+  height: 49px;
+  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
 
 .col-left {
-  text-align: center; }
+  max-width: 13%;
+  padding: 0; }
   .col-left:hover {
     background-color: #edf1f5; }
-  .col-left figure {
-    margin: 6px auto; }
-    .col-left figure img {
-      height: 36px;
-      width: 32px; }
-    .col-left figure figcaption {
-      float: right;
-      padding-left: 30px;
-      font-size: 13px; }
+  .col-left .navbar-brand {
+    padding: 0 0 0 5px; }
+    .col-left .navbar-brand figure {
+      margin: 6px auto; }
+      .col-left .navbar-brand figure img {
+        height: 36px;
+        width: 32px; }
+      .col-left .navbar-brand figure figcaption {
+        float: right;
+        padding-left: 30px;
+        font-size: 13px; }
 
 .col-middle {
   border-left: 1px solid #D3DAE0;
@@ -224,16 +232,21 @@ hr {
     margin: 0 10px;
     width: 80px; }
   .col-middle .context #search i {
-    font-size: 1.5em; }
+    font-size: 1.5em;
+    color: #B5B9C0;
+    -webkit-text-stroke: 1px #E6EBF0; }
 
 .col-right {
   cursor: pointer;
-  text-align: center; }
+  text-align: center;
+  padding: 0;
+  max-width: 57px; }
   .col-right i {
     color: #B5B9C0;
     font-size: 2em;
     position: relative;
-    top: 10px; }
+    top: 10px;
+    -webkit-text-stroke: 2px #E6EBF0; }
   .col-right:hover {
     background-color: #edf1f5; }
   .col-right span {
