@@ -10,22 +10,28 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5)
 .col
   &-left
-    max-width: 13%
+    max-width: 13.2%
+    height: 49px
     padding: 0
     &:hover
       background-color: #edf1f5
     .navbar-brand
-      padding: 0 0 0 5px
+      padding: 0 0 0 3px
       figure
+        width: 34px
+        float: left
         margin: 6px auto
         img
           height: 36px
           width: 32px
-        figcaption
-          float: right
-          padding-left: 30px
-          font-size: 13px
+      p
+        float: right
+        padding: 0 5px
+        font-size: 8px
+        line-height: 2
+        margin: 6px auto
   &-middle
+    height: 49px
     border-left: 1px solid #D3DAE0
     border-right: 1px solid #D3DAE0
     padding: 0
@@ -90,6 +96,7 @@
           color: #B5B9C0
           -webkit-text-stroke: 1px #E6EBF0
   &-right
+    height: 49px
     cursor: pointer
     text-align: center
     padding: 0
