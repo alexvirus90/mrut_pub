@@ -199,7 +199,7 @@ $(document).ready( () => {
 				console.log('zoom', zoom);
 			});
 
-			map.off('moveend', () => {
+			map.on('moveend', () => {
 				bounds = map.getBounds();
 				console.log('bounds', bounds);
 			});
