@@ -54,6 +54,10 @@
   .feedEkList .itemContent p {
     font-size: 14px; }
 
+.ui-widget-header {
+  margin: 0 !important;
+  border: 0; }
+
 #progressbar {
   display: none;
   height: 6px;
@@ -130,15 +134,34 @@ hr {
 
 .legend {
   line-height: 18px;
-  color: #555; }
-  .legend .col-12, .legend .col-10 {
-    padding: 0;
-    margin: auto; }
+  color: #555;
+  width: 255px;
+  -webkit-transition: width, 0.3s linear;
+  -o-transition: width, 0.3s linear;
+  transition: width, 0.3s linear; }
+  .legend .col-12, .legend .col-2, .legend .col-11 {
+    padding: 0; }
+  .legend .col-2 {
+    max-width: 11%;
+    cursor: pointer; }
+  .legend .col-11 {
+    max-width: 89%;
+    display: block; }
+    .legend .col-11 .col-12 {
+      padding: 5px 0; }
   .legend p {
     font-size: 10px; }
 
+.legendHide {
+  width: 36px;
+  -webkit-transition: width, 0.3s linear;
+  -o-transition: width, 0.3s linear;
+  transition: width, 0.3s linear; }
+  .legendHide .colHide {
+    display: none; }
+
 .info {
-  padding: 6px 8px;
+  padding: 6px 6px;
   font: 14px/16px Arial, Helvetica, sans-serif;
   background: white;
   background: rgba(255, 255, 255, 0.8);

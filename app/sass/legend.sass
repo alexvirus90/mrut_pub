@@ -3,13 +3,35 @@
 .legend
   line-height: 18px
   color: #555
-  .col-12, .col-10
+  width: 255px
+  -webkit-transition: width, 0.3s linear
+  -moz-transition: width, 0.3s linear
+  -ms-transition: width, 0.3s linear
+  -o-transition: width, 0.3s linear
+  transition: width, 0.3s linear
+  .col-12, .col-2, .col-11
     padding: 0
-    margin: auto
+  .col-2
+    max-width: 11%
+    cursor: pointer
+  .col-11
+    max-width: 89%
+    display: block
+    .col-12
+      padding: 5px 0
   p
     font-size: 10px
+.legendHide
+  width: 36px
+  -webkit-transition: width, 0.3s linear
+  -moz-transition: width, 0.3s linear
+  -ms-transition: width, 0.3s linear
+  -o-transition: width, 0.3s linear
+  transition: width, 0.3s linear
+  .colHide
+    display: none
 .info
-  padding: 6px 8px
+  padding: 6px 6px
   font: 14px/16px Arial, Helvetica, sans-serif
   background: white
   background: rgba(255,255,255,0.8)

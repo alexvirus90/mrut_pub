@@ -146,58 +146,38 @@ $(document).ready( () => {
 
 			let legend = L.control({position: 'bottomright'});
 			legend.onAdd = (map) => {
-				let div = L.DomUtil.create('div', 'info legend');
+				let div = L.DomUtil.create('div', 'info legend legendHide');
 				div.innerHTML =
 					"<div class='row'>" +
-						"<div class='col-12'>" +
+						"<div class='col-2'>" +
 							"<div class='col-12'>" +
-								"<img src='images/car/square_grey_32.png' />" +
+								"<img src='images/car/square_grey_32.png' width='24' height='24' />" +
 							"</div>" +
 							"<div class='col-12'>" +
-								"<img src='images/car/triangle_grey_32.png' />" +
+								"<img src='images/car/triangle_grey_32.png' width='24' height='24' />" +
 							"</div>" +
 							"<div class='col-12'>" +
-								"<img src='images/car/circle_grey_32.png' />" +
+								"<img src='images/car/circle_grey_32.png' width='24' height='24' />" +
 							"</div>" +
 							"<div class='col-12'>" +
-								"<img src='images/car/circle_t_32.png' />" +
+								"<img src='images/car/circle_t_32.png' width='24' height='24' />" +
 							"</div>" +
 						"</div>" +
-					"</div>" +
-					"<div class='row'>" +
+						"<div class='col-11 colHide'>" +
+							"<div class='col-12'>" +
+								"<p>&nbsp-&nbspМашины для уборки тротуаров</p>" +
+							"</div>" +
+							"<div class='col-12'>" +
+								"<p>&nbsp-&nbspМашины для уборки проезжей части</p>" +
+							"</div>" +
+							"<div class='col-12'>" +
+								"<p>&nbsp-&nbspДругая техника</p>" +
+							"</div>" +
+							"<div class='col-12'>" +
+								"<p>&nbsp-&nbspТреккер&nbsp(для ручной уборки)</p>" +
+							"</div>" +
+						"</div>" +
 					"</div>";
-					// "<div class='row'>" +
-					// 	"<div class='col-2'>" +
-					// 		"<img src='images/car/square_grey_32.png' />" +
-					// 	"</div>" +
-					// 	"<div class='col-10'>" +
-					// 		"<p>&nbsp-&nbspМашины для уборки тротуаров</p>" +
-					// 	"</div>" +
-					// "</div>" +
-					// "<div class='row'>" +
-					// 	"<div class='col-2'>" +
-					// 		"<img src='images/car/triangle_grey_32.png' />" +
-					// 	"</div>" +
-					// 	"<div class='col-10'>" +
-					// 		"<p>&nbsp-&nbspМашины для уборки проезжей части</p>" +
-					// 	"</div>" +
-					// "</div>" +
-					// "<div class='row'>" +
-					// 	"<div class='col-2'>" +
-					// 		"<img src='images/car/circle_grey_32.png' />" +
-					// 	"</div>" +
-					// 	"<div class='col-10'>" +
-					// 		"<p>&nbsp-&nbspДругая техника</p>" +
-					// 	"</div>" +
-					// "</div>" +
-					// "<div class='row'>" +
-					// 	"<div class='col-2'>" +
-					// 		"<img src='images/car/circle_t_32.png' />" +
-					// 	"</div>" +
-					// 	"<div class='col-10'>" +
-					// 		"<p>&nbsp-&nbspТреккер&nbsp(для ручной уборки)</p>" +
-					// 	"</div>" +
-					// "</div>";
 					return div;
 			};
 			legend.addTo(map);
@@ -209,7 +189,7 @@ $(document).ready( () => {
 			let overlayMaps 	= {
 				"На линии": markerOnline,
 				"В дежурстве": markerOffline,
-				"Тракира": markerTrakers
+				"Треккера": markerTrakers
 			};
 			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			map.addControl(layersControl);
@@ -224,12 +204,13 @@ $(document).ready( () => {
 				console.log('bounds', bounds);
 			});
 
-			$(".legend").mouseover(function () {
-				$(".panel-collapse").fadeIn();
-			});
-			$(".panel-collapse").mouseout(function(){
-				$(".panel-collapse").fadeOut();
-			});
+			$(".legend")
+				.mouseover(function () {
+					$(this).removeClass('legendHide');
+				})
+				.mouseout(function () {
+					$(this).addClass('legendHide');
+				});
 
 			return WaitForConnect();
 		}
