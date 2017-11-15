@@ -1,57 +1,59 @@
 @media only screen and (min-width: 1281px) and (max-width: 1440px) {
   .header .col-middle .context #search .search-input {
     width: 87%; }
-  .header .col-left .navbar-brand figcaption {
-    font-size: 11px; }
+  .header .col-left .navbar-brand p {
+    font-size: 8px; }
   .header .col-left .navbar-brand {
-    margin: 0; }
-    .header .col-left .navbar-brand figcaption {
-      padding-left: 10px; } }
+    margin: 0; } }
 
 @media only screen and (min-width: 1025px) and (max-width: 1280px) {
   .header .col-middle .context #search .search-input {
     width: 87%; }
-  .header .col-left .navbar-brand figcaption {
+  .header .col-left .navbar-brand p {
     font-size: 8px; }
   .header .col-left .navbar-brand {
-    margin: 0; }
-    .header .col-left .navbar-brand figcaption {
-      padding-left: 9px; } }
+    margin: 0; } }
 
 @media only screen and (min-width: 769px) and (max-width: 1024px) {
   .header .col-middle .context #search .search-input {
     width: 78%; }
+  .header .col-left .navbar-brand p {
+    display: none; }
   .header .col-left {
-    max-width: 8%; } }
+    max-width: 5%;
+    text-align: center; }
+    .header .col-left .navbar-brand {
+      padding: 0; } }
 
 @media only screen and (min-width: 577px) and (max-width: 768px) {
   .header .col-middle .context #search .search-input {
     width: 92%; }
-  .header .col-left {
-    max-width: 10%; }
-  .header .col-middle .dropdown {
+    .header .col-middle .context #search .search-input input {
+      padding-left: 10px; }
+  .header .col-left .navbar-brand p {
     display: none; }
-  .header .col-middle .context .search-input input {
-    padding-left: 10px; } }
+  .header .col-left {
+    max-width: 7%;
+    text-align: center; }
+    .header .col-left .navbar-brand {
+      padding: 0; }
+  .header .col-middle .dropdown {
+    display: none; } }
 
 @media only screen and (min-width: 320px) and (max-width: 576px) {
   .header .col-middle .context #search .search-input {
-    width: 86%; }
-  .header .col-middle .dropdown {
-    display: none; }
-  .header .col-middle .context .search-input input {
-    padding-left: 10px; }
-  #test .in {
-    min-width: 320px; } }
-
-@media only screen and (min-width: 320px) and (max-width: 1024px) {
-  .header .col-left .navbar-brand figcaption {
+    width: 85%; }
+    .header .col-middle .context #search .search-input input {
+      padding-left: 10px; }
+  .header .col-left .navbar-brand p {
     display: none; }
   .header .col-left {
-    padding: 0; }
+    text-align: center; }
     .header .col-left .navbar-brand {
       padding: 0; }
-  .header .col-right {
-    padding: 0; } }
+  .header .col-middle .dropdown {
+    display: none; }
+  #test .in {
+    min-width: 320px; } }
 
 /*# sourceMappingURL=media.css.map */

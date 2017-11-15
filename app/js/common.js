@@ -153,7 +153,6 @@ $(document).ready( () => {
 			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerOnline]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
 			let lc = L.control.locate().addTo(map);
-
 			let legend = L.control({position: 'bottomright'});
 			legend.onAdd = (map) => {
 				let div = L.DomUtil.create('div', 'info legend legendHide');
@@ -208,12 +207,10 @@ $(document).ready( () => {
 				zoom = map.getZoom();
 				console.log('zoom', zoom);
 			});
-
 			map.on('moveend', () => {
 				bounds = map.getBounds();
 				console.log('bounds', bounds);
 			});
-
 			$(".legend")
 				.mouseover(function () {
 					$(this).removeClass('legendHide');
@@ -221,7 +218,6 @@ $(document).ready( () => {
 				.mouseout(function () {
 					$(this).addClass('legendHide');
 				});
-
 			return WaitForConnect();
 		}
 		$.ajax({
@@ -368,7 +364,6 @@ $(document).ready( () => {
 			// 		getSensor(movingMarker, global.data[e.did]);
 			// 	}
 			// });
-
 			pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
 											//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
 											//"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +

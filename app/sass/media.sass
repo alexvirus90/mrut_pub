@@ -1,20 +1,7 @@
 @import "variables"
 @import "mixin"
 
-@include media-breakpoint-between($xl + 80, $xl + 241)
-  #{$search-width}
-    width: 87%
-  #{$value-font}
-    font-size: 11px
-  .header
-    .col
-      &-left
-        .navbar-brand
-          margin: 0
-          figcaption
-            padding-left: 10px
-
-@include media-breakpoint-between($xl - 176, $xl + 81)
+@include media-breakpoint-between($xl + 80, $xl + 241)  //$xl: 1200px; min: 1280 max: 1441
   #{$search-width}
     width: 87%
   #{$value-font}
@@ -24,59 +11,79 @@
       &-left
         .navbar-brand
           margin: 0
-          figcaption
-            padding-left: 9px
 
-@include media-breakpoint-between($md, $lg + 33)
+@include media-breakpoint-between($xl - 176, $xl + 81)  //$xl: 1200px; min: 1024 max: 1281
+  #{$search-width}
+    width: 87%
+  #{$value-font}
+    font-size: 8px
+  .header
+    .col
+      &-left
+        .navbar-brand
+          margin: 0
+
+@include media-breakpoint-between($md, $lg + 33)  //$md: 768px  $lg: 992px; min: 768 max: 1025
   #{$search-width}
     width: 78%
-  .header
-    .col
-      &-left
-        max-width: 8%
-
-@include media-breakpoint-between($sm, $md + 1)
-  #{$search-width}
-    width: 92%
-  .header
-    .col
-      &-left
-        max-width: 10%
-      &-middle
-        .dropdown
-          display: none
-        .context
-          .search
-            &-input
-              input
-                padding-left: 10px
-
-@include media-breakpoint-between($sm - 257, $sm + 1)
-  #{$search-width}
-    width: 86%
-  .header
-    .col
-      &-middle
-        .dropdown
-          display: none
-        .context
-          .search
-            &-input
-              input
-                padding-left: 10px
-  #test
-    .in
-      min-width: 320px
-
-
-@include media-breakpoint-between($sm - 257, $lg + 33)
   #{$value-font}
     display: none
   .header
     .col
       &-left
-        padding: 0
+        max-width: 5%
+        text-align: center
         .navbar-brand
           padding: 0
-      &-right
-        padding: 0
+
+@include media-breakpoint-between($sm, $md + 1) //$sm: 576px  $md: 768px; min: 576 max: 769
+  #{$search-width}
+    width: 92%
+    input
+      padding-left: 10px
+  #{$value-font}
+    display: none
+  .header
+    .col
+      &-left
+        max-width: 7%
+        text-align: center
+        .navbar-brand
+          padding: 0
+      &-middle
+        .dropdown
+          display: none
+
+@include media-breakpoint-between($sm - 257, $sm + 1) //$sm: 576px; min: 320 max: 577
+  #{$search-width}
+    width: 85%
+    input
+      padding-left: 10px
+  #{$value-font}
+    display: none
+  .header
+    .col
+      &-left
+        text-align: center
+        .navbar-brand
+          padding: 0
+      &-middle
+        .dropdown
+          display: none
+  #test
+    .in
+      min-width: 320px
+
+//@include media-breakpoint-between($sm - 257, $lg + 33)  //$sm: 576px $lg: 992px; min: 320 max: 1025
+//  #{$value-font}
+//    display: none
+//  #{$icon}
+//    margin: 0 7px
+//  .header
+//    .col
+//      &-left
+//        padding: 0
+//        .navbar-brand
+//          padding: 0
+//      &-right
+//        padding: 0
