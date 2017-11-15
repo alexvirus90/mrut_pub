@@ -492,13 +492,13 @@ $(document).ready( () => {
 	$(() => {
 		$('#profile').change(() => {
 			if ($('#profile option').eq([1,2]).prop('selected',true)){
-				$('input[type="text').prop('disabled', false);
-				$('input[type="text').val('');
+				$('input[type="text"]').prop('disabled', false);
+				$('input[type="text"]').val('');
 				$('#search_clear a').css('display', 'none');
 			}
 			$('#search_clear a').click(function () {
 				$('#profile option').eq([0]).prop('selected',true);
-				$('input[type="text').prop('disabled', true);
+				$('input[type="text"]').prop('disabled', true);
 			})
 		})
 	});

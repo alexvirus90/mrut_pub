@@ -23,7 +23,7 @@
           border-top-left-radius: 0; }
 
 #search_clear a {
-  margin: 7px 0;
+  margin: 5px 0;
   z-index: 2000; }
 
 .leaflet-control-layers-toggle {
@@ -212,8 +212,7 @@ hr {
   .col-middle .context #search .search-input {
     display: block;
     position: relative;
-    width: 88%;
-    margin: 0 auto; }
+    width: 88%; }
     .col-middle .context #search .search-input input {
       background: transparent;
       border: 0 none;
@@ -244,12 +243,6 @@ hr {
       display: none;
       width: 0;
       height: 0; }
-    .col-middle .context #search .search-input #search_placeholder {
-      position: absolute;
-      z-index: 5;
-      color: #cccccc;
-      left: 0;
-      top: 0; }
   .col-middle .context #search select {
     background: transparent url("https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/down4-16.png") no-repeat 60px center; }
     .col-middle .context #search select::-ms-expand {
@@ -258,12 +251,13 @@ hr {
       background: transparent;
       color: #000; }
   .col-middle .context #search .dropdown {
-    margin: 0 10px;
+    margin-left: 10px;
     width: 80px; }
   .col-middle .context #search i {
     font-size: 1.5em;
     color: #B5B9C0;
-    -webkit-text-stroke: 1px #E6EBF0; }
+    -webkit-text-stroke: 1px #E6EBF0;
+    margin: 0 8px; }
 
 .col-right {
   height: 49px;
@@ -316,25 +310,29 @@ select {
     .aside .aside-contents #contact {
       height: auto;
       overflow-x: hidden; }
-      .aside .aside-contents #contact .row .caption {
-        margin: 10px 0 0;
-        color: #466ba1;
-        font-size: 18px;
-        text-align: center;
-        text-decoration: none; }
-      .aside .aside-contents #contact .row .col_1 {
-        text-align: right;
-        max-width: 50%; }
-      .aside .aside-contents #contact .row .col_2 {
-        padding: 0;
-        text-align: left; }
-      .aside .aside-contents #contact .row p {
-        font-size: 13px; }
-        .aside .aside-contents #contact .row p a[href^="tel:"] {
-          text-decoration: none;
-          color: #000000; }
-        .aside .aside-contents #contact .row p i {
-          margin: 0 5px; }
+      .aside .aside-contents #contact .row {
+        display: block; }
+        .aside .aside-contents #contact .row .caption {
+          margin: 10px 0 0;
+          color: #466ba1;
+          font-size: 18px;
+          text-align: center;
+          text-decoration: none; }
+        .aside .aside-contents #contact .row .col_1, .aside .aside-contents #contact .row .col_2 {
+          display: inline-block; }
+        .aside .aside-contents #contact .row .col_1 {
+          text-align: right;
+          max-width: 50%; }
+        .aside .aside-contents #contact .row .col_2 {
+          padding: 0;
+          text-align: left; }
+        .aside .aside-contents #contact .row p {
+          font-size: 13px; }
+          .aside .aside-contents #contact .row p a[href^="tel:"] {
+            text-decoration: none;
+            color: #000000; }
+          .aside .aside-contents #contact .row p i {
+            margin: 0 5px; }
     .aside .aside-contents .feedEkList {
       height: auto;
       overflow-x: hidden; }
