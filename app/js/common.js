@@ -47,10 +47,6 @@ $(document).ready( () => {
 
 	let input = document.createElement('input');
 	$('#search_clear').append(input);
-	let divList 					= document.createElement("div");
-			divList.id 				= "markers_list";
-			divList.className = "markers_list";
-	$('#map_canvas').append(divList);
 
   function setAttributes(el, attrs) {
 		for(let key in attrs) {
@@ -452,38 +448,12 @@ $(document).ready( () => {
 		}
 		$(() => {
 			if ($('#profile').is(":visible") == false){
-				let toggleCheck = $(
-					'<div class="modal" tabindex="-1" role="dialog"' +
-						'<div class="modal-dialog" role="document">' +
-							'<div class="modal-content">' +
-								'<div class="modal-header">' +
-									'<h5 class="modal-title">Поиск по...</h5>' +
-								'</div>' +
-								'<div class="modal-body">' +
-									'<div class="form-check">' +
-										'<label class="form-check-label">' +
-											'<input type="radio" name="options" class="form-check-input radio address" value="1" />' +
-											'Адрес' +
-										'</label>' +
-									'</div>' +
-									'<div class="form-check">' +
-										'<label class="form-check-label">' +
-											'<input type="radio" name="options" class="form-check-input radio car" value="2" />' +
-											'Объект' +
-										'</label>' +
-									'</div>' +
-								'</div>' +
-							'</div>' +
-						'</div>' +
-					'</div>'
-				);
 				if ($('#search_query').is(':disabled') == true){
 					$('.search-input').click(() => {
-						$(toggleCheck).modal('show');
+						$('#exampleModal').modal('show');
 					});
 				}
 			}
-
 		});
 		//-------------------------------------------------------------------------------------------
 		$('#profile').change(() => {

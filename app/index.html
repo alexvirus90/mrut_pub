@@ -35,112 +35,133 @@
 	<link rel="stylesheet" href="css/media.min.css">
 </head>
 <body>
-	<div data-role="page" id="test">
-		<nav class="navbar navbar-expand{-sm|-md|-lg|-xl} navbar-light bg-light">
-			<div class="container header">
-				<div class="row">
-					<div class="col-2 col-left">
-						<a class="navbar-brand" href="#">
-							<figure>
-								<img src="./images/icon_logo.png" class="d-inline-block" alt="">
-							</figure>
-							<p>Комитет по благоустройству<br /> уборочная техника </p>
-						</a>
-					</div>
-					<div class="col col-middle">
-						<div class="context">
-							<form action="#" id="search" class="form-inline search">
-								<select id="profile" class="ui dropdown">
-									<option value="0" >Фильтр</option>
-									<option value="1" >Адрес</option>
-									<option value="2" >Объект</option>
-								</select>
-								<i class="fa fa-search" aria-hidden="true" ></i>
-								<div id="search_clear" class="search-input"></div>
-							</form>
+	<div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Поиск по...</h5>
+				</div>
+				<div class="modal-body">
+					<div class="check">
+						<label>Адрес</label>
+						<div class="check__toggle">
+							<input data-toggle="toggle" type="checkbox">
 						</div>
 					</div>
-					<div class="col-2 col-right">
-						<i class="fa fa-bars" aria-hidden="true"></i>
-						<span></span>
-					</div>
-				</div>
-			</div>
-		</nav>
-		<div data-role="content" style="padding:0;">
-			<div id="map_canvas">
-				<div id="progressbar"></div>
-			</div>
-			<div class="aside">
-				<div class="aside-header">
-					Информация
-					<span class="close" data-dismiss="aside" aria-hidden="true">&times;</span>
-				</div>
-				<div class="aside-contents">
-					<ul class="nav nav-tabs" id="myTab" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
-								 aria-controls="contact" aria-selected="true">контакты</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="news-tab" data-toggle="tab" href="#news" role="tab" aria-controls="news" aria-selected="false">новости</a>
-						</li>
-					</ul>
-					<div class="tab-content" id="tabContent">
-						<div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="http://grajdanskoe.ru/">ОАО «Гражданское»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Калининский</p></div>
-								<div class="col-5 col_2"><p><a href="tel:961-13-09"><i class="fa fa-phone" aria-hidden="true"></i>961-13-09</a></p></div>
-							</div>
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="http://kolomyagskoe.ru/">ОАО «Коломяжское»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Выборгский<br />Приморский</p></div>
-								<div class="col-5 col_2"><p><a href="tel:8-921-328-56-08"><i class="fa fa-phone" aria-hidden="true"></i>8-921-328-56-08</a></p></div>
-							</div>
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="http://gudp.ru/">СПб ГУДП «Центр»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Адмиралтейский<br />Василеостровский<br />Петроградский<br />Центральный</p></div>
-								<div class="col-5 col_2"><p><a href="tel:956-43-07"><i class="fa fa-phone" aria-hidden="true"></i>956-43-07</a></p></div>
-							</div>
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="http://gudp.ru/">СПб ГУДП «Центр»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Московский<br />Фрунзенский<br />Невский(левый)</p></div>
-								<div class="col-5 col_2"><p><a href="tel:948-62-49"><i class="fa fa-phone" aria-hidden="true"></i>948-62-49</a></p></div>
-							</div>
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="http://gudp-put.ru/">СПб ГУДП «Путь»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Кировский<br />Красносельский</p></div>
-								<div class="col-5 col_2"><p><a href="tel:943-82-46"><i class="fa fa-phone" aria-hidden="true"></i>943-82-46</a></p></div>
-							</div>
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="http://www.avtodor-spb.ru/">ОАО «Автодор СПб»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Колпинский<br>Пушкинский</p></div>
-								<div class="col-5 col_2"><p><a href="tel:8-911-233-02-95"><i class="fa fa-phone" aria-hidden="true"></i>8-911-233-02-95</a></p></div>
-							</div>
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="http://gudsp-kurortnoe.ru/">СПб ГУДСП «Курортное»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Курортный<br>Кронштадтский</p></div>
-								<div class="col-5 col_2"><p><a href="tel:958-20-06"><i class="fa fa-phone" aria-hidden="true"></i>958-20-06</a></p></div>
-							</div>
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="#">СПб ГУДСП «Петродворцовое»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Петродворцовый</p></div>
-								<div class="col-5 col_2"><p><a href="tel:8-921-894-89-28"><i class="fa fa-phone" aria-hidden="true"></i>8-921-894-89-28</a></p></div>
-							</div>
-							<div class="row">
-								<div class="col-12"><p class="caption"><a href="http://www.park7.sp.ru/">ОАО «Автопарк №7 «Спецтранс»</a></p><hr></div>
-								<div class="col-7 col_1"><p>Красногвардейский<br>Невский (правый)</p></div>
-								<div class="col-5 col_2"><p><a href="tel:907-61-38"><i class="fa fa-phone" aria-hidden="true"></i>907-61-38</a></p></div>
-							</div>
+					<div class="check">
+						<label>Объект</label>
+						<div class="check__toggle">
+							<input data-toggle="toggle" type="checkbox">
 						</div>
-						<div class="tab-pane fade" id="news" role="tabpanel" aria-labelledby="news-tab"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="block" data-role="button" data-icon="home" data-iconpos="notext"></div>
-	</div> <!-- page -->
+	</div>
+	<nav class="navbar navbar-expand{-sm|-md|-lg|-xl} navbar-light bg-light">
+		<div class="container header">
+			<div class="row">
+				<div class="col-2 col-left">
+					<a class="navbar-brand" href="#">
+						<figure>
+							<img src="./images/icon_logo.png" class="d-inline-block" alt="">
+						</figure>
+						<p>Комитет по благоустройству<br /> уборочная техника </p>
+					</a>
+				</div>
+				<div class="col col-middle">
+					<div class="context">
+						<form action="#" id="search" class="form-inline search">
+							<select id="profile" class="ui dropdown">
+								<option value="0" >Фильтр</option>
+								<option value="1" >Адрес</option>
+								<option value="2" >Объект</option>
+							</select>
+							<i class="fa fa-search" aria-hidden="true" ></i>
+							<div id="search_clear" class="search-input"></div>
+						</form>
+					</div>
+				</div>
+				<div class="col-2 col-right">
+					<i class="fa fa-bars" aria-hidden="true"></i>
+					<span></span>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div data-role="content" style="padding:0;">
+		<div id="map_canvas">
+			<div id="progressbar"></div>
+		</div>
+		<div class="aside">
+			<div class="aside-header">
+				Информация
+				<span class="close" data-dismiss="aside" aria-hidden="true">&times;</span>
+			</div>
+			<div class="aside-contents">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+							 aria-controls="contact" aria-selected="true">контакты</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="news-tab" data-toggle="tab" href="#news" role="tab" aria-controls="news" aria-selected="false">новости</a>
+					</li>
+				</ul>
+				<div class="tab-content" id="tabContent">
+					<div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="http://grajdanskoe.ru/">ОАО «Гражданское»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Калининский</p></div>
+							<div class="col-5 col_2"><p><a href="tel:961-13-09"><i class="fa fa-phone" aria-hidden="true"></i>961-13-09</a></p></div>
+						</div>
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="http://kolomyagskoe.ru/">ОАО «Коломяжское»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Выборгский<br />Приморский</p></div>
+							<div class="col-5 col_2"><p><a href="tel:8-921-328-56-08"><i class="fa fa-phone" aria-hidden="true"></i>8-921-328-56-08</a></p></div>
+						</div>
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="http://gudp.ru/">СПб ГУДП «Центр»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Адмиралтейский<br />Василеостровский<br />Петроградский<br />Центральный</p></div>
+							<div class="col-5 col_2"><p><a href="tel:956-43-07"><i class="fa fa-phone" aria-hidden="true"></i>956-43-07</a></p></div>
+						</div>
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="http://gudp.ru/">СПб ГУДП «Центр»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Московский<br />Фрунзенский<br />Невский(левый)</p></div>
+							<div class="col-5 col_2"><p><a href="tel:948-62-49"><i class="fa fa-phone" aria-hidden="true"></i>948-62-49</a></p></div>
+						</div>
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="http://gudp-put.ru/">СПб ГУДП «Путь»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Кировский<br />Красносельский</p></div>
+							<div class="col-5 col_2"><p><a href="tel:943-82-46"><i class="fa fa-phone" aria-hidden="true"></i>943-82-46</a></p></div>
+						</div>
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="http://www.avtodor-spb.ru/">ОАО «Автодор СПб»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Колпинский<br>Пушкинский</p></div>
+							<div class="col-5 col_2"><p><a href="tel:8-911-233-02-95"><i class="fa fa-phone" aria-hidden="true"></i>8-911-233-02-95</a></p></div>
+						</div>
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="http://gudsp-kurortnoe.ru/">СПб ГУДСП «Курортное»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Курортный<br>Кронштадтский</p></div>
+							<div class="col-5 col_2"><p><a href="tel:958-20-06"><i class="fa fa-phone" aria-hidden="true"></i>958-20-06</a></p></div>
+						</div>
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="#">СПб ГУДСП «Петродворцовое»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Петродворцовый</p></div>
+							<div class="col-5 col_2"><p><a href="tel:8-921-894-89-28"><i class="fa fa-phone" aria-hidden="true"></i>8-921-894-89-28</a></p></div>
+						</div>
+						<div class="row">
+							<div class="col-12"><p class="caption"><a href="http://www.park7.sp.ru/">ОАО «Автопарк №7 «Спецтранс»</a></p><hr></div>
+							<div class="col-7 col_1"><p>Красногвардейский<br>Невский (правый)</p></div>
+							<div class="col-5 col_2"><p><a href="tel:907-61-38"><i class="fa fa-phone" aria-hidden="true"></i>907-61-38</a></p></div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="news" role="tabpanel" aria-labelledby="news-tab"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="block" data-role="button" data-icon="home" data-iconpos="notext"></div>
 
 	<script src="js/libs/jquery-3.2.1.min.js"></script>
 	<script src="js/libs/bootstrap2-toggle.min.js"></script>
@@ -171,4 +192,3 @@
 	<!--<script src="js/common.min.js"></script>-->
 </body>
 </html>
-

@@ -61,9 +61,29 @@
 .ui.dimmer {
   background-color: rgba(0, 0, 0, 0.5); }
 
-.modal-content {
-  margin: auto;
+.modal-dialog {
   top: 30%; }
+  .modal-dialog .modal-content {
+    margin: auto; }
+    .modal-dialog .modal-content .modal-body .check {
+      width: 50%;
+      margin: 0 auto;
+      height: 30px; }
+      .modal-dialog .modal-content .modal-body .check label {
+        padding: 7px 0; }
+      .modal-dialog .modal-content .modal-body .check .check__toggle {
+        display: inline-block;
+        float: right; }
+        .modal-dialog .modal-content .modal-body .check .check__toggle .toggle, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active {
+          height: 30px !important;
+          width: 23% !important;
+          margin-left: 5px;
+          text-align: right; }
+          .modal-dialog .modal-content .modal-body .check .check__toggle .toggle span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active span {
+            background-color: #B5B9C0 !important; }
+          .modal-dialog .modal-content .modal-body .check .check__toggle .toggle .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active .btn {
+            font-size: 12px;
+            padding: 5px 3px; }
 
 #progressbar {
   display: none;
