@@ -345,7 +345,7 @@ $(document).ready( () => {
 			movingMarker.obj = e.obj;
 			marker[e.did] = {'m_move': movingMarker, 'time': 1};
 
-			let displayedArray;
+			// let displayedArray;
 			// if (bounds) {
 			// 	displayedArray = marker.filter((el) => {
 			// 		let latlng = el.m_move._latlng;
@@ -453,11 +453,37 @@ $(document).ready( () => {
 		$(() => {
 			if ($('#profile').is(":visible") == false){
 				let toggleCheck = $(
-					'<input data-toggle="toggle" data-onstyle="success" id="toggleCheck" type="checkbox" data-on="Адрес" data-off="Объект">'
+					'<div class="modal" tabindex="-1" role="dialog"' +
+						'<div class="modal-dialog" role="document">' +
+							'<div class="modal-content">' +
+								'<div class="modal-header">' +
+									'<h5 class="modal-title">Поиск по...</h5>' +
+								'</div>' +
+								'<div class="modal-body">' +
+									'<div class="form-check">' +
+										'<label class="form-check-label">' +
+											'<input type="radio" name="options" class="form-check-input radio address" value="1" />' +
+											'Адрес' +
+										'</label>' +
+									'</div>' +
+									'<div class="form-check">' +
+										'<label class="form-check-label">' +
+											'<input type="radio" name="options" class="form-check-input radio car" value="2" />' +
+											'Объект' +
+										'</label>' +
+									'</div>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+					'</div>'
 				);
-				$(toggleCheck).prependTo('#search');
-				$('#search_query').prop('disabled', false).val('');
+				if ($('#search_query').is(':disabled') == true){
+					$('.search-input').click(() => {
+						$(toggleCheck).modal('show');
+					});
+				}
 			}
+
 		});
 		//-------------------------------------------------------------------------------------------
 		$('#profile').change(() => {
@@ -469,13 +495,6 @@ $(document).ready( () => {
 				case 2:
 					searchCar();
  					break;
-			}
-		});
-		$('.toggle ').change(() => {
-			if ($('.toggle').hasClass('off')){
-				searchCar();
-			} else {
-				searchAddress();
 			}
 		});
 		//-------------------------------------------------------------------------------------------
