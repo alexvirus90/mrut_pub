@@ -19,35 +19,34 @@ $(document).ready( () => {
 			car_Fun 		 = [],
 			car_Color 	 = [];
 
-	car_imgColor[1] = "black"; car_imgColor[2] = "lilac";
+	car_imgColor[1] = "black"; 			car_imgColor[2] = "lilac";
 	car_imgColor[3] = "light_blue"; car_imgColor[4] = "red";
-	car_imgColor[5] = "orange"; car_imgColor[6] = "blue";
-	car_imgColor[7] = "green"; car_imgColor[8] = "light_green";
+	car_imgColor[5] = "orange"; 		car_imgColor[6] = "blue";
+	car_imgColor[7] = "green"; 			car_imgColor[8] = "light_green";
 	car_imgColor[9] = "light_blue"; car_imgColor[10] = "yellow";
-	car_imgColor[11] = "lilac"; car_imgColor[12] = "brown";
-	car_imgColor[13] = "yellow"; car_imgColor[14] = "lemon";//car_imgColor[15] = "white";
-	car_imgColor[15] = "viovar"; car_imgColor[16] = "t";
+	car_imgColor[11] = "lilac"; 		car_imgColor[12] = "brown";
+	car_imgColor[13] = "yellow"; 		car_imgColor[14] = "lemon";//car_imgColor[15] = "white";
+	car_imgColor[15] = "viovar"; 		car_imgColor[16] = "t";
 
 	car_Fun[1] = "ПГ"; car_Fun[2] = "ССВ";
-	car_Fun[3] = "М"; car_Fun[4] = "РТ";
+	car_Fun[3] = "М";  car_Fun[4] = "РТ";
 	car_Fun[5] = "РУ"; car_Fun[6] = "ПМ";
 	car_Fun[7] = "ПУ"; car_Fun[8] = "В";
-	car_Fun[9] = "Щ"; car_Fun[10] = "П";
+	car_Fun[9] = "Щ";  car_Fun[10] = "П";
 	car_Fun[11] = "Б"; car_Fun[12] = "РЖ";
 	car_Fun[13] = "Т"; car_Fun[14] = "Р"; car_Fun[15] = "К"; car_Fun[16] = "ПР";
 
-	car_Color[1] = "black"; car_Color[2] = "#9B30FF";
+	car_Color[1] = "black"; 		car_Color[2] = "#9B30FF";
 	car_Color[3] = "turquoise"; car_Color[4] = "red";
-	car_Color[5] = "orange"; car_Color[6] = "blue";
-	car_Color[7] = "green"; car_Color[8] = "lime";
-	car_Color[9] = "#00D5D5"; car_Color[10] = "yellow";
-	car_Color[11] = "#FF6A00"; car_Color[12] = "brown";
-	car_Color[13] = "yellow"; car_Color[14] = "green";
-	car_Color[15] = "grey"; car_Color[16] = "green"; car_Color[14] = "C3F266"; car_Color[15] = "viovar";
+	car_Color[5] = "orange"; 		car_Color[6] = "blue";
+	car_Color[7] = "green"; 		car_Color[8] = "lime";
+	car_Color[9] = "#00D5D5"; 	car_Color[10] = "yellow";
+	car_Color[11] = "#FF6A00"; 	car_Color[12] = "brown";
+	car_Color[13] = "yellow"; 	car_Color[14] = "green";
+	car_Color[15] = "grey"; 		car_Color[16] = "green"; car_Color[14] = "C3F266"; car_Color[15] = "viovar";
 
 	let input = document.createElement('input');
 	$('#search_clear').append(input);
-
 	let divList 					= document.createElement("div");
 			divList.id 				= "markers_list";
 			divList.className = "markers_list";
@@ -130,7 +129,7 @@ $(document).ready( () => {
 		let info 				= $('.aside').innerHeight();
 		let asideHeader = info - $('.aside-header').innerHeight();
 		let navTab 			= asideHeader - $('.nav-tabs').innerHeight();
-		let max_height = {
+		let max_height  = {
 			"max-height": navTab - 7 + 'px',
 		};
 		$('.feedEkList').css(max_height);
@@ -139,22 +138,22 @@ $(document).ready( () => {
   function Map() {
 		resizeMap();
 		function mapDraw () {
-			let cloudmadeUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
+			let cloudmadeUrl 			= 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
 			// let minimal = new L.tileLayer('http://190.0.0.14/osm_tiles/{z}/{x}/{y}.png', {
 			// 	detectRetina: true,
 			// 	minZoom: 9
 			// });
-			let minimal = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			let minimal 					= new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				detectRetina: true,
 				minZoom: 9
 			});
 			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
-			spbCenter = new L.LatLng(59.930967, 30.302636);
-			map = new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerOnline]});
+			spbCenter 						= new L.LatLng(59.930967, 30.302636);
+			map 									= new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, markerOnline]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
-			let lc = L.control.locate().addTo(map);
-			let legend = L.control({position: 'bottomright'});
-			legend.onAdd = (map) => {
+			let lc 								= L.control.locate().addTo(map);
+			let legend 						= L.control({position: 'bottomright'});
+			legend.onAdd = () => {
 				let div = L.DomUtil.create('div', 'info legend legendHide');
 				div.innerHTML =
 					"<div class='row'>" +
@@ -190,7 +189,6 @@ $(document).ready( () => {
 					return div;
 			};
 			legend.addTo(map);
-
 			let baseMaps 			= {
 				"Карта СПб": minimal,
 				"Карта СПб(ночь)": midnightCommander
@@ -212,11 +210,11 @@ $(document).ready( () => {
 				console.log('bounds', bounds);
 			});
 			$(".legend")
-				.mouseover(function () {
-					$(this).removeClass('legendHide');
+				.mouseover(() => {
+					$('.legend').removeClass('legendHide');
 				})
-				.mouseout(function () {
-					$(this).addClass('legendHide');
+				.mouseout(() => {
+					$('.legend').addClass('legendHide');
 				});
 			return WaitForConnect();
 		}
@@ -346,6 +344,17 @@ $(document).ready( () => {
 			movingMarker = L.Marker.movingMarker(global.data[e.did].latlon, [], {title: global.data[e.did].nc, icon: greenIcon});
 			movingMarker.obj = e.obj;
 			marker[e.did] = {'m_move': movingMarker, 'time': 1};
+
+			let displayedArray;
+			// if (bounds) {
+			// 	displayedArray = marker.filter((el) => {
+			// 		let latlng = el.m_move._latlng;
+			// 		return latlng.lat <= bounds._northEast.lat && latlng.lat >= bounds._southWest.lat &&
+			// 					 latlng.lng <= bounds._northEast.lng && latlng.lng >= bounds._southWest.lng;
+			// 	});
+			// 	console.log(displayedArray);
+			// }
+
 			// getSensor(movingMarker, global.data[e.did]);
 
 			// map.on('zoomend', function () {
@@ -441,6 +450,16 @@ $(document).ready( () => {
 				}
 			});
 		}
+		$(() => {
+			if ($('#profile').is(":visible") == false){
+				let toggleCheck = $(
+					'<input data-toggle="toggle" data-onstyle="success" id="toggleCheck" type="checkbox" data-on="Адрес" data-off="Объект">'
+				);
+				$(toggleCheck).prependTo('#search');
+				$('#search_query').prop('disabled', false).val('');
+			}
+		});
+		//-------------------------------------------------------------------------------------------
 		$('#profile').change(() => {
 			let that = parseInt($('#profile').val(), 10);
 			switch (that) {
@@ -452,6 +471,14 @@ $(document).ready( () => {
  					break;
 			}
 		});
+		$('.toggle ').change(() => {
+			if ($('.toggle').hasClass('off')){
+				searchCar();
+			} else {
+				searchAddress();
+			}
+		});
+		//-------------------------------------------------------------------------------------------
 		return mapDraw();
   }
 	$(window).resize(() => {
@@ -473,7 +500,7 @@ $(document).ready( () => {
 		ShowPubDate: true,
 		DescCharacterLimit: 100
 	});
-	$(window).resize(function () {
+	$(window).resize(() => {
 		$('.feedEkList').css('max-height', '');
 		$('#contact').css('max-height', '');
 		newsScroll();
@@ -484,12 +511,12 @@ $(document).ready( () => {
 	$( "#progressbar" ).progressbar({
 		value: false
 	});
+	//-------------------------------------------------------------------------------------------
 	$(() => {
 		$('#profile').change(() => {
 			if ($('#profile option').eq([1,2]).prop('selected',true)){
-				$('input[type="text"]').prop('disabled', false);
-				$('input[type="text"]').val('');
-				$('#search_clear a').css('display', 'none');
+					$('input[type="text"]').prop('disabled', false).val('');
+					$('#search_clear a').css('display', 'none');
 			}
 			$('#search_clear a').click(function () {
 				$('#profile option').eq([0]).prop('selected',true);
@@ -497,13 +524,6 @@ $(document).ready( () => {
 			})
 		})
 	});
-	$(".legend").mouseover(function () {
-		$(".panel-collapse").fadeIn();
-	});
-	$(".panel-collapse").mouseleave(function(){
-		$(".panel-collapse").fadeOut();
-	});
-
-
+	//-------------------------------------------------------------------------------------------
 	return Map();
 });

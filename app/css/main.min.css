@@ -58,6 +58,9 @@
   margin: 0 !important;
   border: 0; }
 
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.5); }
+
 #progressbar {
   display: none;
   height: 6px;
@@ -97,6 +100,16 @@ section {
 
 .col-middle .context #search {
   outline: 0 none; }
+
+.form-check {
+  text-align: left; }
+  .form-check label {
+    font-size: 16px; }
+    .form-check label .radio {
+      margin-right: 10px;
+      -webkit-transform: scale(1.6);
+          -ms-transform: scale(1.6);
+              transform: scale(1.6); }
 
 hr {
   display: block;

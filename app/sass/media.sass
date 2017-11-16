@@ -1,7 +1,7 @@
 @import "variables"
 @import "mixin"
 
-@include media-breakpoint-between($xl + 80, $xl + 241)  //$xl: 1200px; min: 1280 max: 1441
+@include media-breakpoint-between($xl + 79, $xl + 240)  //$xl: 1200px; min: 1280 max: 1441
   #{$search-width}
     width: 87%
   #{$value-font}
@@ -12,18 +12,22 @@
         .navbar-brand
           margin: 0
 
-@include media-breakpoint-between($xl - 176, $xl + 81)  //$xl: 1200px; min: 1024 max: 1281
+@include media-breakpoint-between($xl - 177, $xl + 80)  //$xl: 1200px; min: 1024 max: 1281
   #{$search-width}
-    width: 87%
+    width: 86%
   #{$value-font}
-    font-size: 8px
+    display: none
   .header
     .col
       &-left
+        max-width: 6%
+        text-align: center
         .navbar-brand
-          margin: 0
+          padding: 0
+      &-right
+        max-width: 6%
 
-@include media-breakpoint-between($md, $lg + 33)  //$md: 768px  $lg: 992px; min: 768 max: 1025
+@include media-breakpoint-between($md - 1, $lg + 32)  //$md: 768px  $lg: 992px; min: 768 max: 1025
   #{$search-width}
     width: 78%
   #{$value-font}
@@ -31,12 +35,14 @@
   .header
     .col
       &-left
-        max-width: 5%
+        max-width: 6%
         text-align: center
         .navbar-brand
           padding: 0
+      &-right
+        max-width: 6%
 
-@include media-breakpoint-between($sm, $md + 1) //$sm: 576px  $md: 768px; min: 576 max: 769
+@include media-breakpoint-between($sm - 1, $md) //$sm: 576px  $md: 768px; min: 576 max: 769
   #{$search-width}
     width: 92%
     input
@@ -46,17 +52,21 @@
   .header
     .col
       &-left
-        max-width: 7%
+        max-width: 8%
         text-align: center
         .navbar-brand
           padding: 0
       &-middle
         .dropdown
           display: none
+      &-right
+        max-width: 8%
+  .modal-content
+    width: 40%
 
-@include media-breakpoint-between($sm - 257, $sm + 1) //$sm: 576px; min: 320 max: 577
+@include media-breakpoint-between($sm - 257, $sm) //$sm: 576px; min: 320 max: 577
   #{$search-width}
-    width: 85%
+    width: 74%
     input
       padding-left: 10px
   #{$value-font}
@@ -70,9 +80,14 @@
       &-middle
         .dropdown
           display: none
+      &-right
+        max-width: 13.2%
   #test
     .in
       min-width: 320px
+      .col_2
+        a
+          font-size: 12px
 
 //@include media-breakpoint-between($sm - 257, $lg + 33)  //$sm: 576px $lg: 992px; min: 320 max: 1025
 //  #{$value-font}
