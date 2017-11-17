@@ -206,11 +206,14 @@ $(document).ready( () => {
 				console.log('bounds', bounds);
 			});
 			$(".legend")
-				.mouseover(() => {
+				.on('mouseenter  touchstart',(e) => {
 					$('.legend').removeClass('legendHide');
-				})
-				.mouseout(() => {
+					e.stopPropagation();
+				});
+			$(".legend")
+				.on('mouseleave touchend',(e) => {
 					$('.legend').addClass('legendHide');
+					e.stopPropagation();
 				});
 			return WaitForConnect();
 		}
@@ -450,7 +453,13 @@ $(document).ready( () => {
 			if ($('#profile').is(":visible") == false){
 				if ($('#search_query').is(':disabled') == true){
 					$('.search-input').click(() => {
-						$('#exampleModal').modal('show');
+						$('#exampleModal').modal('show', {
+							backdrop: 'static',
+							keyboard: true
+						});
+					});
+					$('input.example').on('change', function() {
+						$('input.example').not(this).prop('checked', false);
 					});
 				}
 			}

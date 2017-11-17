@@ -71,30 +71,34 @@
   top: 30%
   .modal-content
     margin: auto
-    .modal-body
+    .modal-header
+      padding: 11px 15px
+    .modal-body, .modal-footer
+      padding: 5px 15px
       .check
-        width: 50%
+        width: 70%
         margin: 0 auto
         height: 30px
         label
           padding: 7px 0
+          margin: 0
+          &.address
+            margin-bottom: 8px
         .check__toggle
           display: inline-block
           float: right
           .toggle, .btn-success, .btn-success:hover, .btn-success:active
             height: 30px !important
             width: 23% !important
-            //background-color: #dddedf
-            //border-color: #dddedf
+            background-color: #dddedf
+            border-color: #dddedf
             margin-left: 5px
-            text-align: right
             span
               background-color: #B5B9C0!important
-            .btn-success, .btn-default,
-            .btn-success:hover, .btn-default:hover
-              //background-color: #dddedf
-              //border-color: #dddedf
-              //color: #000
             .btn
               font-size: 12px
               padding: 5px 3px
+    .modal-footer
+      button
+        height: 30px
+        background-color: #4183c4

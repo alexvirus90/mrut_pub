@@ -65,25 +65,36 @@
   top: 30%; }
   .modal-dialog .modal-content {
     margin: auto; }
-    .modal-dialog .modal-content .modal-body .check {
-      width: 50%;
-      margin: 0 auto;
-      height: 30px; }
-      .modal-dialog .modal-content .modal-body .check label {
-        padding: 7px 0; }
-      .modal-dialog .modal-content .modal-body .check .check__toggle {
-        display: inline-block;
-        float: right; }
-        .modal-dialog .modal-content .modal-body .check .check__toggle .toggle, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active {
-          height: 30px !important;
-          width: 23% !important;
-          margin-left: 5px;
-          text-align: right; }
-          .modal-dialog .modal-content .modal-body .check .check__toggle .toggle span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active span {
-            background-color: #B5B9C0 !important; }
-          .modal-dialog .modal-content .modal-body .check .check__toggle .toggle .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active .btn {
-            font-size: 12px;
-            padding: 5px 3px; }
+    .modal-dialog .modal-content .modal-header {
+      padding: 11px 15px; }
+    .modal-dialog .modal-content .modal-body, .modal-dialog .modal-content .modal-footer {
+      padding: 5px 15px; }
+      .modal-dialog .modal-content .modal-body .check, .modal-dialog .modal-content .modal-footer .check {
+        width: 70%;
+        margin: 0 auto;
+        height: 30px; }
+        .modal-dialog .modal-content .modal-body .check label, .modal-dialog .modal-content .modal-footer .check label {
+          padding: 7px 0;
+          margin: 0; }
+          .modal-dialog .modal-content .modal-body .check label.address, .modal-dialog .modal-content .modal-footer .check label.address {
+            margin-bottom: 8px; }
+        .modal-dialog .modal-content .modal-body .check .check__toggle, .modal-dialog .modal-content .modal-footer .check .check__toggle {
+          display: inline-block;
+          float: right; }
+          .modal-dialog .modal-content .modal-body .check .check__toggle .toggle, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active, .modal-dialog .modal-content .modal-footer .check .check__toggle .toggle, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success:hover, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success:active {
+            height: 30px !important;
+            width: 23% !important;
+            background-color: #dddedf;
+            border-color: #dddedf;
+            margin-left: 5px; }
+            .modal-dialog .modal-content .modal-body .check .check__toggle .toggle span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover span, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active span, .modal-dialog .modal-content .modal-footer .check .check__toggle .toggle span, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success span, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success:hover span, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success:active span {
+              background-color: #B5B9C0 !important; }
+            .modal-dialog .modal-content .modal-body .check .check__toggle .toggle .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:hover .btn, .modal-dialog .modal-content .modal-body .check .check__toggle .btn-success:active .btn, .modal-dialog .modal-content .modal-footer .check .check__toggle .toggle .btn, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success .btn, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success:hover .btn, .modal-dialog .modal-content .modal-footer .check .check__toggle .btn-success:active .btn {
+              font-size: 12px;
+              padding: 5px 3px; }
+    .modal-dialog .modal-content .modal-footer button {
+      height: 30px;
+      background-color: #4183c4; }
 
 #progressbar {
   display: none;
@@ -364,7 +375,7 @@ select {
           padding: 0;
           text-align: left; }
         .aside .aside-contents #contact .row p {
-          font-size: 13px; }
+          font-size: 12px; }
           .aside .aside-contents #contact .row p a[href^="tel:"] {
             text-decoration: none;
             color: #000000; }
@@ -374,6 +385,7 @@ select {
       height: auto;
       overflow-x: hidden; }
   .aside.in {
-    width: 30%; }
+    width: 30%;
+    min-width: 320px; }
 
 /*# sourceMappingURL=main.css.map */

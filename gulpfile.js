@@ -45,6 +45,7 @@ gulp.task('libs', () => {
 	'app/libs/leaflet_list_markers/leaflet_list_markers.js',
 	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
 	'app/libs/Semantic-UI/semantic.min.js',
+	'app/libs/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js',
 	'app/libs/FeedEk/FeedEk.js',
 	'app/libs/jquery.clear/addclear.js'])
 	.pipe(gulp.dest('app/js/libs'));

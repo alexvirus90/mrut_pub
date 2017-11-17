@@ -22,7 +22,7 @@
 	<link rel="stylesheet" href="css/libs/bootstrap2-toggle.min.css">
 	<link rel="stylesheet" href="css/libs/bootstrap.css">
 	<!--<link rel="stylesheet" href="css/libs/bootstrap-grid.css">-->
-	<!--<link rel="stylesheet" href="css/libs/bootstrap-reboot.css">-->
+	<link rel="stylesheet" href="css/libs/bootstrap-reboot.css">
 	<link rel="stylesheet" href="css/libs/leaflet.css">
 	<link rel="stylesheet" href="https://code.jquery.com/ui/jquery-ui-git.css">
 	<link rel="stylesheet" href="css/libs/L.Control.Locate.min.css">
@@ -39,21 +39,27 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Поиск по...</h5>
+					<h5 class="modal-title">Выбрать </h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 				</div>
 				<div class="modal-body">
 					<div class="check">
-						<label>Адрес</label>
+						<label class="address">Поиск по адресу</label>
 						<div class="check__toggle">
-							<input data-toggle="toggle" type="checkbox">
+							<input class="example" data-toggle="toggle" type="checkbox">
 						</div>
 					</div>
 					<div class="check">
-						<label>Объект</label>
+						<label class="object">Поиск по объектам</label>
 						<div class="check__toggle">
-							<input data-toggle="toggle" type="checkbox">
+							<input class="example" data-toggle="toggle" type="checkbox">
 						</div>
 					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">Ok</button>
 				</div>
 			</div>
 		</div>
@@ -169,6 +175,7 @@
 	<script src="js/libs/bootstrap.js"></script>
 	<script src="js/libs/jquery.js"></script>
 	<script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+	<script src="js/libs/jquery.ui.touch-punch.min.js"></script>
 	<script src="js/libs/leaflet.js"></script>
 	<script src="js/libs/L.Control.Locate.min.js"></script>
 	<script src="js/libs/MovingMarker.js"></script>
