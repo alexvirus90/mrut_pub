@@ -66,9 +66,10 @@
     display: none; }
   .header .col-right {
     max-width: 13.2%; }
-  #test .in {
+  .aside.in {
+    width: 30%;
     min-width: 320px; }
-    #test .in .col_2 a {
+    .aside.in .col_2 a {
       font-size: 12px; } }
 
 /*# sourceMappingURL=media.css.map */

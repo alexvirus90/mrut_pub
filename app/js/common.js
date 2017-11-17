@@ -121,12 +121,12 @@ $(document).ready( () => {
 				content.height(content_height);
 				$("#map_canvas").height(content_height);
   }
-	function newsScroll() {
+	function newsScroll() {																										//scroll
 		let info 				= $('.aside').innerHeight();
 		let asideHeader = info - $('.aside-header').innerHeight();
 		let navTab 			= asideHeader - $('.nav-tabs').innerHeight();
 		let max_height  = {
-			"max-height": navTab - 7 + 'px',
+			"max-height": navTab - 15 + 'px',
 		};
 		$('.feedEkList').css(max_height);
 		$('#contact').css(max_height);
@@ -167,7 +167,7 @@ $(document).ready( () => {
 								"<img src='images/car/circle_t_32.png' width='24' height='24' />" +
 							"</div>" +
 						"</div>" +
-						"<div class='col-11 colHide'>" +
+						"<div class='col-10 colHide'>" +
 							"<div class='col-12'>" +
 								"<p>&nbsp-&nbspМашины для уборки тротуаров</p>" +
 							"</div>" +
@@ -205,16 +205,36 @@ $(document).ready( () => {
 				bounds = map.getBounds();
 				console.log('bounds', bounds);
 			});
-			$(".legend")
-				.on('mouseenter  touchstart',(e) => {
-					$('.legend').removeClass('legendHide');
+			//Legend  touchstart touchend
+			$(".legend").on('mouseover touchstart',(e) => {
+				if (e.type != "touchstart"){
+					$(".legend").removeClass('legendHide');
 					e.stopPropagation();
-				});
-			$(".legend")
-				.on('mouseleave touchend',(e) => {
-					$('.legend').addClass('legendHide');
+				} else {
+					let hasCl = $('.legend').hasClass('legendHide');
+					if (hasCl) {
+						$(".legend").removeClass('legendHide');
+						e.stopPropagation();
+					} else {
+						$(".legend").addClass('legendHide');
+						e.stopPropagation();
+					}
+				}
+				if(!($('.legend').hasClass('legendHide'))){
+					$('.colHide').show(500);
+				}
+			});
+			$('.legend').on('mouseout touchstart', (e) => {
+				if (e.type == "touchstart"){
+					$('#map_canvas').on('touchstart', (e) => {
+						$(".legend").addClass('legendHide');
+						e.stopPropagation();
+					});
+				} else {
+					$(".legend").addClass('legendHide');
 					e.stopPropagation();
-				});
+				}
+			});
 			return WaitForConnect();
 		}
 		$.ajax({

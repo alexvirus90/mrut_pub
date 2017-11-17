@@ -187,26 +187,26 @@ hr {
   -webkit-transition: width, 0.3s linear;
   -o-transition: width, 0.3s linear;
   transition: width, 0.3s linear; }
-  .legend .col-12, .legend .col-2, .legend .col-11 {
+  .legend .col-12, .legend .col-2, .legend .col-10 {
     padding: 0; }
   .legend .col-2 {
     max-width: 11%;
     cursor: pointer; }
-  .legend .col-11 {
-    max-width: 89%;
-    display: block; }
-    .legend .col-11 .col-12 {
+  .legend .col-10 {
+    max-width: 89%; }
+    .legend .col-10 .col-12 {
       padding: 5px 0; }
   .legend p {
     font-size: 10px; }
 
 .legendHide {
   width: 36px;
-  -webkit-transition: width, 0.3s linear;
-  -o-transition: width, 0.3s linear;
-  transition: width, 0.3s linear; }
-  .legendHide .colHide {
-    display: none; }
+  -webkit-transition: width, 0.1s linear;
+  -o-transition: width, 0.1s linear;
+  transition: width, 0.1s linear; }
+
+.colHide {
+  display: none; }
 
 .info {
   padding: 6px 6px;
@@ -341,51 +341,51 @@ select {
   border: 0; }
   .aside-backdrop {
     z-index: 20; }
-  .aside .aside-header {
+  .aside-header {
     background-color: #dddedf;
     border-bottom: 3px solid #B5B9C0;
     border-top: 1px solid #B5B9C0;
     color: #000;
     padding: .8em; }
-  .aside .aside-contents {
+  .aside-contents {
     padding: 0; }
-    .aside .aside-contents .nav-item {
+    .aside-contents .nav-item {
       width: 50%; }
-      .aside .aside-contents .nav-item .nav-link {
+      .aside-contents .nav-item .nav-link {
         text-transform: uppercase;
         font-weight: bold;
         text-align: center; }
-    .aside .aside-contents #contact {
+    .aside-contents #contact {
       height: auto;
       overflow-x: hidden; }
-      .aside .aside-contents #contact .row {
+      .aside-contents #contact .row {
         display: block; }
-        .aside .aside-contents #contact .row .caption {
+        .aside-contents #contact .row .caption {
           margin: 10px 0 0;
           color: #466ba1;
           font-size: 18px;
           text-align: center;
           text-decoration: none; }
-        .aside .aside-contents #contact .row .col_1, .aside .aside-contents #contact .row .col_2 {
+        .aside-contents #contact .row .col_1, .aside-contents #contact .row .col_2 {
           display: inline-block; }
-        .aside .aside-contents #contact .row .col_1 {
+        .aside-contents #contact .row .col_1 {
           text-align: right;
           max-width: 50%; }
-        .aside .aside-contents #contact .row .col_2 {
+        .aside-contents #contact .row .col_2 {
           padding: 0;
           text-align: left; }
-        .aside .aside-contents #contact .row p {
+        .aside-contents #contact .row p {
           font-size: 12px; }
-          .aside .aside-contents #contact .row p a[href^="tel:"] {
+          .aside-contents #contact .row p a[href^="tel:"] {
             text-decoration: none;
             color: #000000; }
-          .aside .aside-contents #contact .row p i {
+          .aside-contents #contact .row p i {
             margin: 0 5px; }
-    .aside .aside-contents .feedEkList {
+    .aside-contents .feedEkList {
       height: auto;
       overflow-x: hidden; }
   .aside.in {
-    width: 30%;
+    width: 400px;
     min-width: 320px; }
 
 /*# sourceMappingURL=main.css.map */
