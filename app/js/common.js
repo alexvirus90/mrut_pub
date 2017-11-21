@@ -232,12 +232,14 @@ $(document).ready( () => {
 					e.stopPropagation();
 				}
 			});
+
 			return WaitForConnect();
 		}
 		$.ajax({
 			url: "/js/info.json",
 			success: (data) => {
 				for (let k in data.result) {
+
 					if (typeof data.result[k] === 'object') {
 						global.data[data.result[k]['did']] = data.result[k];
 						carsArray.push(data.result[k]);
@@ -471,7 +473,31 @@ $(document).ready( () => {
 				$('.search-input').removeAttr('href');
 			}
 		});
-		//-------------------------------------------------------------------------------------------
+		$(() => {
+			$('.modal-body').change(() => {
+				let inpSearch = $('input[type="text"]');
+				if ($('#address').is(':checked', true)){
+					let hideDis = inpSearch.prop('disabled', false);
+					if (hideDis){
+						$('.search-input').removeAttr('data-target');
+					}
+					searchAddress();
+				}
+				if ($('#object').is(':checked', true)){
+					let hideDis = inpSearch.prop('disabled', false);
+					if (hideDis){
+						$('.search-input').removeAttr('data-target');
+					}
+					searchCar();
+				}
+			});
+			$('#search_clear a').click((e) => {
+				$('input[type="text"]').prop('disabled', true);
+				$('.search-input').attr('data-target', '#searchModal');
+				$('#search_query').prop('placeholder', 'Поиск по');
+				e.stopPropagation();
+			});
+		});
 		$('#profile').change(() => {
 			let that = parseInt($('#profile').val(), 10);
 			switch (that) {
@@ -483,7 +509,6 @@ $(document).ready( () => {
  					break;
 			}
 		});
-		//-------------------------------------------------------------------------------------------
 		return mapDraw();
   }
 	$(window).resize(() => {
@@ -529,34 +554,19 @@ $(document).ready( () => {
 			})
 		})
 	});
-	$(() => {
-		$('.modal-body').change(() => {
-			let inpSearch = $('input[type="text"]');
-			if ($('#address').is(':checked', true)){
-				let hideDis = inpSearch.prop('disabled', false);
-				if (hideDis){
-					$('.search-input').removeAttr('data-target');
-				}
-				searchAddress();
-			}
-			if ($('#object').is(':checked', true)){
-				let hideDis = inpSearch.prop('disabled', false);
-				if (hideDis){
-					$('.search-input').removeAttr('data-target');
-				}
-				searchCar();
-			}
-		});
-		$('#search_clear a').click((e) => {
-			$('input[type="text"]').prop('disabled', true);
-			$('.search-input').attr('data-target', '#searchModal');
+	$('.search-input').on('click touchstart', function (e) {
+		if (e.type == "touchstart"){
+			$('.search-input').load({
+				keyboard: false,
+				backdrop: 'static'
+			});
 			e.stopPropagation();
-		});
+		}
 	});
-	// $('.search-input').on('touchstart', function (e) {
-	// 	if (e.type == "touchstart"){
-	// 	}
-	// });
+	$('.modal-footer__button').click(function () {
+		$('#search_query').focus();
+		$('#search_query').removeAttr('placeholder');
+	});
 	//-------------------------------------------------------------------------------------------
 	return Map();
 });
