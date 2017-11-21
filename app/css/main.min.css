@@ -266,7 +266,7 @@ hr {
   .col-middle .context #search .search-input {
     display: block;
     position: relative;
-    width: 88%; }
+    width: 91%; }
     .col-middle .context #search .search-input input {
       background: transparent;
       border: 0 none;
@@ -281,7 +281,11 @@ hr {
     .col-middle .context #search .search-input:disabled {
       background: #dddddd; }
     .col-middle .context #search .search-input a {
-      top: 13px !important; }
+      top: 0px !important;
+      height: 40px;
+      width: 30px;
+      text-align: center;
+      padding-top: 13px; }
     .col-middle .context #search .search-input #search_query .clearable {
       background: black url("data:image/gif;base64,R0lGODlhBwAHAIAAAP///5KSkiH5BAAAAAAALAAAAAAHAAcAAAIMTICmsGrIXnLxuDMLADs=") no-repeat right -10px center;
       border: 1px solid #999;
@@ -419,7 +423,7 @@ select {
     height: 30px;
     width: 30px;
     top: 0;
-    right: 50px;
+    right: 30px;
     -o-transition: border .25s linear;
     transition: border .25s linear;
     -webkit-transition: border .25s linear; }
