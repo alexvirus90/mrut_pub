@@ -12,7 +12,8 @@ let color, func, zoom, bounds, imgType, addMarker, movingMarker, greenIcon,	imgP
 
 let	markerOnline  = new L.LayerGroup(),
 		markerOffline = new L.FeatureGroup(),
-		markerTrakers = new L.layerGroup();
+		markerTrakers = new L.layerGroup(),
+		markerhide 		= new L.layerGroup();
 
 $(document).ready( () => {
 	let car_imgColor = [],
@@ -235,272 +236,197 @@ $(document).ready( () => {
 
 			return WaitForConnect();
 		}
-		$.ajax({
-			url: "/js/info.json",
-			success: (data) => {
-				for (let k in data.result) {
+		return mapDraw();
+  }
+	$.ajax({
+		url: "/js/info.json",
+		success: (data) => {
+			for (let k in data.result) {
 
-					if (typeof data.result[k] === 'object') {
-						global.data[data.result[k]['did']] = data.result[k];
-						carsArray.push(data.result[k]);
-					}
+				if (typeof data.result[k] === 'object') {
+					global.data[data.result[k]['did']] = data.result[k];
+					carsArray.push(data.result[k]);
 				}
-				let conId = WaitForConnect();
 			}
-		});
-		function get_function_car(obj, sensors) {
-			let arr_FName = new Array();
-			obj = obj.car_info || obj;
-			let s_fun = "";
-			let color = "";
-
-			if (car_Fun[obj.F1_ID] != undefined) {
-				arr_FName[0] = car_Fun[obj.F1_ID];
-			} else { arr_FName[0] = ""; }
-			if (car_Fun[obj.F2_ID] != undefined) {
-				arr_FName[1] = car_Fun[obj.F2_ID];
-			} else { arr_FName[1] = ""; }
-			if (car_Fun[obj.F3_ID] != undefined) {
-				arr_FName[2] = car_Fun[obj.F3_ID];
-			} else { arr_FName[2] = ""; }
-			if (car_Fun[obj.F4_ID] != undefined) {
-				arr_FName[3] = car_Fun[obj.F4_ID];
-			} else { arr_FName[3] = ""; }
-
-			if ((((sensors & 1024) / 1024) == obj.GB_AL) && (((sensors & 8) / 8) == 1)) {
-				if (((sensors & obj.F1_MASK) / obj.F1_MASK) == obj.F1_AL) {
-					color = car_Color[obj.F1_ID];
-					s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[0] + "</b></span> ";
-				} else { s_fun += "<span style='color:grey;'><b>" + arr_FName[0] + "</b></span> " + " "; }
-				if (((sensors & obj.F2_MASK) / obj.F2_MASK) == obj.F2_AL) {
-					color = car_Color[obj.F2_ID];
-					s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[1] + "</b></span> ";
-				}
-				else { s_fun += "<span style='color:grey;'><b>" + arr_FName[1] + "</b></span> " + " "; }
-				if (((sensors & obj.F3_MASK) / obj.F3_MASK) == obj.F3_AL) {
-					color = car_Color[obj.F3_ID];
-					s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[2] + "</b></span> ";
-				}
-				else { s_fun += "<span style='color:grey;'><b>" + arr_FName[2] + "</b></span> " + " "; }
-				if (((sensors & obj.F4_MASK) / obj.F4_MASK) == obj.F4_AL) {
-					color = car_Color[obj.F4_ID];
-					s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[3] + "</b></span> ";
-				}
-				else { s_fun += "<span style='color:grey;'><b>" + arr_FName[3] + "</b></span> " + " "; }
-			}
-			else {
-				s_fun = arr_FName[0] + " " + arr_FName[1] + " " + arr_FName[2] + " " + arr_FName[3];
-			}
-			return s_fun;
+			let conId = WaitForConnect();
 		}
-		function getSensor(obj, car_info) {
-			if (((obj.obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
-				((obj.obj.sensors & 8) / 8) == 1) {
-				markerOnline.addLayer(obj);
+	});
+	function get_function_car(obj, sensors) {
+		let arr_FName = new Array();
+		obj = obj.car_info || obj;
+		let s_fun = "";
+		let color = "";
+
+		if (car_Fun[obj.F1_ID] != undefined) {
+			arr_FName[0] = car_Fun[obj.F1_ID];
+		} else { arr_FName[0] = ""; }
+		if (car_Fun[obj.F2_ID] != undefined) {
+			arr_FName[1] = car_Fun[obj.F2_ID];
+		} else { arr_FName[1] = ""; }
+		if (car_Fun[obj.F3_ID] != undefined) {
+			arr_FName[2] = car_Fun[obj.F3_ID];
+		} else { arr_FName[2] = ""; }
+		if (car_Fun[obj.F4_ID] != undefined) {
+			arr_FName[3] = car_Fun[obj.F4_ID];
+		} else { arr_FName[3] = ""; }
+
+		if ((((sensors & 1024) / 1024) == obj.GB_AL) && (((sensors & 8) / 8) == 1)) {
+			if (((sensors & obj.F1_MASK) / obj.F1_MASK) == obj.F1_AL) {
+				color = car_Color[obj.F1_ID];
+				s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[0] + "</b></span> ";
+			} else { s_fun += "<span style='color:grey;'><b>" + arr_FName[0] + "</b></span> " + " "; }
+			if (((sensors & obj.F2_MASK) / obj.F2_MASK) == obj.F2_AL) {
+				color = car_Color[obj.F2_ID];
+				s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[1] + "</b></span> ";
+			}
+			else { s_fun += "<span style='color:grey;'><b>" + arr_FName[1] + "</b></span> " + " "; }
+			if (((sensors & obj.F3_MASK) / obj.F3_MASK) == obj.F3_AL) {
+				color = car_Color[obj.F3_ID];
+				s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[2] + "</b></span> ";
+			}
+			else { s_fun += "<span style='color:grey;'><b>" + arr_FName[2] + "</b></span> " + " "; }
+			if (((sensors & obj.F4_MASK) / obj.F4_MASK) == obj.F4_AL) {
+				color = car_Color[obj.F4_ID];
+				s_fun += "<span style='color:" + color + ";'><b>" + arr_FName[3] + "</b></span> ";
+			}
+			else { s_fun += "<span style='color:grey;'><b>" + arr_FName[3] + "</b></span> " + " "; }
+		}
+		else {
+			s_fun = arr_FName[0] + " " + arr_FName[1] + " " + arr_FName[2] + " " + arr_FName[3];
+		}
+		return s_fun;
+	}
+	function getSensor(obj, car_info) {
+		if (((obj.obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
+			((obj.obj.sensors & 8) / 8) == 1) {
+			markerOnline.addLayer(obj);
+		} else {
+			markerOffline.addLayer(obj);
+		}
+	}
+	function getFunColor(obj, car_info) {
+		let c = null;
+		if (((obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL && //Если включена масса
+			((obj.sensors & 8) / 8) === 1) { //и если включено зажигание
+			if ((car_info.F1_MASK !== "") &&
+				(((obj.sensors & car_info.F1_MASK) / car_info.F1_MASK) === car_info.F1_AL)) {
+				c = car_imgColor[car_info.F1_ID];
+			}
+			else if ((car_info.F2_MASK !== "") &&
+				(((obj.sensors & car_info.F2_MASK) / car_info.F2_MASK) === car_info.F2_AL)) {
+				c = car_imgColor[car_info.F2_ID];
+			}
+			else if ((car_info.F3_MASK !== "") &&
+				(((obj.sensors & car_info.F3_MASK) / car_info.F3_MASK) === car_info.F3_AL)) {
+				c = car_imgColor[car_info.F3_ID];
+			}
+			else if ((car_info.F4_MASK !== "") &&
+				(((obj.sensors & car_info.F4_MASK) / car_info.F4_MASK) === car_info.F4_AL)) {
+				c = car_imgColor[car_info.F4_ID];
 			} else {
-				markerOffline.addLayer(obj);
+				c = "white";
+			}
+		} else {
+			c = "grey";
+		}
+		return c;
+	}
+	function startMarkerTo(e) {
+		marker[e.did].m_move.start();
+		if (marker[e.did].m_move.isStarted() == false) {
+			marker[e.did].m_move.moveTo(global.data[e.did].latlon[0], (e.obj.speed * 2000));
+		} else {
+			let latlng = L.latLng(e.latlon[0], e.latlon[1]);
+			if (marker[e.did].m_move._latlng.distanceTo(latlng) <= 2000) {
+				marker[e.did].m_move.addLatLng(e.latlon[0], (e.obj.speed * 2000));
 			}
 		}
-		function getFunColor(obj, car_info) {
-			let c = null;
-			if (((obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL && //Если включена масса
-				((obj.sensors & 8) / 8) === 1) { //и если включено зажигание
-				if ((car_info.F1_MASK !== "") &&
-					(((obj.sensors & car_info.F1_MASK) / car_info.F1_MASK) === car_info.F1_AL)) {
-					c = car_imgColor[car_info.F1_ID];
-				}
-				else if ((car_info.F2_MASK !== "") &&
-					(((obj.sensors & car_info.F2_MASK) / car_info.F2_MASK) === car_info.F2_AL)) {
-					c = car_imgColor[car_info.F2_ID];
-				}
-				else if ((car_info.F3_MASK !== "") &&
-					(((obj.sensors & car_info.F3_MASK) / car_info.F3_MASK) === car_info.F3_AL)) {
-					c = car_imgColor[car_info.F3_ID];
-				}
-				else if ((car_info.F4_MASK !== "") &&
-					(((obj.sensors & car_info.F4_MASK) / car_info.F4_MASK) === car_info.F4_AL)) {
-					c = car_imgColor[car_info.F4_ID];
-				} else {
-					c = "white";
-				}
-			} else {
-				c = "grey";
-			}
-			return c;
-		}
-		function startMarkerTo(e) {
-			marker[e.did].m_move.start();
-			if (marker[e.did].m_move.isStarted() == false) {
-				marker[e.did].m_move.moveTo(global.data[e.did].latlon[0], (e.obj.speed * 2000));
-			} else {
-				let latlng = L.latLng(e.latlon[0], e.latlon[1]);
-				if (marker[e.did].m_move._latlng.distanceTo(latlng) <= 2000) {
-					marker[e.did].m_move.addLatLng(e.latlon[0], (e.obj.speed * 2000));
-				}
-			}
-		}
-		$(window).on('startpoint', (e) => {
-			if (global.data[e.did] === undefined) return;
-			if (global.data[e.did]['imgType'] === undefined) return;
-
-			color 		= getFunColor(e.obj, global.data[e.did]);
-			func 			= get_function_car(global.data[e.did], e.obj.sensors);
-			imgType 	= global.data[e.did]['imgType'];
-			imgPath 	= 'images/car/' + imgType + color + '_32.png';
-			greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32],	iconAnchor: [16, 16]});
-
-			if (marker[e.did] !== undefined) {
-				if (zoom === 15 || zoom > 15) {
-					startMarkerTo(e);
-					return;
-				} else {
-					marker[e.did].m_move.setLatLng(e.latlon[0]);
-					return;
-				}
-			}
-
-			movingMarker = L.Marker.movingMarker(global.data[e.did].latlon, [], {title: global.data[e.did].nc, icon: greenIcon});
-			movingMarker.obj = e.obj;
-			marker[e.did] = {'m_move': movingMarker, 'time': 1};
-
-			// let displayedArray;
-			// if (bounds) {
-			// 	displayedArray = marker.filter((el) => {
-			// 		let latlng = el.m_move._latlng;
-			// 		return latlng.lat <= bounds._northEast.lat && latlng.lat >= bounds._southWest.lat &&
-			// 					 latlng.lng <= bounds._northEast.lng && latlng.lng >= bounds._southWest.lng;
-			// 	});
-			// 	console.log(displayedArray);
-			// }
-
-			getSensor(movingMarker, global.data[e.did]);
-
-			// map.on('zoomend', function () {
-				// let iszoom = 0;
-				// zoom = map.getZoom();
-			// 	console.log('zoom', zoom);
-			// 	if (zoom == 14 && iszoom == 0 ) {
-			// 		iszoom = 1;
-			// 		markerOnline.clearLayers();
-			// 		markerOffline.clearLayers();
-			// 		if (marker[e.did] !== undefined) {
-			// 			getSensor(movingMarker, global.data[e.did]);
-			// 		}
-			// 	} else {
-			// 		iszoom = 0;
-			// 		getSensor(movingMarker, global.data[e.did]);
-			// 	}
-			// });
-			pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
-											"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
-											"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
-											"<b>Гаражный номер: </b>" + global.data[e.did].nc + "</br>" +
-											"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
-											"<b>Функция: </b>" + func + "</br>" +
-											"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
-			marker[e.did].m_move.bindPopup(pupuptext);
-		});
-		function searchAddress() {
-			$('#search_query').autocomplete({
-					appendTo: '.col-middle',
-					source: (request, response) => {
-						$.ajax({
-							url: "http://190.0.0.14/nominatim/search",
-							cache: true,
-							method: "GET",
-							data: {
-								q: 'Санкт-Петербург, ' + request.term,
-								format: 'json',
-								limit: 10,
-							},
-							success: (data) => {
-								response($.map(data, (item) => {
-									return {
-										value: item.display_name.split(',', 6),
-										latitude: item.lat,
-										longitude: item.lon
-									}
-								}));
-								$('#progressbar').hide();
-							}
-						});
+	}
+	function searchAddress() {
+		$('#search_query').autocomplete({
+			appendTo: '.col-middle',
+			source: (request, response) => {
+				$.ajax({
+					url: "http://190.0.0.14/nominatim/search",
+					cache: true,
+					method: "GET",
+					data: {
+						q: 'Санкт-Петербург, ' + request.term,
+						format: 'json',
+						limit: 10,
 					},
-					select: (event, point) => {
-						let lat = point.item.latitude,
-								lon = point.item.longitude;
-						markerSearch = {lat, lon};
-						map.setView(markerSearch, 18);
-						let dot = L.marker(markerSearch).addTo(map);
-						$('#search_clear a').click(() => {
-							if (dot != undefined) {
-								map.removeLayer(dot);
+					success: (data) => {
+						response($.map(data, (item) => {
+							return {
+								value: item.display_name.split(',', 6),
+								latitude: item.lat,
+								longitude: item.lon
 							}
-						});
-					},
-					search: () => {
-						$('#progressbar').show();
+						}));
+						$('#progressbar').hide();
 					}
 				});
-		}
-		function searchCar() {
-			$('#search_query').autocomplete({
-				appendTo: '.col-middle',
-				source: (request, response) => {
-					let re = $.ui.autocomplete.escapeRegex(request.term);
-					let matcher = new RegExp(re, "ig");
-					response($.grep(($.map(carsArray, (v, i) => {
-						return {
-							label: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
-							value: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
-							did: v.did
-						};
-					})), (item) => {
-						return matcher.test(item.value);
-					}));
-					$('#progressbar').hide();
-				},
-				select: (event, point) => {
-					map.setView(marker[point.item.did].m_move._latlng, 18);
-					marker[point.item.did].m_move.openPopup(marker[point.item.did].m_move._latlng);
-				},
-				search: () => {
-					$('#progressbar').show();
-				}
-			});
-		}
-		$(() => {
-			if ($('#profile').is(":visible") == true){
-				$('.search-input').removeAttr('data-target');
+			},
+			select: (event, point) => {
+				let lat = point.item.latitude,
+					lon = point.item.longitude;
+				markerSearch = {lat, lon};
+				map.setView(markerSearch, 18);
+				let dot = L.marker(markerSearch).addTo(map);
+				$('#search_clear a').click(() => {
+					if (dot != undefined) {
+						map.removeLayer(dot);
+					}
+				});
+			},
+			search: () => {
+				$('#progressbar').show();
 			}
 		});
-		$(() => {
-			$('.modal-body').change(() => {
-				let inpSearch = $('input[type="text"]');
-				if ($('#address').is(':checked', true)){
-					let hideDis = inpSearch.prop('disabled', false);
-					if (hideDis){
-						$('.search-input').removeAttr('data-target');
-					}
-					searchAddress();
-				}
-				if ($('#object').is(':checked', true)){
-					let hideDis = inpSearch.prop('disabled', false);
-					if (hideDis){
-						$('.search-input').removeAttr('data-target');
-					}
-					searchCar();
-				}
-			});
-			$('#search_clear a').click((e) => {
-				if ($('#profile').is(":visible") == false) {
-					$('input[type="text"]').prop('disabled', true);
-					$('.search-input').attr('data-target', '#searchModal');
-					$('#search_query').prop('placeholder', 'Поиск по');
-					e.stopPropagation();
-				}
-			});
+	}
+	function searchCar() {
+		$('#search_query').autocomplete({
+			appendTo: '.col-middle',
+			source: (request, response) => {
+				let re = $.ui.autocomplete.escapeRegex(request.term);
+				let matcher = new RegExp(re, "ig");
+				response($.grep(($.map(carsArray, (v, i) => {
+					return {
+						label: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
+						value: [v.nc + " " + "(" + v.bn + ", " + v.mn + ", " + v.vgn + ", " + v.acn + ")"],
+						did: v.did
+					};
+				})), (item) => {
+					return matcher.test(item.value);
+				}));
+				$('#progressbar').hide();
+			},
+			select: (event, point) => {
+				map.setView(marker[point.item.did].m_move._latlng, 18);
+				marker[point.item.did].m_move.openPopup(marker[point.item.did].m_move._latlng);
+			},
+			search: () => {
+				$('#progressbar').show();
+			}
 		});
+	}
+	$(() => {
+		$("#search_query").addClear();
+
+		if ($('#profile').is(":visible") == true){
+			$('.search-input').removeAttr('data-target');
+		}
+
 		$('#profile').change(() => {
+			if ($('#profile option').eq([1,2]).prop('selected',true)){
+				$('input[type="text"]').prop('disabled', false).val('');
+				$('#search_clear a').css('display', 'none');
+			}
+			$('#search_clear a').click(() => {
+				$('#profile option').eq([0]).prop('selected',true);
+				$('input[type="text"]').prop('disabled', true);
+			});
+
 			let that = parseInt($('#profile').val(), 10);
 			switch (that) {
 				case 1:
@@ -508,14 +434,102 @@ $(document).ready( () => {
 					break;
 				case 2:
 					searchCar();
- 					break;
+					break;
 			}
 		});
-		return mapDraw();
-  }
+
+		$('.modal-body').change(() => {
+			let inpSearch = $('input[type="text"]');
+			if ($('#address').is(':checked', true)){
+				let hideDis = inpSearch.prop('disabled', false);
+				if (hideDis){
+					$('.search-input').removeAttr('data-target');
+				}
+				searchAddress();
+			}
+			if ($('#object').is(':checked', true)){
+				let hideDis = inpSearch.prop('disabled', false);
+				if (hideDis){
+					$('.search-input').removeAttr('data-target');
+				}
+				searchCar();
+			}
+		});
+
+		$('#search_clear a').click((e) => {
+			if ($('#profile').is(":visible") == false) {
+				$('input[type="text"]').prop('disabled', true);
+				$('.search-input').attr('data-target', '#searchModal');
+				$('#search_query').prop('placeholder', 'Поиск по');
+				e.stopPropagation();
+			}
+		});
+	});
 	$(window).resize(() => {
 		clearTimeout(resizeTimer);
 		resizeTimer = setTimeout(resizeMap(), 100);
+		$('.feedEkList').css('max-height', '');
+		$('#contact').css('max-height', '');
+		newsScroll();
+	});
+	$(window).on('startpoint', (e) => {
+		if (global.data[e.did] === undefined) return;
+		if (global.data[e.did]['imgType'] === undefined) return;
+
+		color 		= getFunColor(e.obj, global.data[e.did]);
+		func 			= get_function_car(global.data[e.did], e.obj.sensors);
+		imgType 	= global.data[e.did]['imgType'];
+		imgPath 	= 'images/car/' + imgType + color + '_32.png';
+		greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32],	iconAnchor: [16, 16]});
+
+		if (marker[e.did] !== undefined) {
+			if (zoom === 15 || zoom > 15) {
+				startMarkerTo(e);
+				return;
+			} else {
+				marker[e.did].m_move.setLatLng(e.latlon[0]);
+				return;
+			}
+		}
+
+		movingMarker = L.Marker.movingMarker(global.data[e.did].latlon, [], {title: global.data[e.did].nc, icon: greenIcon});
+		movingMarker.obj = e.obj;
+		marker[e.did] = {'m_move': movingMarker};
+		let displayedArray;
+		if (bounds) {
+			displayedArray = marker.filter((el) => {
+				let latlng = el.m_move._latlng;
+				return latlng.lat <= bounds._northEast.lat && latlng.lat >= bounds._southWest.lat &&
+							 latlng.lng <= bounds._northEast.lng && latlng.lng >= bounds._southWest.lng;
+			});
+			// console.log(displayedArray);
+		}
+		let listIdDisp = [];
+
+		for(let j in displayedArray){
+			listIdDisp.push(displayedArray[j].m_move.obj.header.id)
+		}
+
+		for(let k in marker){
+			let idm = marker[k].m_move.obj.header.id;
+			 if(listIdDisp.indexOf(idm) === -1){
+				 // markerhide.addLayer(marker[k]);
+				 // markerhide.clearLayers();
+			 } else {
+				console.log(2,idm);
+			 }
+		}
+
+		getSensor(movingMarker, global.data[e.did]);
+
+		// pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
+		// 	"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
+		// 	"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
+		// 	"<b>Гаражный номер: </b>" + global.data[e.did].nc + "</br>" +
+		// 	"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
+		// 	"<b>Функция: </b>" + func + "</br>" +
+		// 	"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
+		// marker[e.did].m_move.bindPopup(pupuptext);
 	});
   $('.col-right').click(() => {
 		newsScroll();
@@ -532,31 +546,10 @@ $(document).ready( () => {
 		ShowPubDate: true,
 		DescCharacterLimit: 100
 	});
-	$(window).resize(() => {
-		$('.feedEkList').css('max-height', '');
-		$('#contact').css('max-height', '');
-		newsScroll();
-	});
-	$(() => {
-		$("#search_query").addClear();
-  });
-	$( "#progressbar" ).progressbar({
+	$("#progressbar").progressbar({
 		value: false
 	});
-	//-------------------------------------------------------------------------------------------
-	$(() => {
-		$('#profile').change(() => {
-			if ($('#profile option').eq([1,2]).prop('selected',true)){
-					$('input[type="text"]').prop('disabled', false).val('');
-					$('#search_clear a').css('display', 'none');
-			}
-			$('#search_clear a').click(() => {
-				$('#profile option').eq([0]).prop('selected',true);
-				$('input[type="text"]').prop('disabled', true);
-			})
-		})
-	});
-	$('.search-input').on('click touchstart', function (e) {
+	$('.search-input').on('click touchstart', (e) => {
 		if (e.type == "touchstart"){
 			$('.search-input').load({
 				keyboard: false,
@@ -565,10 +558,9 @@ $(document).ready( () => {
 			e.stopPropagation();
 		}
 	});
-	$('.modal-footer__button').click(function () {
+	$('.modal-footer__button').click(() => {
 		$('#search_query').focus();
 		$('#search_query').removeAttr('placeholder');
 	});
-	//-------------------------------------------------------------------------------------------
 	return Map();
 });
