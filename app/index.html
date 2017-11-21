@@ -35,31 +35,29 @@
 	<link rel="stylesheet" href="css/media.min.css">
 </head>
 <body>
-	<div class="modal" id="exampleModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
+	<div class="modal" id="searchModal">
+		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Выбрать </h5>
+					<h5 class="modal-title">Задать фильтр </h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<div class="check">
-						<label class="address">Поиск по адресу</label>
-						<div class="check__toggle">
-							<input class="example" data-toggle="toggle" type="checkbox">
-						</div>
+					<div class="rdio">
+						<input type="radio" id="address" class="radio" name="radioSearch">
+						<label class="address" for="address">Фильтр по адресу</label>
+						<div class="radiobutton"></div>
 					</div>
-					<div class="check">
-						<label class="object">Поиск по объектам</label>
-						<div class="check__toggle">
-							<input class="example" data-toggle="toggle" type="checkbox">
-						</div>
+					<div class="rdio">
+						<input type="radio" id="object" class="radio" name="radioSearch">
+						<label class="object" for="object">Фильтр по объектам</label>
+						<div class="radiobutton"></div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">Ok</button>
+					<button type="button" class="btn btn-primary" aria-hidden="true" data-dismiss="modal" aria-label="Close">Ok</button>
 				</div>
 			</div>
 		</div>
@@ -84,7 +82,7 @@
 								<option value="2" >Объект</option>
 							</select>
 							<i class="fa fa-search" aria-hidden="true" ></i>
-							<div id="search_clear" class="search-input"></div>
+							<div id="search_clear" class="search-input" data-toggle="modal" data-target="#searchModal"></div>
 						</form>
 					</div>
 				</div>
@@ -175,7 +173,7 @@
 	<script src="js/libs/bootstrap.js"></script>
 	<script src="js/libs/jquery.js"></script>
 	<script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
-	<script src="js/libs/jquery.ui.touch-punch.min.js"></script>
+	<!--<script src="js/libs/jquery.ui.touch-punch.min.js"></script>-->
 	<script src="js/libs/leaflet.js"></script>
 	<script src="js/libs/L.Control.Locate.min.js"></script>
 	<script src="js/libs/MovingMarker.js"></script>

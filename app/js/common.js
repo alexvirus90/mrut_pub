@@ -53,7 +53,7 @@ $(document).ready( () => {
 			el.setAttribute(key, attrs[key]);
 		}
   }
-  setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable",  "placeholder": "Поиск по", "disabled": "disabled"});
+  setAttributes(input, {"type": "text", "id": "search_query", "class": "clearable", "placeholder": "Поиск по", "disabled": "disabled"});
 
 	function WaitForConnect() {
 		$.ajax({
@@ -219,9 +219,6 @@ $(document).ready( () => {
 						$(".legend").addClass('legendHide');
 						e.stopPropagation();
 					}
-				}
-				if(!($('.legend').hasClass('legendHide'))){
-					$('.colHide').show(500);
 				}
 			});
 			$('.legend').on('mouseout touchstart', (e) => {
@@ -470,18 +467,8 @@ $(document).ready( () => {
 			});
 		}
 		$(() => {
-			if ($('#profile').is(":visible") == false){
-				if ($('#search_query').is(':disabled') == true){
-					$('.search-input').click(() => {
-						$('#exampleModal').modal('show', {
-							backdrop: 'static',
-							keyboard: true
-						});
-					});
-					$('input.example').on('change', function() {
-						$('input.example').not(this).prop('checked', false);
-					});
-				}
+			if ($('#profile').is(":visible") == true){
+				$('.search-input').removeAttr('href');
 			}
 		});
 		//-------------------------------------------------------------------------------------------
@@ -536,12 +523,40 @@ $(document).ready( () => {
 					$('input[type="text"]').prop('disabled', false).val('');
 					$('#search_clear a').css('display', 'none');
 			}
-			$('#search_clear a').click(function () {
+			$('#search_clear a').click(() => {
 				$('#profile option').eq([0]).prop('selected',true);
 				$('input[type="text"]').prop('disabled', true);
 			})
 		})
 	});
+	$(() => {
+		$('.modal-body').change(() => {
+			let inpSearch = $('input[type="text"]');
+			if ($('#address').is(':checked', true)){
+				let hideDis = inpSearch.prop('disabled', false);
+				if (hideDis){
+					$('.search-input').removeAttr('data-target');
+				}
+				searchAddress();
+			}
+			if ($('#object').is(':checked', true)){
+				let hideDis = inpSearch.prop('disabled', false);
+				if (hideDis){
+					$('.search-input').removeAttr('data-target');
+				}
+				searchCar();
+			}
+		});
+		$('#search_clear a').click((e) => {
+			$('input[type="text"]').prop('disabled', true);
+			$('.search-input').attr('data-target', '#searchModal');
+			e.stopPropagation();
+		});
+	});
+	// $('.search-input').on('touchstart', function (e) {
+	// 	if (e.type == "touchstart"){
+	// 	}
+	// });
 	//-------------------------------------------------------------------------------------------
 	return Map();
 });
