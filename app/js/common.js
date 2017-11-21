@@ -373,7 +373,7 @@ $(document).ready( () => {
 			// 	console.log(displayedArray);
 			// }
 
-			// getSensor(movingMarker, global.data[e.did]);
+			getSensor(movingMarker, global.data[e.did]);
 
 			// map.on('zoomend', function () {
 				// let iszoom = 0;
@@ -392,8 +392,8 @@ $(document).ready( () => {
 			// 	}
 			// });
 			pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
-											//"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
-											//"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
+											"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
+											"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
 											"<b>Гаражный номер: </b>" + global.data[e.did].nc + "</br>" +
 											"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
 											"<b>Функция: </b>" + func + "</br>" +
@@ -470,7 +470,7 @@ $(document).ready( () => {
 		}
 		$(() => {
 			if ($('#profile').is(":visible") == true){
-				$('.search-input').removeAttr('href');
+				$('.search-input').removeAttr('data-target');
 			}
 		});
 		$(() => {
@@ -492,10 +492,12 @@ $(document).ready( () => {
 				}
 			});
 			$('#search_clear a').click((e) => {
-				$('input[type="text"]').prop('disabled', true);
-				$('.search-input').attr('data-target', '#searchModal');
-				$('#search_query').prop('placeholder', 'Поиск по');
-				e.stopPropagation();
+				if ($('#profile').is(":visible") == false) {
+					$('input[type="text"]').prop('disabled', true);
+					$('.search-input').attr('data-target', '#searchModal');
+					$('#search_query').prop('placeholder', 'Поиск по');
+					e.stopPropagation();
+				}
 			});
 		});
 		$('#profile').change(() => {
