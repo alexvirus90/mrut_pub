@@ -3,12 +3,14 @@
 let carsArray 	 = [],
 		mrkOn 		 	 = [],
 	 	marker 			 = [],
-	 	global 			 = {data: []},
-	 	evt 				 = $.Event('startpoint');
+	 	global 			 = {data: [],slices: []},
+	 	evt 				 = $.Event('startpoint'),
+	  addSlice     = $.Event('onAddSlice'),
+		updateSlice  = $.Event('onUpdateSlice');
 
 let map, markerSearch, pupuptext,	spbCenter, resizeTimer;
 
-let color, func, zoom, bounds, imgType, addMarker, movingMarker, greenIcon,	imgPath;
+let zoom, bounds;
 
 let	markerOnline  = new L.LayerGroup(),
 		markerOffline = new L.FeatureGroup(),
@@ -27,7 +29,7 @@ $(document).ready( () => {
 	car_imgColor[9] = "light_blue"; car_imgColor[10] = "yellow";
 	car_imgColor[11] = "lilac"; 		car_imgColor[12] = "brown";
 	car_imgColor[13] = "yellow"; 		car_imgColor[14] = "lemon";//car_imgColor[15] = "white";
-	car_imgColor[15] = "viovar"; 		car_imgColor[16] = "t";
+	car_imgColor[15] = "violet"; 		car_imgColor[16] = "t";
 
 	car_Fun[1] = "ПГ"; car_Fun[2] = "ССВ";
 	car_Fun[3] = "М";  car_Fun[4] = "РТ";
@@ -35,7 +37,8 @@ $(document).ready( () => {
 	car_Fun[7] = "ПУ"; car_Fun[8] = "В";
 	car_Fun[9] = "Щ";  car_Fun[10] = "П";
 	car_Fun[11] = "Б"; car_Fun[12] = "РЖ";
-	car_Fun[13] = "Т"; car_Fun[14] = "Р"; car_Fun[15] = "К"; car_Fun[16] = "ПР";
+	car_Fun[13] = "Т"; car_Fun[14] = "Р";
+	car_Fun[15] = "К"; car_Fun[16] = "ПР";
 
 	car_Color[1] = "black"; 		car_Color[2] = "#9B30FF";
 	car_Color[3] = "turquoise"; car_Color[4] = "red";
@@ -43,8 +46,8 @@ $(document).ready( () => {
 	car_Color[7] = "green"; 		car_Color[8] = "lime";
 	car_Color[9] = "#00D5D5"; 	car_Color[10] = "yellow";
 	car_Color[11] = "#FF6A00"; 	car_Color[12] = "brown";
-	car_Color[13] = "yellow"; 	car_Color[14] = "green";
-	car_Color[15] = "grey"; 		car_Color[16] = "green"; car_Color[14] = "C3F266"; car_Color[15] = "viovar";
+	car_Color[13] = "yellow"; 	car_Color[14] = "C3F266";
+	car_Color[15] = "violet"; 	car_Color[16] = "grey";
 
 	let input = document.createElement('input');
 	$('#search_clear').append(input);
@@ -59,8 +62,8 @@ $(document).ready( () => {
 	function WaitForConnect() {
 		$.ajax({
 			type: 'GET',
-			url: 'http://176.97.34.40:6064/?command=connect&principal=1',
-			// url: 'http://176.97.34.41:6064/?command=connect&principal=1',
+			// url: 'http://176.97.34.40:6064/?command=connect&principal=1',
+			url: 'http://176.97.34.41:6064/?command=connect&principal=1',
 			async: true,
 			cache: false,
 			success: (data) => {
@@ -75,8 +78,8 @@ $(document).ready( () => {
 	function WaitForPool(id) {
 		$.ajax({
 			type: 'GET',
-			url: 'http://176.97.34.40:6064/?command=receive&connection=' + id,
-			// url: 'http://176.97.34.41:6064/?command=receive&connection=' + id,
+			// url: 'http://176.97.34.40:6064/?command=receive&connection=' + id,
+			url: 'http://176.97.34.41:6064/?command=receive&connection=' + id,
 			async: true,
 			cache: false,
 			success: (data) => {
@@ -95,13 +98,25 @@ $(document).ready( () => {
 						if (slice.root[k].lat == 0 || slice.root[k].lon == 0) continue;
 						if ((slice.root[k].flag & 32) == 32) continue;
 
-						evt.latlon = [[slice.root[k].lat, slice.root[k].lon]];
-						evt.did = slice.root[k].header.id;
-						if (global.data[evt.did] !== undefined){
-							global.data[evt.did].latlon = evt.latlon;
+						let idn = slice.root[k].header.id;
+						if(global.slices[idn] !== undefined){
+							updateSlice.obj = {sls: slice.root[k], latlon: [slice.root[k].lat, slice.root[k].lon]};
+							updateSlice.did = idn;
+							$(window).trigger(updateSlice);
+						}else{
+							global.slices[idn] = {sls: slice.root[k], latlon: [slice.root[k].lat, slice.root[k].lon]};
+							addSlice.obj = slice.root[k];
+							addSlice.did = idn;
+							$(window).trigger(addSlice);
 						}
-						evt.obj = slice.root[k];
-						$(window).trigger(evt);
+
+						// evt.latlon = [[slice.root[k].lat, slice.root[k].lon]];
+						// evt.did = slice.root[k].header.id;
+						// if (global.data[evt.did] !== undefined){
+						// 	global.data[evt.did].latlon = evt.latlon;
+						// }
+						// evt.obj = slice.root[k];
+						// $(window).trigger(evt);
 					}
 				}
 				WaitForPool(id);
@@ -150,7 +165,7 @@ $(document).ready( () => {
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
 			let lc 								= L.control.locate().addTo(map);
 			let legend 						= L.control({position: 'bottomright'});
-			legend.onAdd = () => {
+			legend.onAdd 					= () => {
 				let div = L.DomUtil.create('div', 'info legend legendHide');
 				div.innerHTML =
 					"<div class='row'>" +
@@ -186,25 +201,57 @@ $(document).ready( () => {
 					return div;
 			};
 			legend.addTo(map);
-			let baseMaps 			= {
+			let baseMaps 				  = {
 				"Карта СПб": minimal,
 				"Карта СПб(ночь)": midnightCommander
 			};
-			let overlayMaps 	= {
+			let overlayMaps 			= {
 				"На линии": markerOnline,
 				"В дежурстве": markerOffline,
 				"Треккера": markerTrakers
 			};
-			let layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+			let layersControl 		= new L.Control.Layers(baseMaps, overlayMaps);
 			map.addControl(layersControl);
 
 			map.on('zoomend', () => {
 				zoom = map.getZoom();
+
 				console.log('zoom', zoom);
+				// if(zoom == 13 || zoom > 13){
+				// 	startMarkerTo();
+					markerOnline.clearLayers();
+					markerOffline.clearLayers();
+					bounds = map.getBounds();
+					for (let k in global.slices){
+						let sls = global.slices[k];
+						if(bounds.contains(sls.latlon)){
+							addMarkerOnMap(sls.sls, global.data[sls.sls.header.id]);
+						}
+					}
+				// }else{
+				// 	markerOnline.clearLayers();
+				// 	markerOffline.clearLayers();
+				// 	bounds = map.getBounds();
+				// 	for (let k in global.slices){
+				// 		let sls = global.slices[k];
+				// 		if(bounds.contains(sls.latlon)){
+				// 			addMarkerOnMap(sls.sls, global.data[sls.sls.header.id]);
+				// 		}
+				// 	}
+				// }
 			});
 			map.on('moveend', () => {
 				bounds = map.getBounds();
 				console.log('bounds', bounds);
+				markerOnline.clearLayers();
+				markerOffline.clearLayers();
+				bounds = map.getBounds();
+				for (let k in global.slices){
+					let sls = global.slices[k];
+					if(bounds.contains(sls.latlon)){
+						addMarkerOnMap(sls.sls, global.data[sls.sls.header.id]);
+					}
+				}
 			});
 			//Legend  touchstart touchend
 			$(".legend").on('mouseover touchstart',(e) => {
@@ -242,7 +289,6 @@ $(document).ready( () => {
 		url: "/js/info.json",
 		success: (data) => {
 			for (let k in data.result) {
-
 				if (typeof data.result[k] === 'object') {
 					global.data[data.result[k]['did']] = data.result[k];
 					carsArray.push(data.result[k]);
@@ -296,13 +342,76 @@ $(document).ready( () => {
 		}
 		return s_fun;
 	}
-	function getSensor(obj, car_info) {
-		if (((obj.obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
-			((obj.obj.sensors & 8) / 8) == 1) {
-			markerOnline.addLayer(obj);
+	function getIcon(vehicleInfo, obj) {
+		let color 			 = getFunColor(obj, vehicleInfo),
+				func 				 = get_function_car(vehicleInfo, obj.sensors),
+				imgType 		 = vehicleInfo['imgType'],
+				imgPath 		 = 'images/car/' + imgType + color + '_32.png';
+				return L.icon({iconUrl: imgPath, iconSize: [32, 32], iconAnchor: [16, 16]});
+	}
+	function addMarkerOnMap(obj, car_info) {
+		let idn = obj.header.id,
+				eP =  L.latLng(obj.lat, obj.lon),
+				sP =  L.latLng(global.slices[idn].latlon),
+			  lZoom = map.getZoom();
+		//console.log('z', lZoom);
+		if(car_info === undefined) return;
+		let func 				 = get_function_car(car_info, obj.sensors),
+				greenIcon 	 = getIcon(car_info, obj),
+		 		movingMarker;
+
+		movingMarker = L.Marker.movingMarker([eP,eP], [], {title: car_info.nc, icon: greenIcon})
+
+		//if(lZoom >= 16){
+		//	movingMarker = L.marker([obj.lat, obj.lon], {title: car_info.nc, icon: greenIcon});
+			//console.log(sP, '|', eP);
+			//movingMarker.start();
+			//movingMarker.addLatLng(sP, 100000)
+			//movingMarker = L.Marker.movingMarker([sP,eP], [20000], {title: car_info.nc, icon: greenIcon})
+			//movingMarker.start();
+			//console.log('movingMarker', movingMarker);
+		//} else {
+			//movingMarker = L.marker([obj.lat, obj.lon], {title: car_info.nc, icon: greenIcon});
+			//movingMarker = L.Marker.movingMarker([sP,sP], [], {title: car_info.nc, icon: greenIcon})
+			//movingMarker.start();
+			// movingMarker = L.marker([obj.lat, obj.lon], {title: car_info.nc, icon: greenIcon});
+		//}
+		marker[obj.header.id] = {'m_move': movingMarker};
+		//
+		// pupuptext = "<p><b>Тип: </b>" + car_info['job'] + "</br>" +
+		// 						"<b>Предприятие: </b>" + car_info['vgn'] + "</br>" +
+		// 						"<b>Автоколонна: </b>" + car_info['acn'] +"</br>" +
+		// 						"<b>Гаражный номер: </b>" + car_info.nc + "</br>" +
+		// 						"<b>Марка: </b>" + car_info['bn'] + "</br>" +
+		// 						"<b>Функция: </b>" + func + "</br>" +
+		// 						"<b>Скорость: </b>" + obj.speed + "(км/ч)</p>";
+		// marker[obj.header.id].m_move.bindPopup(pupuptext);
+
+		if (((obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
+			((obj.sensors & 8) / 8) == 1) {
+			markerOnline.addLayer(movingMarker);
 		} else {
-			markerOffline.addLayer(obj);
+			markerOffline.addLayer(movingMarker);
 		}
+	}
+	function updateMarkerOnMap(obj, car_info) {
+		if(car_info === undefined) return;
+		let idn 	= obj.sls.header.id,
+			 	slice = global.slices[idn].sls;
+
+		if(slice.sensors !== obj.sls.sensors  ){
+			let greenIcon 	 = getIcon(car_info, obj);
+			marker[idn].m_move.setIcon(greenIcon);
+		}
+		if(map.getZoom() >= 16 ){
+			marker[idn].m_move.moveTo(obj.latlon, 100000);
+			marker[idn].m_move.start();
+
+		}else{
+			marker[idn].m_move.setLatLng(obj.latlon);
+		}
+
+		global.slices[idn] = obj;
 	}
 	function getFunColor(obj, car_info) {
 		let c = null;
@@ -331,17 +440,17 @@ $(document).ready( () => {
 		}
 		return c;
 	}
-	function startMarkerTo(e) {
-		marker[e.did].m_move.start();
-		if (marker[e.did].m_move.isStarted() == false) {
-			marker[e.did].m_move.moveTo(global.data[e.did].latlon[0], (e.obj.speed * 2000));
-		} else {
-			let latlng = L.latLng(e.latlon[0], e.latlon[1]);
-			if (marker[e.did].m_move._latlng.distanceTo(latlng) <= 2000) {
-				marker[e.did].m_move.addLatLng(e.latlon[0], (e.obj.speed * 2000));
-			}
-		}
-	}
+	// function startMarkerTo(e) {
+	// 	marker[e.did].m_move.start();
+	// 	if (marker[e.did].m_move.isStarted() == false) {
+	// 		marker[e.did].m_move.moveTo(global.data[e.did].latlon[0], (e.obj.speed * 2000));
+	// 	} else {
+	// 		let latlng = L.latLng(e.latlon[0], e.latlon[1]);
+	// 		if (marker[e.did].m_move._latlng.distanceTo(latlng) <= 2000) {
+	// 			marker[e.did].m_move.addLatLng(e.latlon[0], (e.obj.speed * 2000));
+	// 		}
+	// 	}
+	// }
 	function searchAddress() {
 		$('#search_query').autocomplete({
 			appendTo: '.col-middle',
@@ -472,65 +581,76 @@ $(document).ready( () => {
 		$('#contact').css('max-height', '');
 		newsScroll();
 	});
-	$(window).on('startpoint', (e) => {
-		if (global.data[e.did] === undefined) return;
-		if (global.data[e.did]['imgType'] === undefined) return;
 
-		color 		= getFunColor(e.obj, global.data[e.did]);
-		func 			= get_function_car(global.data[e.did], e.obj.sensors);
-		imgType 	= global.data[e.did]['imgType'];
-		imgPath 	= 'images/car/' + imgType + color + '_32.png';
-		greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32],	iconAnchor: [16, 16]});
-
-		if (marker[e.did] !== undefined) {
-			if (zoom === 15 || zoom > 15) {
-				startMarkerTo(e);
-				return;
-			} else {
-				marker[e.did].m_move.setLatLng(e.latlon[0]);
-				return;
-			}
-		}
-
-		movingMarker = L.Marker.movingMarker(global.data[e.did].latlon, [], {title: global.data[e.did].nc, icon: greenIcon});
-		movingMarker.obj = e.obj;
-		marker[e.did] = {'m_move': movingMarker};
-		let displayedArray;
-		if (bounds) {
-			displayedArray = marker.filter((el) => {
-				let latlng = el.m_move._latlng;
-				return latlng.lat <= bounds._northEast.lat && latlng.lat >= bounds._southWest.lat &&
-							 latlng.lng <= bounds._northEast.lng && latlng.lng >= bounds._southWest.lng;
-			});
-			// console.log(displayedArray);
-		}
-		let listIdDisp = [];
-
-		for(let j in displayedArray){
-			listIdDisp.push(displayedArray[j].m_move.obj.header.id)
-		}
-
-		for(let k in marker){
-			let idm = marker[k].m_move.obj.header.id;
-			 if(listIdDisp.indexOf(idm) === -1){
-				 // markerhide.addLayer(marker[k]);
-				 // markerhide.clearLayers();
-			 } else {
-				console.log(2,idm);
-			 }
-		}
-
-		getSensor(movingMarker, global.data[e.did]);
-
-		// pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
-		// 	"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
-		// 	"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
-		// 	"<b>Гаражный номер: </b>" + global.data[e.did].nc + "</br>" +
-		// 	"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
-		// 	"<b>Функция: </b>" + func + "</br>" +
-		// 	"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
-		// marker[e.did].m_move.bindPopup(pupuptext);
+	$(window).on('onAddSlice', (e) => {
+		addMarkerOnMap(e.obj, global.data[e.did]);
 	});
+	$(window).on('onUpdateSlice', (e) => {
+		updateMarkerOnMap(e.obj, global.data[e.did]);
+	});
+
+		// $(window).on('startpoint', (e) => {
+		// console.log('e', e);
+	// 	if (global.data[e.did] === undefined) return;
+	// 	if (global.data[e.did]['imgType'] === undefined) return;
+	//
+	// 	color 		= getFunColor(e.obj, global.data[e.did]);
+	// 	func 			= get_function_car(global.data[e.did], e.obj.sensors);
+	// 	imgType 	= global.data[e.did]['imgType'];
+	// 	imgPath 	= 'images/car/' + imgType + color + '_32.png';
+	// 	greenIcon = L.icon({iconUrl: imgPath, iconSize: [32, 32],	iconAnchor: [16, 16]});
+	//
+	// 	if (marker[e.did] !== undefined) {
+	// 		if (zoom === 15 || zoom > 15) {
+	// 			startMarkerTo(e);
+	// 			return;
+	// 		} else {
+	// 			marker[e.did].m_move.setLatLng(e.latlon[0]);
+	// 			return;
+	// 		}
+	// 	}
+	//
+	// 	movingMarker = L.Marker.movingMarker(global.data[e.did].latlon, [], {title: global.data[e.did].nc, icon: greenIcon});
+	// 	movingMarker.obj = e.obj;
+	// 	marker[e.did] = {'m_move': movingMarker};
+	// 	getSensor(movingMarker, global.data[e.did]);
+	// 	let displayedArray;
+	// 	if (bounds) {
+	// 		if (zoom === 15 || zoom > 15) {
+	// 			// markerOnline.clearLayers();
+	//
+	// 		}
+	// 		displayedArray = marker.filter((el) => {
+	// 			let latlng = el.m_move._latlng;
+	// 			return latlng.lat <= bounds._northEast.lat && latlng.lat >= bounds._southWest.lat &&
+	// 						 latlng.lng <= bounds._northEast.lng && latlng.lng >= bounds._southWest.lng;
+	// 		});
+	// 		// console.log(displayedArray);
+	// 	}
+	// 	let listIdDisp = [];
+	//
+	// 	for(let j in displayedArray){
+	// 		listIdDisp.push(displayedArray[j].m_move.obj.header.id)
+	// 	}
+	//
+	// 	for(let k in marker){
+	// 		let idm = marker[k].m_move.obj.header.id;
+	// 		 if(listIdDisp.indexOf(idm) === -1){
+	// 				// marker = [];
+	// 		 } else {
+	// 			 // marker = [];
+	// 		 }
+	// 	}
+	//
+	// 	// pupuptext = "<p><b>Тип: </b>" + global.data[e.did]['job'] + "</br>" +
+	// 	// 	"<b>Предприятие: </b>" + global.data[e.did]['vgn'] + "</br>" +
+	// 	// 	"<b>Автоколонна: </b>" +global.data[e.did]['acn'] +"</br>" +
+	// 	// 	"<b>Гаражный номер: </b>" + global.data[e.did].nc + "</br>" +
+	// 	// 	"<b>Марка: </b>" + global.data[e.did]['bn'] + "</br>" +
+	// 	// 	"<b>Функция: </b>" + func + "</br>" +
+	// 	// 	"<b>Скорость: </b>" + e.obj.speed + "(км/ч)</p>";
+	// 	// marker[e.did].m_move.bindPopup(pupuptext);
+	// });
   $('.col-right').click(() => {
 		newsScroll();
 		if ($(".aside").hasClass("in")) {
