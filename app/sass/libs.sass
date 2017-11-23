@@ -43,6 +43,28 @@
   p
     font-size: 1em
 
+//--------------------------------------------------------------------------------------
+.leaflet-touch
+  .leaflet-top
+    .leaflet-control-locate
+      margin-top: 0!important
+    .leaflet-control-zoom, .leaflet-control-layer, .leaflet-control-locate
+      margin-top: 10px
+      border: 0
+    .leaflet-bar
+      a
+        width: 40px
+        height: 40px
+        line-height: 36px
+        &:first-child, &:last-child
+          border-radius: 100%
+          border: 2px solid rgba(0, 0, 0, .4)
+          padding-top: 1px
+        &:focus
+          border-radius: 100%
+
+//--------------------------------------------------------------------------------------
+
 .col-middle
   ul
     left: 0 !important

@@ -38,6 +38,26 @@
 .leaflet-popup-content p {
   font-size: 1em; }
 
+.leaflet-touch .leaflet-top .leaflet-control-locate {
+  margin-top: 0 !important; }
+
+.leaflet-touch .leaflet-top .leaflet-control-zoom, .leaflet-touch .leaflet-top .leaflet-control-layer, .leaflet-touch .leaflet-top .leaflet-control-locate {
+  margin-top: 10px;
+  border: 0; }
+
+.leaflet-touch .leaflet-top .leaflet-bar a {
+  width: 40px;
+  height: 40px;
+  line-height: 36px; }
+  .leaflet-touch .leaflet-top .leaflet-bar a:first-child, .leaflet-touch .leaflet-top .leaflet-bar a:last-child {
+    -webkit-border-radius: 100%;
+            border-radius: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    padding-top: 1px; }
+  .leaflet-touch .leaflet-top .leaflet-bar a:focus {
+    -webkit-border-radius: 100%;
+            border-radius: 100%; }
+
 .col-middle ul {
   left: 0 !important;
   width: 100% !important; }
@@ -113,8 +133,21 @@ h1 {
   display: none; }
 
 p {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 16pt; }
+  font-family: Verdana, "DejaVu Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-style: normal;
+  font-variant-caps: normal;
+  -webkit-font-variant-ligatures: normal;
+          font-variant-ligatures: normal;
+  font-variant-numeric: normal;
+  letter-spacing: -0.33px;
+  -webkit-text-size-adjust: 100%;
+     -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+          text-size-adjust: 100%;
+  color: #4A5C6A; }
 
 html, body, #map_canvas {
   height: 100%;
@@ -233,7 +266,7 @@ hr {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
 
 .col-left {
-  max-width: 13.2%;
+  max-width: 17%;
   height: 49px;
   padding: 0; }
   .col-left:hover {
@@ -250,9 +283,9 @@ hr {
     .col-left .navbar-brand p {
       float: right;
       padding: 0 5px;
-      font-size: 8px;
-      line-height: 2;
-      margin: 6px auto; }
+      font-size: 11px;
+      line-height: 1.3;
+      margin: 3px auto; }
 
 .col-middle {
   height: 49px;
