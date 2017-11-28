@@ -6,7 +6,7 @@ let carsArray 	 = [],
 	  addSlice     = $.Event('onAddSlice'),
 		updateSlice  = $.Event('onUpdateSlice');
 
-let map, mrkSearch, pupuptext,	spbCenter, resizeTimer;
+let map, mrkSearch, popUp,	spbCntr, resizeTimer;
 
 let zoom, bounds;
 
@@ -165,18 +165,18 @@ $(document).ready( () => {
   function Map() {
 		resizeMap();
 		function mapDraw () {
-			let cloudmadeUrl 			= 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
-			let minimal 					= new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			let cloudUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
+			let day 		 = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				detectRetina: true,
 				minZoom: 9
 			});
-			let midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999});
-			spbCenter 						= new L.LatLng(59.930967, 30.302636);
-			map 									= new L.Map('map_canvas', {center: spbCenter, zoom: 10, layers: [minimal, mrkOn]});
+			let night  = new L.TileLayer(cloudUrl, {styleId: 999});
+			spbCntr 	 = new L.LatLng(59.930967, 30.302636);
+			map 			 = new L.Map('map_canvas', {center: spbCntr, zoom: 10, layers: [day, mrkOn]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
-			let lc 								= L.control.locate().addTo(map);
-			let legend 						= L.control({position: 'bottomright'});
-			legend.onAdd 					= () => {
+			let lc 		 = L.control.locate().addTo(map);
+			let lgnd 	 = L.control({position: 'bottomright'});
+			lgnd.onAdd = () => {
 				let div = L.DomUtil.create('div', 'info legend legendHide');
 				div.innerHTML =
 					"<div class='row mrg'>" +
@@ -211,10 +211,10 @@ $(document).ready( () => {
 					"</div>";
 					return div;
 			};
-			legend.addTo(map);
-			let baseMaps 				  = {
-				"Карта СПб": minimal,
-				"Карта СПб(ночь)": midnightCommander
+			lgnd.addTo(map);
+			let baseMaps = {
+				"Карта СПб": day,
+				"Карта СПб(ночь)": night
 			};
 			let overlayMaps 			= {
 				"На линии": mrkOn,
@@ -337,14 +337,21 @@ $(document).ready( () => {
 	function getIcon(vehicleInfo, obj) {
 		let color 			 = getFunColor(obj, vehicleInfo),
 				imgType 		 = vehicleInfo['imgType'],
-				imgPath 		 = 'images/car/' + imgType + color + '_32.png';
-				return L.icon({iconUrl: imgPath, iconSize: [32, 32], iconAnchor: [16, 16]});
+				imgPath;
+		if (zoom >= 14){
+			imgPath = 'images/car/' + imgType + color + '_32_d.png';
+			return L.icon({iconUrl: imgPath, iconSize: [32, 38], iconAnchor: [16, 16]});
+		} else {
+			imgPath = 'images/car/' + imgType + color + '_32.png';
+			return L.icon({iconUrl: imgPath, iconSize: [32, 32], iconAnchor: [16, 16]});
+		}
+
 	}
 	function addMrkOnMap(obj, car_info) {
 		let idn = obj.header.id,
-				eP =  L.latLng(obj.lat, obj.lon),					 								//endPoint конечные координаты
-				sP =  L.latLng(global.slices[idn].latlon),								//startPoint начальные координаты
-			  lZoom = map.getZoom();
+				eP = L.latLng(obj.lat, obj.lon),					 								//endPoint конечные координаты
+				sP = L.latLng(global.slices[idn].latlon),								//startPoint начальные координаты
+			  lZ = map.getZoom();																				//Величина zoom
 		if(car_info === undefined) return;
 		let func 	= getFuncCar(car_info, obj.sensors),
 				сIcon = getIcon(car_info, obj),														//создание иконки
@@ -354,14 +361,14 @@ $(document).ready( () => {
 
 		marker[obj.header.id] = {'m_move': movMarker};
 
-		pupuptext = "<div><b>Тип: </b>" + car_info['job'] + "</br>" +
+		popUp = "<div><b>Тип: </b>" + car_info['job'] + "</br>" +
 								"<b>Предприятие: </b>" + car_info['vgn'] + "</br>" +
 								"<b>Автоколонна: </b>" + car_info['acn'] +"</br>" +
 								"<b>Гаражный номер: </b>" + car_info.nc + "</br>" +
 								"<b>Марка: </b>" + car_info['bn'] + "</br>" +
 								"<b class='name'>Функция:</b>" + "<div class='func'>" +  func + "</div>" + "</br>" +
 								"<b>Скорость: </b>" + obj.speed + "(км/ч)</div>";
-		marker[obj.header.id].m_move.bindPopup(pupuptext);
+		marker[obj.header.id].m_move.bindPopup(popUp);
 
 		if (((obj.sensors & car_info.GB_MASK) / car_info.GB_MASK) === car_info.GB_AL &&
 			((obj.sensors & 8) / 8) == 1) {

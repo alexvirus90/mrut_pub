@@ -37,7 +37,6 @@ gulp.task('libs', () => {
   return gulp.src([
 	'node_modules/jquery-ui/external/jquery-1.12.4/jquery.js',
 	'app/libs/tether/js/tether.js',
-	'app/libs/leaflet-tracksymbol/leaflet-tracksymbol.js',
 	'app/libs/bootstrap/js/bootstrap.js',
 	'node_modules/leaflet/dist/leaflet.js',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.js',
