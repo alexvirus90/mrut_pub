@@ -13,7 +13,8 @@
     display: none; }
   .header .col-left {
     max-width: 6%;
-    text-align: center; }
+    text-align: left;
+    padding-left: 3px; }
     .header .col-left .navbar-brand {
       padding: 0; }
   .header .col-right {
@@ -21,12 +22,15 @@
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .header .col-middle .context #search .search-input {
-    width: 78%; }
+    width: 80%; }
+    .header .col-middle .context #search .search-input a {
+      float: right; }
   .header .col-left .navbar-brand p {
     display: none; }
   .header .col-left {
     max-width: 6%;
-    text-align: center; }
+    text-align: left;
+    padding-left: 3px; }
     .header .col-left .navbar-brand {
       padding: 0; }
   .header .col-right {
@@ -35,13 +39,12 @@
 @media only screen and (min-width: 576px) and (max-width: 767px) {
   .header .col-middle .context #search .search-input {
     width: 92%; }
-    .header .col-middle .context #search .search-input input {
-      padding-left: 10px; }
   .header .col-left .navbar-brand p {
     display: none; }
   .header .col-left {
     max-width: 8%;
-    text-align: center; }
+    text-align: left;
+    padding-left: 3px; }
     .header .col-left .navbar-brand {
       padding: 0; }
   .header .col-middle .dropdown {
@@ -53,13 +56,15 @@
 
 @media only screen and (min-width: 320px) and (max-width: 575px) {
   .header .col-middle .context #search .search-input {
-    width: 80%; }
+    width: 84%; }
     .header .col-middle .context #search .search-input input {
-      padding-left: 10px; }
+      width: 160px; }
   .header .col-left .navbar-brand p {
     display: none; }
   .header .col-left {
-    text-align: center; }
+    max-width: 13.2%;
+    text-align: left;
+    padding-left: 3px; }
     .header .col-left .navbar-brand {
       padding: 0; }
   .header .col-middle .dropdown {

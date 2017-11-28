@@ -37,8 +37,8 @@ gulp.task('libs', () => {
   return gulp.src([
 	'node_modules/jquery-ui/external/jquery-1.12.4/jquery.js',
 	'app/libs/tether/js/tether.js',
+	'app/libs/leaflet-tracksymbol/leaflet-tracksymbol.js',
 	'app/libs/bootstrap/js/bootstrap.js',
-	'node_modules/bootstrap-toggle/js/bootstrap2-toggle.min.js',
 	'node_modules/leaflet/dist/leaflet.js',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
@@ -53,19 +53,24 @@ gulp.task('babeljs', () => {
 		.pipe(babel({
 			presets: ['env']
 		}))
+		.pipe(minify({
+			ext: {
+				min: '.min.js'
+			},
+		}))
 		.pipe(gulp.dest('dist/js'))
 });
 gulp.task('minjs', () => {
   return gulp.src(['app/js/libs/**/*.js'], { since: gulp.lastRun('minjs') })
-	// .pipe(minify({
-	//   ext:{
-	// 	min: '.min.js'
-	//   },
-	//   ignoreFiles: ['*.min.js']
-	// }))
+	.pipe(minify({
+	  ext:{
+		min: '.min.js'
+	  },
+	  ignoreFiles: ['*.min.js']
+	}))
 	.pipe(gulpIf(isDevelopment, sourcemaps.write('.')))
 	// .pipe(gulpIf('**/*.min.js', gulp.dest('dist/js')))
-	.pipe(gulpIf('**/*.js', gulp.dest('dist/js/libs')))
+	.pipe(gulpIf('**/*.min.js', gulp.dest('dist/js/libs')))
 });
 gulp.task('cssnano', () => {
   return gulp.src([
@@ -74,12 +79,10 @@ gulp.task('cssnano', () => {
 	'app/libs/tether/css/tether-theme-arrows-dark.css',
 	'app/libs/tether/css/tether-theme-basic.css',
 	'app/libs/bootstrap/css/bootstrap.css',
-	'node_modules/bootstrap-toggle/css/bootstrap2-toggle.min.css',
 	'node_modules/leaflet/dist/leaflet.css',
 	'app/sass/leaflet.ie.css',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.css',
 	'app/libs/asidebar/dist.css',
-	'app/libs/jquery-ui/jquery-ui.min.css',
 	'app/libs/Semantic-UI/semantic.min.css',
 	'app/libs/font-awesome/css/font-awesome.css',
 	'app/libs/FeedEk/FeedEk.css'

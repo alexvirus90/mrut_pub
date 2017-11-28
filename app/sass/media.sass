@@ -21,7 +21,8 @@
     .col
       &-left
         max-width: 6%
-        text-align: center
+        text-align: left
+        padding-left: 3px
         .navbar-brand
           padding: 0
       &-right
@@ -29,14 +30,17 @@
 
 @include media-breakpoint-between($md - 1, $lg + 32)  //$md: 768px  $lg: 992px; min: 768 max: 1025
   #{$search-width}
-    width: 78%
+    width: 80%
+    a
+      float: right
   #{$value-font}
     display: none
   .header
     .col
       &-left
         max-width: 6%
-        text-align: center
+        text-align: left
+        padding-left: 3px
         .navbar-brand
           padding: 0
       &-right
@@ -45,15 +49,14 @@
 @include media-breakpoint-between($sm - 1, $md) //$sm: 576px  $md: 768px; min: 576 max: 769
   #{$search-width}
     width: 92%
-    input
-      padding-left: 10px
   #{$value-font}
     display: none
   .header
     .col
       &-left
         max-width: 8%
-        text-align: center
+        text-align: left
+        padding-left: 3px
         .navbar-brand
           padding: 0
       &-middle
@@ -66,15 +69,17 @@
 
 @include media-breakpoint-between($sm - 257, $sm) //$sm: 576px; min: 320 max: 577
   #{$search-width}
-    width: 80%
+    width: 84%
     input
-      padding-left: 10px
+      width: 160px
   #{$value-font}
     display: none
   .header
     .col
       &-left
-        text-align: center
+        max-width: 13.2%
+        text-align: left
+        padding-left: 3px
         .navbar-brand
           padding: 0
       &-middle
@@ -89,16 +94,3 @@
       .col_2
         a
           font-size: 12px
-//@include media-breakpoint-between($sm - 257, $lg + 33)  //$sm: 576px $lg: 992px; min: 320 max: 1025
-//  #{$value-font}
-//    display: none
-//  #{$icon}
-//    margin: 0 7px
-//  .header
-//    .col
-//      &-left
-//        padding: 0
-//        .navbar-brand
-//          padding: 0
-//      &-right
-//        padding: 0

@@ -52,7 +52,9 @@
   .leaflet-touch .leaflet-top .leaflet-bar a:first-child, .leaflet-touch .leaflet-top .leaflet-bar a:last-child {
     -webkit-border-radius: 100%;
             border-radius: 100%;
-    border: 2px solid rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+            background-clip: padding-box;
     padding-top: 1px; }
   .leaflet-touch .leaflet-top .leaflet-bar a:focus {
     -webkit-border-radius: 100%;
@@ -187,31 +189,15 @@ hr {
   margin: 5px 0;
   padding: 0; }
 
-#popupPanel-popup {
-  right: 0 !important;
-  left: auto !important; }
+.name {
+  display: inline-block;
+  width: 56px;
+  margin-right: 5px;
+  vertical-align: top; }
 
-#popupPanel {
-  width: 250px;
-  border: 1px solid #000;
-  border-right: none;
-  background: rgba(0, 0, 0, 0.5);
-  margin: -1px 0; }
-  #popupPanel .ui-btn {
-    margin-left: 10px;
-    margin-right: 10px; }
-  #popupPanel .ui-intput-text {
-    width: 200px;
-    margin-left: 10px;
-    margin-right: 10px; }
-
-#curLoc {
-  position: absolute;
-  bottom: 0;
-  left: 10px; }
-
-.ui-icon-myapp-email {
-  background-image: url("app-icon-email.png"); }
+.func {
+  display: inline-block;
+  width: 200px; }
 
 .legend {
   line-height: 18px;
@@ -219,7 +205,15 @@ hr {
   width: 260px;
   -webkit-transition: all, 0.3s linear;
   -o-transition: all, 0.3s linear;
-  transition: all, 0.3s linear; }
+  transition: all, 0.3s linear;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box; }
+  .legend .mrg {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 6px;
+    -webkit-border-radius: 5px;
+            border-radius: 5px; }
   .legend .col-12, .legend .col-2, .legend .col-10 {
     padding: 0; }
   .legend .col-2 {
@@ -233,7 +227,7 @@ hr {
     font-size: 10px; }
 
 .legendHide {
-  width: 36px;
+  width: 41px;
   -webkit-transition: all, 0.1s linear;
   -o-transition: all, 0.1s linear;
   transition: all, 0.1s linear; }
@@ -248,12 +242,6 @@ hr {
   transition: all, 0.3s linear; }
 
 .info {
-  padding: 6px 6px;
-  font: 14px/16px Arial, Helvetica, sans-serif;
-  background: white;
-  background: rgba(255, 255, 255, 0.8);
-  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   -webkit-border-radius: 5px;
           border-radius: 5px; }
 
@@ -266,7 +254,7 @@ hr {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
 
 .col-left {
-  max-width: 17%;
+  max-width: 213px;
   height: 49px;
   padding: 0; }
   .col-left:hover {
@@ -299,7 +287,7 @@ hr {
   .col-middle .context #search .search-input {
     display: block;
     position: relative;
-    width: 91%; }
+    width: 89%; }
     .col-middle .context #search .search-input input {
       background: transparent;
       border: 0 none;
@@ -380,7 +368,7 @@ select {
     padding-right: 5px; }
 
 .aside {
-  z-index: 22;
+  z-index: 500;
   border: 0; }
   .aside-backdrop {
     z-index: 20; }
@@ -413,15 +401,19 @@ select {
           display: inline-block; }
         .aside-contents #contact .row .col_1 {
           text-align: right;
-          max-width: 50%; }
+          max-width: 45%;
+          padding: 0 5px 0 0; }
         .aside-contents #contact .row .col_2 {
           padding: 0;
-          text-align: left; }
+          text-align: left;
+          max-width: 50%;
+          vertical-align: top; }
         .aside-contents #contact .row p {
           font-size: 12px; }
           .aside-contents #contact .row p a[href^="tel:"] {
             text-decoration: none;
-            color: #000000; }
+            color: #000000;
+            vertical-align: top; }
           .aside-contents #contact .row p i {
             margin: 0 5px; }
     .aside-contents .feedEkList {
