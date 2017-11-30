@@ -38,11 +38,11 @@
 .leaflet-popup-content p {
   font-size: 1em; }
 
-.leaflet-touch .leaflet-top .leaflet-control-locate {
-  margin-top: 0 !important; }
-
 .leaflet-touch .leaflet-top .leaflet-control-zoom, .leaflet-touch .leaflet-top .leaflet-control-layer, .leaflet-touch .leaflet-top .leaflet-control-locate {
   margin-top: 10px;
+  border: 0; }
+
+.leaflet-touch .leaflet-top .leaflet-control-fullscreen {
   border: 0; }
 
 .leaflet-touch .leaflet-top .leaflet-bar a {
@@ -59,6 +59,15 @@
   .leaflet-touch .leaflet-top .leaflet-bar a:focus {
     -webkit-border-radius: 100%;
             border-radius: 100%; }
+
+.leaflet-touch .leaflet-control-fullscreen {
+  margin-top: 0 !important; }
+  .leaflet-touch .leaflet-control-fullscreen a {
+    background: #fff url(../images/fullscreen.png) no-repeat 0 0;
+    background-position: 5px 5px; }
+
+.leaflet-touch.leaflet-fullscreen-on .leaflet-control-fullscreen a {
+  background-position: 5px -22px; }
 
 .col-middle ul {
   left: 0 !important;

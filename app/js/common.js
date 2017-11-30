@@ -124,14 +124,6 @@ $(document).ready( () => {
 							addSlice.did = idn;
 							$(window).trigger(addSlice);
 						}
-
-						// evt.latlon = [[slice.root[k].lat, slice.root[k].lon]];
-						// evt.did = slice.root[k].header.id;
-						// if (global.data[evt.did] !== undefined){
-						// 	global.data[evt.did].latlon = evt.latlon;
-						// }
-						// evt.obj = slice.root[k];
-						// $(window).trigger(evt);
 					}
 				}
 				WaitForPool(id);
@@ -141,7 +133,7 @@ $(document).ready( () => {
 			}
 		});
 	}
-  function resizeMap() {
+  function rsM() {
 		scroll(0, 0);
 		let header 					= $(".header:visible");
 		let footer 					= $(".footer:visible");
@@ -151,8 +143,8 @@ $(document).ready( () => {
 				content_height -= (content.outerHeight() - content.height());
 				content.height(content_height);
 				$("#map_canvas").height(content_height);
-  }
-	function newsScroll() {																										//scroll
+  }										//resizeMap
+	function nsScrl() {																										//scroll
 		let info 				= $('.aside').innerHeight();
 		let asideHeader = info - $('.aside-header').innerHeight();
 		let navTab 			= asideHeader - $('.nav-tabs').innerHeight();
@@ -161,21 +153,22 @@ $(document).ready( () => {
 		};
 		$('.feedEkList').css(max_height);
 		$('#contact').css(max_height);
-	}
+	}									//scroll
   function Map() {
-		resizeMap();
+		rsM();
 		function mapDraw () {
 			let cloudUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
 			let day 		 = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				detectRetina: true,
 				minZoom: 9
 			});
-			let night  = new L.TileLayer(cloudUrl, {styleId: 999});
-			spbCntr 	 = new L.LatLng(59.930967, 30.302636);
-			map 			 = new L.Map('map_canvas', {center: spbCntr, zoom: 10, layers: [day, mrkOn]});
+			let night  	 = new L.TileLayer(cloudUrl, {styleId: 999});
+			spbCntr 	   = new L.LatLng(59.930967, 30.302636);
+			map 			   = new L.Map('map_canvas', { center: spbCntr, zoom: 10, layers: [day, mrkOn]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
-			let lc 		 = L.control.locate().addTo(map);
-			let lgnd 	 = L.control({position: 'bottomright'});
+			let fs     = map.addControl(new L.Control.Fullscreen());								//fullscreen button
+			let lc 		 = L.control.locate().addTo(map);															//geolocation
+			let lgnd 	 = L.control({position: 'bottomright'});											//the location of the legend
 			lgnd.onAdd = () => {
 				let div = L.DomUtil.create('div', 'info legend legendHide');
 				div.innerHTML =
@@ -226,7 +219,7 @@ $(document).ready( () => {
 
 			map.on('zoomend', () => {
 				zoom = map.getZoom();
-				console.log('zoom', zoom);
+				// console.log('zoom', zoom);
 				mrkOn.clearLayers();
 				mrkOff.clearLayers();
 				bounds = map.getBounds();
@@ -335,30 +328,28 @@ $(document).ready( () => {
 		return s_fun;
 	}
 	function getIcon(vehicleInfo, obj) {
-		let color 			 = getFunColor(obj, vehicleInfo),
-				imgType 		 = vehicleInfo['imgType'],
+		let color 	= getFunColor(obj, vehicleInfo),
+				imgType = vehicleInfo['imgType'],
 				imgPath;
-		if (zoom >= 14){
-			imgPath = 'images/car/' + imgType + color + '_32_d.png';
-			return L.icon({iconUrl: imgPath, iconSize: [32, 38], iconAnchor: [16, 16]});
-		} else {
+		// if (zoom >= 14){
+		// 	imgPath = 'images/car/' + imgType + color + '_32_d.png';
+		// 	return L.icon({iconUrl: imgPath, iconSize: [32, 38], iconAnchor: [16, 16]});
+		// } else {
 			imgPath = 'images/car/' + imgType + color + '_32.png';
 			return L.icon({iconUrl: imgPath, iconSize: [32, 32], iconAnchor: [16, 16]});
-		}
-
+		// }
 	}
 	function addMrkOnMap(obj, car_info) {
 		let idn = obj.header.id,
 				eP = L.latLng(obj.lat, obj.lon),					 								//endPoint конечные координаты
-				sP = L.latLng(global.slices[idn].latlon),								//startPoint начальные координаты
+				sP = L.latLng(global.slices[idn].latlon),									//startPoint начальные координаты
 			  lZ = map.getZoom();																				//Величина zoom
 		if(car_info === undefined) return;
 		let func 	= getFuncCar(car_info, obj.sensors),
 				сIcon = getIcon(car_info, obj),														//создание иконки
 				movMarker;
 
-		movMarker = L.Marker.movingMarker([eP,eP], [], {title: car_info.nc, icon: сIcon});
-
+		movMarker = L.Marker.movingMarker([eP, eP], [], {title: car_info.nc, icon: сIcon});
 		marker[obj.header.id] = {'m_move': movMarker};
 
 		popUp = "<div><b>Тип: </b>" + car_info['job'] + "</br>" +
@@ -405,7 +396,7 @@ $(document).ready( () => {
 				marker[idn].m_move.moveTo(obj.latlon, getDurat(slice.time, obj.sls.time));
 				marker[idn].m_move.start();
 			}
-		}else{
+		} else {
 			marker[idn].m_move.setLatLng(obj.latlon);
 		}
 		global.slices[idn] = obj;
@@ -569,10 +560,10 @@ $(document).ready( () => {
 	});
 	$(window).resize(() => {
 		clearTimeout(resizeTimer);
-		resizeTimer = setTimeout(resizeMap(), 100);
+		resizeTimer = setTimeout(rsM(), 100);
 		$('.feedEkList').css('max-height', '');
 		$('#contact').css('max-height', '');
-		newsScroll();
+		nsScrl();
 	});
 	$(window).on('onAddSlice', (e) => {
 		addMrkOnMap(e.obj, global.data[e.did]);
@@ -581,7 +572,7 @@ $(document).ready( () => {
 		updMrkOnMap(e.obj, global.data[e.did]);
 	});
   $('.col-right').click(() => {
-		newsScroll();
+		nsScrl();
 		if ($(".aside").hasClass("in")) {
 			$('.aside').asidebar('close')
 		} else {
