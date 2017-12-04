@@ -37,34 +37,62 @@
     padding: 0
     .context
       #search
+        display: inline-block
+        width: 100%
+        .button-state
+          border: none
+          background: #E6EBF0
+          height: 49px
+          cursor: pointer
+          outline: none
+          float: right
+          padding: 0 4px
+          position: absolute
+          right: 0
+          top: 0
+          span
+            color: #B5B9C0
+            //color: #7C7C7D
+            font-size: 28px
+            -webkit-text-stroke: 1px #E6EBF0
         &.focus
           background-color: #ffffff
-        &:hover
+        &:hover, .button-state:hover
           background-color: #edf1f5
         .search-input
-          display: block
+          display: inline-block
           position: relative
-          width: 89%
+          width: 94.5%
           //margin: 0 10px
           input
-            background: transparent
+            background: transparent!important
             border: 0 none
-            font: 15px/20px Verdana, "DejaVu Sans", sans-serif
+            font: 18px/25px Verdana, "DejaVu Sans", sans-serif
             height: 49px
             outline: none
             position: relative
-            width: 97%
+            width: 98.5%
             z-index: 10
+            padding-left: 10px
           &:enabled
-            background: #ffff00
+            background: #dddddd
           &:disabled
             background: #dddddd
-          a
-            top: 0px !important
-            height: 40px
-            width: 30px
-            text-align: center
-            padding-top: 13px
+        .closed
+          color: #7C7C7D
+          position: absolute
+          right: 0
+          top: 0
+          height: 49px
+          width: 36px
+          padding: 10px 4px
+          text-align: center
+          display: none
+          i
+            margin: 0
+            font-size: 2.1em
+            -webkit-text-stroke: 3px #E6EBF0
+
           #search_query
             .clearable
               background: black url("data:image/gif;base64,R0lGODlhBwAHAIAAAP///5KSkiH5BAAAAAAALAAAAAAHAAcAAAIMTICmsGrIXnLxuDMLADs=") no-repeat right -10px center
@@ -79,21 +107,12 @@
               display: none
               width: 0
               height: 0
-        select
-          background: transparent url("../images/filter_down.png") no-repeat 60px center
-          &::-ms-expand
-            display: none
-          &::-ms-value
-            background: transparent
-            color: #000
-        .dropdown
-          margin-left: 10px
-          width: 80px
         i
           font-size: 1.5em
           color: #B5B9C0
           -webkit-text-stroke: 1px #E6EBF0
-          margin: 0 8px
+          margin: 14px 4px
+          float: left
   &-right
     height: 49px
     cursor: pointer

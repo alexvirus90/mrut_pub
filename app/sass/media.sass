@@ -3,7 +3,7 @@
 
 @include media-breakpoint-between($xl + 79, $xl + 240)  //$xl: 1200px; min: 1280 max: 1441
   #{$search-width}
-    width: 87%
+    width: 93%
   #{$value-font}
     font-size: 11px
   .header
@@ -14,13 +14,13 @@
 
 @include media-breakpoint-between($xl - 177, $xl + 80)  //$xl: 1200px; min: 1024 max: 1281
   #{$search-width}
-    width: 86%
+    width: 93%
   #{$value-font}
     display: none
   .header
     .col
       &-left
-        max-width: 6%
+        max-width: 40px
         text-align: left
         padding-left: 3px
         .navbar-brand
@@ -30,7 +30,7 @@
 
 @include media-breakpoint-between($md - 1, $lg + 32)  //$md: 768px  $lg: 992px; min: 768 max: 1025
   #{$search-width}
-    width: 80%
+    width: 90%
     a
       float: right
   #{$value-font}
@@ -38,7 +38,7 @@
   .header
     .col
       &-left
-        max-width: 6%
+        max-width: 40px
         text-align: left
         padding-left: 3px
         .navbar-brand
@@ -48,13 +48,13 @@
 
 @include media-breakpoint-between($sm - 1, $md) //$sm: 576px  $md: 768px; min: 576 max: 769
   #{$search-width}
-    width: 92%
+    width: 86%
   #{$value-font}
     display: none
   .header
     .col
       &-left
-        max-width: 8%
+        max-width: 40px
         text-align: left
         padding-left: 3px
         .navbar-brand
@@ -69,17 +69,18 @@
 
 @include media-breakpoint-between($sm - 257, $sm) //$sm: 576px; min: 320 max: 577
   #{$search-width}
-    width: 84%
+    width: 170px
     input
-      width: 160px
+      width: 170px
+      padding-left: 0
   #{$value-font}
     display: none
   .header
     .col
       &-left
         max-width: 13.2%
-        text-align: left
-        padding-left: 3px
+        text-align: center
+
         .navbar-brand
           padding: 0
       &-middle

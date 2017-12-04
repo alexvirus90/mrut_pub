@@ -37,15 +37,15 @@ gulp.task('libs', () => {
   return gulp.src([
 	'node_modules/jquery-ui/external/jquery-1.12.4/jquery.js',
 	'app/libs/tether/js/tether.js',
+	'app/libs/jq_ui/jquery-ui.js',
 	'app/libs/bootstrap/js/bootstrap.js',
 	'node_modules/leaflet/dist/leaflet.js',
-	'app/libs/leaflet.fullscreen/Leaflet.fullscreen.js',
+	'app/libs/leaflet.fullscreen/Control.FullScreen.js',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.js',
 	'app/libs/Leaflet.MovingMarker/MovingMarker.js',
 	'app/libs/asidebar/js/jquery/asidebar.jquery.js',
 	'app/libs/Semantic-UI/semantic.min.js',
-	'app/libs/FeedEk/FeedEk.js',
-	'app/libs/jquery.clear/addclear.js'])
+	'app/libs/FeedEk/FeedEk.js'])
 	.pipe(gulp.dest('app/js/libs'));
 });
 gulp.task('babeljs', () => {
@@ -80,7 +80,8 @@ gulp.task('cssnano', () => {
 	'app/libs/tether/css/tether-theme-basic.css',
 	'app/libs/bootstrap/css/bootstrap.css',
 	'node_modules/leaflet/dist/leaflet.css',
-	'app/libs/leaflet.fullscreen/leaflet.fullscreen.css',
+	'app/libs/jq_ui/jquery-ui.css',
+	'app/libs/leaflet.fullscreen/Control.FullScreen.css',
 	'app/sass/leaflet.ie.css',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.css',
 	'app/libs/asidebar/dist.css',

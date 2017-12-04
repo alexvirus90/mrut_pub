@@ -66,13 +66,14 @@ $(document).ready( () => {
 
 	let input = document.createElement('input');
 	$('#search_clear').append(input);
+	$('#search').append("<a href='#' class='closed'><i class='fa fa-times'></i></a>");
 
   function setAttr(el, attrs) {
 		for(let key in attrs) {
 			el.setAttribute(key, attrs[key]);
 		}
   }
-	setAttr(input, {"type": "text", "id": "search_query", "class": "clearable", "placeholder": "Поиск по", "disabled": "disabled"});
+	setAttr(input, {"type": "text", "id": "search_query", "class": "address clearable", "placeholder": "Поиск по адресу"});
 
 	function WaitForConnect() {
 		$.ajax({
@@ -133,7 +134,7 @@ $(document).ready( () => {
 			}
 		});
 	}
-  function rsM() {
+  function rsM() {				//resizeMap
 		scroll(0, 0);
 		let header 					= $(".header:visible");
 		let footer 					= $(".footer:visible");
@@ -143,7 +144,7 @@ $(document).ready( () => {
 				content_height -= (content.outerHeight() - content.height());
 				content.height(content_height);
 				$("#map_canvas").height(content_height);
-  }										//resizeMap
+  }
 	function nsScrl() {																										//scroll
 		let info 				= $('.aside').innerHeight();
 		let asideHeader = info - $('.aside-header').innerHeight();
@@ -153,7 +154,7 @@ $(document).ready( () => {
 		};
 		$('.feedEkList').css(max_height);
 		$('#contact').css(max_height);
-	}									//scroll
+	}
   function Map() {
 		rsM();
 		function mapDraw () {
@@ -166,7 +167,8 @@ $(document).ready( () => {
 			spbCntr 	   = new L.LatLng(59.930967, 30.302636);
 			map 			   = new L.Map('map_canvas', { center: spbCntr, zoom: 10, layers: [day, mrkOn]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
-			let fs     = map.addControl(new L.Control.Fullscreen());								//fullscreen button
+			// let fs     = map.addControl(new L.Control.Fullscreen());								//fullscreen button
+			let fs     = L.control.fullscreen({ position: 'topleft'}).addTo(map);			//fullscreen button
 			let lc 		 = L.control.locate().addTo(map);															//geolocation
 			let lgnd 	 = L.control({position: 'bottomright'});											//the location of the legend
 			lgnd.onAdd = () => {
@@ -276,6 +278,7 @@ $(document).ready( () => {
   }
 	$.ajax({
 		url: "/js/info.json",
+		dataType: 'json',
 		success: (data) => {
 			for (let k in data.result) {
 				if (typeof data.result[k] === 'object') {
@@ -428,12 +431,12 @@ $(document).ready( () => {
 		}
 		return c;
 	}
-	function searchAddr() {
+	function schAddr() { 									//searchAddress
 		$('#search_query').autocomplete({
 			appendTo: '.col-middle',
 			source: (request, response) => {
 				$.ajax({
-					url: "http://nominatim.openstreetmap.org/search",
+					url: "https://nominatim.openstreetmap.org",
 					cache: true,
 					method: "GET",
 					data: {
@@ -455,11 +458,12 @@ $(document).ready( () => {
 			},
 			select: (event, point) => {
 				let lat = point.item.latitude,
-					lon = point.item.longitude;
+						lon = point.item.longitude;
 				mrkSearch = {lat, lon};
 				map.setView(mrkSearch, 18);
-				let dot = L.marker(mrkSearch).addTo(map);
-				$('#search_clear a').click(() => {
+				let mIcon = L.icon({iconUrl: 'images/marker_30.png', iconSize: [30, 30], iconAnchor: [15, 15]});
+				let dot = L.marker(mrkSearch, { icon: mIcon }).addTo(map);
+				$('.closed').click(() => {
 					if (dot != undefined) {
 						map.removeLayer(dot);
 					}
@@ -470,7 +474,7 @@ $(document).ready( () => {
 			}
 		});
 	}
-	function searchCar() {
+	function schCar() {								//searchCar
 		$('#search_query').autocomplete({
 			appendTo: '.col-middle',
 			source: (request, response) => {
@@ -496,67 +500,33 @@ $(document).ready( () => {
 			}
 		});
 	}
-	function focHolder() {
-		let int = $('#search_query');
-		int.focus();
-		int.removeAttr('placeholder');
-	}
 	$(() => {
-		$("#search_query").addClear();
-
-		if ($('#profile').is(":visible") == true){
-			$('.search-input').removeAttr('data-target');
+		schAddr();
+		let el = $('#search_query');
+		$('.button-state').click(() => {
+			if(el.hasClass('address')){
+				el.removeClass('address');
+				el.addClass('object');
+				el.attr('placeholder', 'Поиск по объектам');
+				schCar();
+			} else {
+				el.removeClass('object');
+				el.addClass('address');
+				el.attr('placeholder', 'Поиск по адресу');
+				schAddr();
+			}
+		});
+	});
+	$('#search_query').on('input',() => {
+		if($('#search_query').val() !== '') {
+			$('.closed').show();
+			$('.button-state').hide();
 		}
-
-		$('#profile').change(() => {
-			if ($('#profile option').eq([1,2]).prop('selected',true)){
-				$('input[type="text"]').prop('disabled', false).val('');
-				$('#search_clear a').css('display', 'none');
-			}
-			$('#search_clear a').click(() => {
-				$('#profile option').eq([0]).prop('selected',true);
-				$('input[type="text"]').prop('disabled', true);
-			});
-
-			let that = parseInt($('#profile').val(), 10);
-			switch (that) {
-				case 1:
-					searchAddr();
-					focHolder();
-					break;
-				case 2:
-					searchCar();
-					focHolder();
-					break;
-			}
-		});
-
-		$('.modal-body').change(() => {
-			let inpSearch = $('input[type="text"]');
-			if ($('#address').is(':checked', true)){
-				let hideDis = inpSearch.prop('disabled', false);
-				if (hideDis){
-					$('.search-input').removeAttr('data-target');
-				}
-				searchAddr();
-			}
-			if ($('#object').is(':checked', true)){
-				let hideDis = inpSearch.prop('disabled', false);
-				if (hideDis){
-					$('.search-input').removeAttr('data-target');
-				}
-				searchCar();
-			}
-		});
-
-		$('#search_clear a').click((e) => {
-			if ($('#profile').is(":visible") == false) {
-				$('input[type="text"]').prop('disabled', true);
-				$('.search-input').attr('data-target', '#searchModal');
-				e.stopPropagation();
-			}
-			$('#search_query').prop('placeholder', 'Поиск по');
-		});
+	});
+	$('.closed').click(() => {
+		$('.button-state').show();
+		$('.closed').hide();
+		$('#search_query').val('');
 	});
 	$(window).resize(() => {
 		clearTimeout(resizeTimer);
@@ -564,6 +534,7 @@ $(document).ready( () => {
 		$('.feedEkList').css('max-height', '');
 		$('#contact').css('max-height', '');
 		nsScrl();
+
 	});
 	$(window).on('onAddSlice', (e) => {
 		addMrkOnMap(e.obj, global.data[e.did]);
@@ -588,18 +559,6 @@ $(document).ready( () => {
 	});
 	$("#progressbar").progressbar({
 		value: false
-	});
-	$('.search-input').on('click touchstart', (e) => {
-		if (e.type == "touchstart"){
-			$('.search-input').load({
-				keyboard: false,
-				backdrop: 'static'
-			});
-			e.stopPropagation();
-		}
-	});
-	$('.modal-footer__button').click(() => {
-		focHolder();
 	});
 	return Map();
 });

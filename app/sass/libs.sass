@@ -44,34 +44,29 @@
     font-size: 1em
 
 //--------------------------------------------------------------------------------------
-.leaflet-touch
+.leaflet-container
   .leaflet-top
     .leaflet-control-zoom, .leaflet-control-layer, .leaflet-control-locate
       margin-top: 10px
       border: 0
-    .leaflet-control-fullscreen
-      border: 0
     .leaflet-bar
+      box-shadow: none
+      .fullscreen-icon
+        background: #fff url(../images/fullscreen@1.2x.png) no-repeat 0 0
+        background-position: 2px 2px
       a
         width: 40px
         height: 40px
         line-height: 36px
-        &:first-child, &:last-child
-          border-radius: 100%
-          border: 2px solid rgba(0, 0, 0, .2)
-          background-clip: padding-box
-          padding-top: 1px
+        border-radius: 100%
+        border: 2px solid rgba(0, 0, 0, .2)
+        background-clip: padding-box
+        padding-top: 1px
         &:focus
           border-radius: 100%
-  .leaflet-control-fullscreen
-    margin-top: 0!important
-    a
-      background: #fff url(../images/fullscreen.png) no-repeat 0 0
-      background-position: 5px 5px
-  &.leaflet-fullscreen-on
-    .leaflet-control-fullscreen
-      a
-        background-position: 5px -22px
+  &.fullscreen-icon-on
+    .fullscreen-icon
+      background-position: 2px -30px !important
 
 //--------------------------------------------------------------------------------------
 
@@ -81,7 +76,7 @@
     width: 100% !important
 
 .ui-autocomplete
-  max-height: 300px
+  max-height: 320px
   overflow-y: auto
   overflow-x: hidden
 
@@ -99,38 +94,9 @@
 .ui
   &.dimmer
     background-color: rgba(0,0,0,.5)
-.modal-dialog
-  top: 20%
-  .modal-content
-    margin: auto
-    .modal-header
-      padding: 11px 15px
-    .modal-body, .modal-footer
-      padding: 5px 15px
-      .check
-        width: 70%
-        margin: 0 auto
-        height: 30px
-        label
-          padding: 7px 0
-          margin: 0
-          &.address
-            margin-bottom: 8px
-        .check__toggle
-          display: inline-block
-          float: right
-          .toggle, .btn-success, .btn-success:hover, .btn-success:active
-            height: 30px !important
-            width: 23% !important
-            background-color: #dddedf
-            border-color: #dddedf
-            margin-left: 5px
-            span
-              background-color: #B5B9C0!important
-            .btn
-              font-size: 12px
-              padding: 5px 3px
-    .modal-footer
-      button
-        height: 30px
-        background-color: #4183c4
+  &-menu
+    &-item-wrapper
+      padding: 8px 1em 8px .4em!important
+      font-weight: bold
+      font-size: 1em
+      color: grey

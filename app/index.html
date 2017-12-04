@@ -21,9 +21,9 @@
 	<link rel="stylesheet" href="css/libs/tether-theme-basic.css">
 	<link rel="stylesheet" href="css/libs/bootstrap.css">
 	<link rel="stylesheet" href="css/libs/leaflet.css">
-	<link rel="stylesheet" href="https://code.jquery.com/ui/jquery-ui-git.css">
+	<link rel="stylesheet" href="css/libs/jquery-ui.css">
 	<link rel="stylesheet" href="css/libs/L.Control.Locate.min.css">
-	<link rel="stylesheet" href="css/libs/leaflet.fullscreen.css">
+	<link rel="stylesheet" href="css/libs/Control.FullScreen.css">
 	<link rel="stylesheet" href="css/libs/dist.css">
 	<link rel="stylesheet" href="css/libs/FeedEk.css">
 	<link rel="stylesheet" href="css/libs/semantic.min.css">
@@ -32,33 +32,6 @@
 	<link rel="stylesheet" href="css/media.min.css">
 </head>
 <body>
-	<div class="modal" id="searchModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Задать фильтр </h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div class="rdio">
-						<input type="radio" id="address" class="radio" name="radioSearch">
-						<label class="address" for="address">Фильтр по адресу</label>
-						<div class="radiobutton"></div>
-					</div>
-					<div class="rdio">
-						<input type="radio" id="object" class="radio" name="radioSearch">
-						<label class="object" for="object">Фильтр по объектам</label>
-						<div class="radiobutton"></div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary modal-footer__button" aria-hidden="true" data-dismiss="modal" aria-label="Close">Ok</button>
-				</div>
-			</div>
-		</div>
-	</div>
 	<nav class="navbar navbar-expand{-sm|-md|-lg|-xl} navbar-light bg-light">
 		<div class="container header">
 			<div class="row">
@@ -73,18 +46,16 @@
 				<div class="col col-middle">
 					<div class="context">
 						<form action="#" id="search" class="form-inline search">
-							<select id="profile" class="ui dropdown">
-								<option value="0" >Фильтр</option>
-								<option value="1" >Адрес</option>
-								<option value="2" >Объект</option>
-							</select>
-							<i class="fa fa-search" aria-hidden="true" ></i>
-							<div id="search_clear" class="search-input" data-toggle="modal" data-target="#searchModal"></div>
+							<i class="fa fa-search"></i>
+							<div id="search_clear" class="search-input"></div>
+							<button class="button-state">
+								<span class="fa fa-exchange fa-lg"></span>
+							</button>
 						</form>
 					</div>
 				</div>
 				<div class="col-2 col-right">
-					<i class="fa fa-bars" aria-hidden="true"></i>
+					<i class="fa fa-bars"></i>
 					<span></span>
 			</div>
 			</div>
@@ -174,16 +145,25 @@
 	<script src="js/libs/tether.min.js"></script>
 	<script src="js/libs/bootstrap.min.js"></script>
 	<script src="js/libs/jquery.min.js"></script>
-	<script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+	<script src="js/libs/jquery-ui.min.js"></script>
 	<script src="js/libs/leaflet.min.js"></script>
 	<script src="js/libs/L.Control.Locate.min.js"></script>
 	<script src="js/libs/MovingMarker.min.js"></script>
-	<script src="js/libs/Leaflet.fullscreen.min.js"></script>
+	<script src="js/libs/Control.FullScreen.min.js"></script>
 	<script src="js/libs/asidebar.jquery.min.js"></script>
 	<script src="js/libs/semantic.min.js"></script>
-	<script src="js/libs/addclear.min.js"></script>
 	<script src="js/libs/FeedEk.min.js"></script>
-	<script src="js/common.min.js"></script>
-	<!--<script src="js/common.js"></script>-->
+	<!--<script src="js/common.min.js"></script>-->
+	<script src="js/common.js"></script>
+
+	<!— Global site tag (gtag.js) - Google Analytics —>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110461792-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-110461792-1');
+	</script>
 </body>
 </html>
