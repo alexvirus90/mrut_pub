@@ -32,11 +32,114 @@
 	<link rel="stylesheet" href="css/media.min.css">
 </head>
 <body>
+	<div class="modal" id="searchModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Сведения о системе</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<ul class="nav nav-pills nav-fill">
+						<li class="nav-item">
+							<a class="nav-link hidden-sm-up icon_system" href="#system" data-toggle="pill" role="tab" aria-controls="system"><i class="fa fa-info" aria-hidden="true"></i></a>
+							<a class="nav-link active hidden-xs-down" href="#system" id="system-tab" data-toggle="pill" role="tab" aria-controls="system">О системе</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link hidden-sm-up icon_info" href="#info" data-toggle="pill" role="tab" aria-controls="info"><i class="fa fa-handshake-o " aria-hidden="true"></i></a>
+							<a class="nav-link hidden-xs-down" href="#info" id="info-tab" data-toggle="pill" role="tab" aria-controls="info">Обладатель информации ГИС</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link hidden-sm-up icon_dev" href="#dev" data-toggle="pill" role="tab" aria-controls="dev"><i class="fa fa-globe" aria-hidden="true"></i></a>
+							<a class="nav-link hidden-xs-down" href="#dev" id="dev-tab" data-toggle="pill" role="tab" aria-controls="dev">Разработчики ГИС</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade show active" id="system" role="tabpanel" aria-labelledby="system-tab">
+							<div class="row">
+								<div class="col-12 col_2">
+									<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Автоматизация полномочий Комитета по благоустройству Санкт-Петербурга в части реализации полномочий, предусмотренных п. 3.73. Положения о Комитете по благоустройству Санкт-Петербурга, утвержденного постановлением Правительства Санкт-Петербурга от 29.06.2010 №836 «О мерах по совершенствованию государственного управления в области благоустройства и дорожного хозяйства»:<br />
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9755;&nbsp;обеспечивать осуществление дорожной деятельности в части, касающейся содержания автомобильных дорог общего пользования регионального значения в Санкт-Петербурге (включая проведение первоочередных мероприятий по обеспечению безопасности и организации дорожного движения), если указанное полномочие в соответствии с нормативными правовыми актами Правительства Санкт-Петербурга не отнесено к компетенции иных исполнительных органов государственной власти Санкт-Петербурга, в том числе осуществлять установку дорожных ограждений (за исключением дорожных ограждений на искусственных дорожных сооружениях), обеспечивать содержание искусственных дорожных сооружений, являющихся имуществом казны Санкт-Петербурга, в части, касающейся выполнения работ по очистке, обеспыливанию, механизированной снегоочистке, расчистке от снежных заносов, борьбе с зимней скользкостью, погрузке и вывозу снега, распределению противогололедных материалов, очистке от снега и льда, борьбе с наледями, выполняемых на проезжей части указанных искусственных дорожных сооружений, а также на тротуарах и иных частях указанных искусственных дорожных сооружений, на которых разрешено движение пешеходов.</p>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+							<div class="row">
+								<div class="col-5 col_1"><p>Полное наименование:</p></div>
+								<div class="col-7 col_2"><p>Комитет по благоустройству Санкт-Петербурга</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>Сокращенное наименование:</p></div>
+								<div class="col-7 col_2"><p>КБ СПб</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>Юридический адрес:</p></div>
+								<div class="col-7 col_2"><p>191023, Санкт-Петербург, ул. Караванная, д. 9</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>ИНН:</p></div>
+								<div class="col-7 col_2"><p>7840424142</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>ОГРН:</p></div>
+								<div class="col-7 col_2"><p>1099847031570</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>ФИО уполномоченного должностного лица:</p></div>
+								<div class="col-7 col_2"><p>Рублевский Владимир Викторович</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>Должность уполномоченного должностного лица:</p></div>
+								<div class="col-7 col_2"><p>Член Правительства Санкт-Петербурга - председатель Комитета</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>Телефон:</p></div>
+								<div class="col-7 col_2"><p><a href="tel:88125761204"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;+7(812)576-12-04</a></p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>Факс:</p></div>
+								<div class="col-7 col_2"><p><i class="fa fa-fax" aria-hidden="true"></i>&nbsp;+7(812)312-79-62</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>Адрес электронной почты:</p></div>
+								<div class="col-7 col_2"><p><i class="fa fa-envelope-square" aria-hidden="true"></i>&nbsp;kb@gov.spb.ru</p></div>
+							</div>
+							<div class="row">
+								<div class="col-5 col_1"><p>Принадлежность к структурному (функциональному) элементу:</p></div>
+								<div class="col-7 col_2"><p>7840424142</p></div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="dev" role="tabpanel" aria-labelledby="dev-tab">
+							<div class="row">
+								<div class="col-5 col_1"><p>Санкт-Петербургское государственное унитарное предприятие «Санкт-Петербургский информационно-аналитический центр»</p></div>
+								<div class="col-7 col_2"><p>Санкт-Петербургское государственное унитарное предприятие«Санкт-Петербургский информационно-аналитический центр»</p></div>
+							</div>
+							<hr />
+							<div class="row">
+								<div class="col-5 col_1"><p>ООО «НАВСИ»</p></div>
+								<div class="col-7 col_2"><p>Россия, Санкт-Петербург, Светлановский пр. д.2А.
+									<br /><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;+7 (812) 323-8611.
+									<br /><i class="fa fa-fax" aria-hidden="true"></i>&nbsp;+7 (812) 323-8633.
+									<br /><i class="fa fa-envelope-square" aria-hidden="true"></i>&nbsp;office@navsy.ru
+									<br /><a href="http://www.navsy.ru/"><i class="fa fa-globe" aria-hidden="true"></i>&nbsp;www.navsy.ru</a>
+								</p></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--<div class="modal-footer">-->
+					<!--<button type="button" class="btn btn-primary modal-footer__button" data-dismiss="modal" aria-label="Close">Закрыть</button>-->
+				<!--</div>-->
+			</div>
+		</div>
+	</div>
 	<nav class="navbar navbar-expand{-sm|-md|-lg|-xl} navbar-light bg-light">
 		<div class="container header">
 			<div class="row">
 				<div class="col-2 col-left">
-					<a class="navbar-brand" href="#">
+					<a class="navbar-brand" href="#" data-toggle="modal" data-target="#searchModal">
 						<figure>
 							<img src="./images/icon_logo.png" class="d-inline-block" alt="">
 						</figure>
@@ -48,9 +151,9 @@
 						<form action="#" id="search" class="form-inline search">
 							<i class="fa fa-search"></i>
 							<div id="search_clear" class="search-input"></div>
-							<button class="button-state">
+							<a class="button-state">
 								<span class="fa fa-exchange fa-lg"></span>
-							</button>
+							</a>
 						</form>
 					</div>
 				</div>
@@ -153,8 +256,8 @@
 	<script src="js/libs/asidebar.jquery.min.js"></script>
 	<script src="js/libs/semantic.min.js"></script>
 	<script src="js/libs/FeedEk.min.js"></script>
-	<!--<script src="js/common.min.js"></script>-->
-	<script src="js/common.js"></script>
+	<script src="js/common.min.js"></script>
+	<!--<script src="js/common.js"></script>-->
 
 	<!— Global site tag (gtag.js) - Google Analytics —>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110461792-1"></script>

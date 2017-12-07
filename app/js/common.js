@@ -75,29 +75,26 @@ $(document).ready( () => {
   }
 	setAttr(input, {"type": "text", "id": "search_query", "class": "address clearable", "placeholder": "Поиск по адресу"});
 
-	function WaitForConnect() {
-		$.ajax({
-			type: 'GET',
-			url: 'http://176.97.34.40:6064/?command=connect&principal=1',
-			// url: 'http://176.97.34.41:6064/?command=connect&principal=1',
-			async: true,
-			cache: false,
-			success: (data) => {
-				let json = eval('(' + data + ')');
-				WaitForPool(json.root[0].connection);
-			},
-			error: (XMLHttpRequest, textStatus, errorThrown) => {
-				WaitForPool(json.root[0].connection);
-			}
-		});
-	}
+	// function WaitForConnect() {
+	// 	$.ajax({
+	// 		type: 'GET',
+	// 		url: '/srv/pool.php?get=connect&principal=1',
+	// 		async: true,
+	// 		cache: false,
+	// 		success: (data) => {
+	// 			let json = eval('(' + data + ')');
+	// 			WaitForPool(json.root[0].connection);
+	// 		},
+	// 		error: (XMLHttpRequest, textStatus, errorThrown) => {
+	// 			WaitForPool(json.root[0].connection);
+	// 		}
+	// 	});
+	// }
 	function WaitForPool(id) {
 		$.ajax({
 			type: 'GET',
-			url: 'http://176.97.34.40:6064/?command=receive&connection=' + id,
-			// url: 'http://176.97.34.41:6064/?command=receive&connection=' + id,
-			async: true,
-			cache: false,
+			url: '/json.json',
+			cache: true,
 			success: (data) => {
 				let json  = eval('(' + data + ')');
 				let str 	= JSON.stringify(json);
@@ -158,8 +155,8 @@ $(document).ready( () => {
   function Map() {
 		rsM();
 		function mapDraw () {
-			let cloudUrl = 'http://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
-			let day 		 = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			let cloudUrl = 'https://{s}.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/{styleId}/256/{z}/{x}/{y}.png';
+			let day 		 = new L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				detectRetina: true,
 				minZoom: 9
 			});
@@ -167,7 +164,6 @@ $(document).ready( () => {
 			spbCntr 	   = new L.LatLng(59.930967, 30.302636);
 			map 			   = new L.Map('map_canvas', { center: spbCntr, zoom: 10, layers: [day, mrkOn]});
 			map.setMaxBounds([[59.430967, 29.302636], [60.430967, 31.302636]]);
-			// let fs     = map.addControl(new L.Control.Fullscreen());								//fullscreen button
 			let fs     = L.control.fullscreen({ position: 'topleft'}).addTo(map);			//fullscreen button
 			let lc 		 = L.control.locate().addTo(map);															//geolocation
 			let lgnd 	 = L.control({position: 'bottomright'});											//the location of the legend
@@ -271,13 +267,11 @@ $(document).ready( () => {
 					e.stopPropagation();
 				}
 			});
-
-			return WaitForConnect();
 		}
 		return mapDraw();
   }
 	$.ajax({
-		url: "/js/info.json",
+		url: "/info.json",
 		dataType: 'json',
 		success: (data) => {
 			for (let k in data.result) {
@@ -286,7 +280,7 @@ $(document).ready( () => {
 					carsArray.push(data.result[k]);
 				}
 			}
-			let conId = WaitForConnect();
+			let conId = WaitForPool();
 		}
 	});
 	function getFuncCar(obj, sensors) {
@@ -466,6 +460,7 @@ $(document).ready( () => {
 				$('.closed').click(() => {
 					if (dot != undefined) {
 						map.removeLayer(dot);
+						map.setZoom(10);
 					}
 				});
 			},
@@ -507,7 +502,11 @@ $(document).ready( () => {
 			if(el.hasClass('address')){
 				el.removeClass('address');
 				el.addClass('object');
-				el.attr('placeholder', 'Поиск по объектам');
+				if($(window).width() <= 575){
+					el.attr('placeholder', 'Поиск по б/н');
+				} else {
+					el.attr('placeholder', 'Поиск по бортовому номеру');
+				}
 				schCar();
 			} else {
 				el.removeClass('object');
@@ -541,6 +540,12 @@ $(document).ready( () => {
 	});
 	$(window).on('onUpdateSlice', (e) => {
 		updMrkOnMap(e.obj, global.data[e.did]);
+	});
+	$('.col-left').click(() => {
+		if ($(window).width() <= 575){
+			$('#system-tab').removeClass('active');
+			$('.icon_system').addClass('active');
+		} 
 	});
   $('.col-right').click(() => {
 		nsScrl();

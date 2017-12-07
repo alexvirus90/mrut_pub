@@ -1,5 +1,4 @@
 .aside
-  z-index: 500
   border: 0
   &-backdrop
     z-index: 20
@@ -11,15 +10,17 @@
     padding: .8em
   &-contents
     padding: 0
+    overflow: hidden
     .nav-item
       width: 50%
       .nav-link
         text-transform: uppercase
         font-weight: bold
         text-align: center
+    @include scrollbars(.7em, grey)
     #contact
       height: auto
-      overflow-x: hidden
+      overflow-y: auto
       .row
         display: block
         .caption
@@ -54,3 +55,4 @@
   &.in
     width: 400px
     min-width: 320px
+    z-index: 555

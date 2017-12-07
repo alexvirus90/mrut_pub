@@ -25,3 +25,15 @@
 @mixin media-breakpoint-down($resolution-max)
   @media only screen and (min-width: $resolution-max)
     @content
+
+@mixin scrollbars($size, $primary, $secondary: lighten($primary, 25%))
+  ::-webkit-scrollbar
+    width:  $size
+    height: $size
+
+  ::-webkit-scrollbar-thumb
+    background: $primary
+
+  ::-webkit-scrollbar-track
+    background: $secondary
+

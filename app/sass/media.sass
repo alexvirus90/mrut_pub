@@ -45,6 +45,10 @@
           padding: 0
       &-right
         max-width: 6%
+  .modal
+    &.show
+      .modal-dialog
+        margin: 30px 10px
 
 @include media-breakpoint-between($sm - 1, $md) //$sm: 576px  $md: 768px; min: 576 max: 769
   #{$search-width}
@@ -64,8 +68,10 @@
           display: none
       &-right
         max-width: 8%
-  .modal-content
-    width: 70%
+  .modal
+    &.show
+      .modal-dialog
+        margin: 30px 15px
 
 @include media-breakpoint-between($sm - 257, $sm) //$sm: 576px; min: 320 max: 577
   #{$search-width}
@@ -95,3 +101,14 @@
       .col_2
         a
           font-size: 12px
+  .modal-open
+    .modal
+      overflow-y: hidden
+      &.show
+        .modal-dialog
+          margin: 0
+          .modal-content
+            .modal-body
+              .tab-content
+                p
+                  font-size: 12px
