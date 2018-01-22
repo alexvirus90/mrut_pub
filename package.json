@@ -9,12 +9,15 @@
     "bower": "./node_modules/.bin/bower",
     "prod": "SET NODE_ENV=production && gulp build",
     "start": "static --progress --inline --hot",
-    "dev": "SET NODE_ENV=development && npm run start"
+    "dev": "SET NODE_ENV=development && gulp build"
   },
   "author": "Komarov Alexander",
   "license": "ISC",
   "dependencies": {
-    "ol": "^4.4.2"
+    "body-parser": "^1.18.2",
+    "ol": "^4.4.2",
+    "pouchdb": "^6.4.1",
+    "vis": "^4.21.0"
   },
   "devDependencies": {
     "babel": "^6.23.0",
@@ -30,6 +33,7 @@
     "gulp-autoprefixer": "^4.0.0",
     "gulp-babel": "^7.0.0",
     "gulp-cache": "^0.4.6",
+    "gulp-clean-css": "^3.9.0",
     "gulp-concat": "^2.6.1",
     "gulp-cssnano": "^2.1.2",
     "gulp-if": "^2.0.2",
@@ -42,11 +46,12 @@
     "gulp-uglifyjs": "^0.6.2",
     "imagemin-pngquant": "^5.0.1",
     "jquery": "^3.2.1",
-    "jquery-autocomplete": "^1.2.1",
     "jquery-ui": "^1.12.1",
-    "jstorage": "^0.4.8",
     "leaflet": "^1.2.0",
     "leaflet-rotatedmarker": "^0.2.0",
-    "leaflet.fullscreen": "^1.4.3"
+    "leaflet.fullscreen": "^1.4.3",
+    "reconnecting-websocket": "^3.2.2",
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.0.4"
   }
 }

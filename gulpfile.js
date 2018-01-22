@@ -5,7 +5,8 @@ const gulp         = require('gulp'),
       browserSync  = require('browser-sync'),
       concat       = require('gulp-concat'),
       minify       = require('gulp-minify'),
-      cssnano      = require('gulp-cssnano'),
+      // cssnano      = require('gulp-cssnano'),
+      cssnano      = require('gulp-clean-css'),
       rename       = require('gulp-rename'),
       del          = require('del'),
       imagemin     = require('gulp-imagemin'),
@@ -24,8 +25,8 @@ gulp.task('sass', () => {
     .pipe(sass())
     .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
     .pipe(gulpIf(isDevelopment, sourcemaps.write('.')))
-	.pipe(gulpIf(!isDevelopment, cssnano()))
-	.pipe(gulpIf('**/*.css', rename({suffix: '.min'})))
+		.pipe(gulpIf(!isDevelopment, cssnano({compatibility: 'ie8'})))
+		.pipe(gulpIf('**/*.css', rename({suffix: '.min'})))
     .pipe(gulp.dest('app/css'))
 });
 gulp.task('lib', () => {
@@ -36,8 +37,13 @@ gulp.task('lib', () => {
 gulp.task('libs', () => {
   return gulp.src([
 	'node_modules/jquery-ui/external/jquery-1.12.4/jquery.js',
+	'node_modules/reconnecting-websocket/dist/index.js',
+	'node_modules/vis/dist/vis.min.js',
+	'node_modules/pouchdb/dist/pouchdb.min.js',
 	'app/libs/tether/js/tether.js',
-	'app/libs/jq_ui/jquery-ui.js',
+	'app/libs/jquery_simple_websocket/jquery.simple.websocket.min.js',
+	'app/libs/jquery_simple_websocket/jquery.simple.websocket.js',
+	'app/libs/jq_ui/jquery-ui.min.js',
 	'app/libs/bootstrap/js/bootstrap.js',
 	'node_modules/leaflet/dist/leaflet.js',
 	'app/libs/leaflet.fullscreen/Control.FullScreen.js',
@@ -49,7 +55,7 @@ gulp.task('libs', () => {
 	.pipe(gulp.dest('app/js/libs'));
 });
 gulp.task('babeljs', () => {
-	return gulp.src('app/js/common.js', { since: gulp.lastRun('babeljs') })
+	return gulp.src(['app/js/common.js'], { since: gulp.lastRun('babeljs') })
 		.pipe(babel({
 			presets: ['env']
 		}))
@@ -70,17 +76,18 @@ gulp.task('minjs', () => {
 	}))
 	.pipe(gulpIf(isDevelopment, sourcemaps.write('.')))
 	// .pipe(gulpIf('**/*.min.js', gulp.dest('dist/js')))
-	.pipe(gulpIf('**/*.min.js', gulp.dest('dist/js/libs')))
+	.pipe(gulpIf(['**/*.min.js'], gulp.dest('dist/js/libs')))
 });
 gulp.task('cssnano', () => {
   return gulp.src([
 	'app/libs/tether/css/tether.css',
+	'node_modules/vis/dist/vis.min.css',
 	'app/libs/tether/css/tether-theme-arrows.css',
 	'app/libs/tether/css/tether-theme-arrows-dark.css',
 	'app/libs/tether/css/tether-theme-basic.css',
 	'app/libs/bootstrap/css/bootstrap.css',
 	'node_modules/leaflet/dist/leaflet.css',
-	'app/libs/jq_ui/jquery-ui.css',
+	'app/libs/jq_ui/jquery-ui.min.css',
 	'app/libs/leaflet.fullscreen/Control.FullScreen.css',
 	'app/sass/leaflet.ie.css',
 	'app/libs/leaflet.locatecontrol/L.Control.Locate.min.css',
@@ -89,7 +96,7 @@ gulp.task('cssnano', () => {
 	'app/libs/font-awesome/css/font-awesome.css',
 	'app/libs/FeedEk/FeedEk.css'
   ], { since: gulp.lastRun('cssnano') })
-	.pipe(cssnano())
+	.pipe(cssnano({compatibility: 'ie8'}))
 	.pipe(gulp.dest('app/css/libs'));
 });
 gulp.task('images', () => {

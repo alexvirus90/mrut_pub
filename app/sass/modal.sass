@@ -2,9 +2,11 @@
 @import "mixin"
 
 .modal
+  overflow-y: hidden!important
   &.show
     .modal-dialog
       max-width: 800px
+      margin: 100px auto
       .modal-content
         border: 0
         .modal-body
